@@ -1,0 +1,4 @@
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\AutoUpdate\bin\Debug\AutoUpdate.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\AutoUpdate\bin\Debug\AutoUpdate.pdb
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\AutoUpdate\obj\Debug\AutoUpdate.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\AutoUpdate\obj\Debug\AutoUpdate.pdb

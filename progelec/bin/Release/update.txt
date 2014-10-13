@@ -1,0 +1,697 @@
+﻿##############
+Ver 1.00.5.XXX
+##############
+
+Ajout Tables equipements-fournitures
+Ajout fourniture equipement
+
+Actualisdation des tables avant generaetion de parcours
+
+Ajout temps de pose sur equipement
+
+
+##############
+Ver 1.00.5.738
+##############
+Ajout MAD SALLES
+Ajoutr MAD EQUIPEMENTS
+
+Modification majeur des tables
+
+Modification de la chaine de generation de parcours sur 
+la gestion de contrainte en cas de contrainte presente
+
+##############
+Ver 1.00.5.645
+##############
+
+Ajout des champ RP et CF sur les troncons
+
+Ajout des champ RP et CF sur le rapport de tremies
+
+
+##############
+Ver 1.00.5.632
+##############
+
+*************************************************************** 
+NEW
+Mise en place d'un patcher Dll et updater 
+Colorimétrie sur la liste tronçon
+*************************************************************** 
+
+Diverses corrections sur la génération des rapports
+ 
+Interface de visualisation des temps globaux et des avancements
+
+
+preparation à la mise à dispo des salle ( BETA template de travail )
+
+##############
+Ver 1.00.5.588
+##############
+
+Maj rapport carnet de tremies
+
+##############
+Ver 1.00.5.586
+##############
+
+Ajout du carnet de tremies
+Ajout menu salle et calcul DCC
+
+##############
+Ver 1.00.5.570
+##############
+
+Correctif sur la saisie des temps de pose / Rac
+
+##############
+Ver 1.00.5.559
+##############
+
+Correctif sur la supppression des troncons
+Ajout des temps de poses troncons / pose et raccordement cables
+
+##############
+Ver 1.00.5.553
+##############
+
+Ajout discriminent à 1 lors de la creation d'un bornier ou d'un depart
+
+
+##############
+Ver 1.00.5.548
+##############
+
+Maj interface sur plusieur form
+Prise en compte creation de bornier et depart type terminal et non virtuel
+
+##############
+Ver 1.00.5.525
+##############
+
+Bonne rentree !!!
+
+Correction Calcul longueur reel sur parcours
+
+Correction sur creation de bornier / association troncon
+
+##############
+Ver 1.00.5.515
+##############
+
+Ajout d'un controle sur resultat dans calcul taux de remplissage tronçon
+
+Bonnes vacances
+
+##############
+Ver 1.00.5.505
+##############
+
+test liste alimentations
+
+##############
+Ver 1.00.5.495
+##############
+
+Correction traitement classement liste troncon sur reserve cal et reserve cal 2
+idem sur lot dans liste cables
+
+Modification formulaire fournitures
+correction enregistrement à la chaine formulaire fournitures
+Identification de la donnée ouverte dans les onglets
+ajout liste des Tronçons non categorisé via une fournitures
+
+
+
+##############
+Ver 1.00.5.464
+##############
+
+Modification gestion données sources
+
+Correction données d'entree sur sedlection departs cables
+
+"En cours" . Mise en place de la carte des batiments
+
+##############
+Ver 1.00.5.450
+##############
+
+ajout Longueur troncon dans detail cables / parcours
+
+corectif en cas de parcours null
+
+##############
+Ver 1.00.5.447
+##############
+
+MODIFICATION synoptique global
+MODIFICATION form cable
+
+
+##############
+Ver 1.00.5.416
+##############
+
+Ajout de 2 contraintes ne passe pas sur generation de parcours
+
+Classement des tronçons par ordre ALPHABETIQUE
+
+Modification formule de calcul remplissage dans fornme cercle
+
+##############
+Ver 1.00.5.404
+##############
+
+Corection detail parcours dans form cables
+
+##############
+Ver 1.00.5.399
+##############
+
+Maj facteur creation cable
+
+##############
+Ver 1.00.5.382
+##############
+
+ajout champ masse calculee par tronçon
+
+correction sur equipement
+
+##############
+Ver 1.00.5.330
+##############
+
+Correction base
+Liste troncon Modification rendering
+
+##############
+Ver 1.00.5.330
+##############
+
+Correction sur borniers et departs
+
+##############
+Ver 1.00.5.315
+##############
+
+correction sur changement de section Cables
+
+Ajout gestion de planning / jalon
+
+ajout besoin global
+
+##############
+Ver 1.00.5.260
+##############
+
+correction mineur sur formulaire tronçons
+Maj DLL
+
+##############
+Ver 1.00.5.200
+##############
+
+Corection definition des besoin
+
+##############
+Ver 1.00.5.198
+##############
+
+ajout definition des besoin
+
+##############
+Ver 1.00.5.194
+##############
+
+Mise en place de controle sur la preselection
+
+Autoselection de la forme sur selection du type tronçon
+
+corrections majeur sur formulaire tronçon et cable
+
+ajout onglet gestion fournitures et stock / commandes / livraisons
+
+[BETA] ajout definition des besoin
+
+##############
+Ver 1.00.5.142
+##############
+
+Suppression du cable et de ces fils via le form cable
+
+AUTO generation d'un template et atribution de fourniture par tronçon
+
+
+[BETA]
+enregistrement des contraintes sur generation globale
+
+creation des actions avec affectation utilisateurs
+
+
+##############
+Ver 1.00.5.091 BETA
+##############
+
+
+enregistrement des contraintes sur generation globale
+
+creation des actions avec affectation utilisateurs
+
+correction sur suppression troncons
+
+Masse des tronçons en KG/m.
+
+ajout d'un controle sur le mode de pose des troncon lors de la sauvegarde
+
+##############
+Ver 1.00.5.049
+##############
+
+Correctif sur affichage de la masse / tronçon
+
+Ajout ouverture cable via form tronçon
+
+Ajout ouverture tronçons via detail cable
+
+
+##############
+Ver 1.00.5.035
+##############
+
+Ajour gestion des fournitures
+Ajout gestion et generation auto des actions
+Planning utilisateur
+
+##############
+Ver 1.00.5.035
+##############
+
+re activation du controle des donnees physique
+
+Ajoutr dans données physique DU A FAIRE
+
+##############
+Ver 1.00.5.026
+##############
+
+ajout d'un controle d'integité sur le binding salle et segregation
+
+desactivation du ctrl des données physique
+
+##############
+Ver 1.00.5.024
+##############
+
+ajout d'un controle d'integité sur le binding type troncon
+
+##############
+Ver 1.00.5.020
+##############
+
+Ajout d'un controle de coherence sur les données physique
+
+##############
+Ver 1.00.5.012
+##############
+
+Reduction du delais de rafraichissement du cache de données
+
+Gestion des données physique cables disponnibles
+
+modification de l'unitée de masse 
+
+
+##############
+Ver 1.00.5.001
+##############
+
+[Form Tronçon]
+Ajout de la masse presente dans le tronçon (calcul effectué l'ors de la generation du taux de remplissage tronçon)
+
+[Correctif]
+Enregistrement sur detail cable
+
+Mise à zero du parcours lors de la generation
+
+##############
+Ver 1.00.4.852
+##############
+
+Correction majeur sur Prise en compte longueur dans algo dijkstra
+
+##############
+Ver 1.00.4.825
+##############
+
+Prise en compte du nombre de couche sur calcul remplissage dans Liste troncons
+Prise en compte autres lots
+
+##############
+Ver 1.00.4.821
+##############
+
+correction sur generation parcours
+
+##############
+Ver 1.00.4.817
+##############
+
+modif liste Cable sur double click
+
+##############
+Ver 1.00.4.815
+##############
+
+Modification detail cable
+Modification Liste Cable
+
+ajout Controle de valeur sur calcul remplissage
+
+##############
+Ver 1.00.4.812
+##############
+
+Correction sur mode de calcul dans form details tronçons
+Modification des controles sur forme troncons
+ajout image Trefle
+
+Correction multiple divers
+
+
+##############
+Ver 1.00.4.780
+##############
+
+Ajout informations dans visualisation associations
+Modification code couleur pour segregation
+
+##############
+Ver 1.00.4.758
+##############
+
+Prise en charge GENERATION AUTOCAD
+
+Correction sur requette de visualisation des assoc en salle
+
+##############
+Ver 1.00.4.732
+##############
+
+[Visualisation des troncons en diagramme]
+
+[Visualisation des associations en diagramme]
+
+##############
+Ver 1.00.4.675
+##############
+
+[CODE]
+Correction sur le calcul des remplissage (detachement des data virtuelles)
+Ajout ne doit pas passer par Tronçons * 2
+
+
+##############
+Ver 1.00.4.655
+##############
+
+[Onglet PROJET]
+Ajout Besoin Câbles Global / section et types
+Refonte des champ de recherche
+
+##############
+Ver 1.00.4.605
+##############
+
+Correction Interface de liaison
+
+##############
+Ver 1.00.4.600
+##############
+
+[BASE]
+Correction moteur de données suite synchronisation
+
+##############
+Ver 1.00.4.593
+##############
+
+[Deroutage]
+Debug en cours ..
+
+
+
+[CODE]
+Refection majeur sur les boucles
+de traitement des calculs 
+taux de remplissage Tronçons
+
+Mise en place de thread et d'avertissement
+pour calcul en cours ou actualisation
+sans bloquer l'utilisateur
+
+Ajout de contrainte ne passe pas (tronçons) / doit passer par
+refection en thread safe en cours..
+
+
+
+##############
+Ver 1.00.4.426
+##############
+
+[generation parcours]
+seconde Corection mineure sur la boucle de traitement
+
+##############
+Ver 1.00.4.423
+##############
+
+[generation parcours]
+Corection mineure sur la boucle de traitement
+
+##############
+Ver 1.00.4.420
+##############
+
+[Lst Cable]
+reprise du mode de generation des parcours
+corection form cables pour ecart depart
+
+Ajout de contrainte ne passe pas / [BETA] doit passer par
+
+##############
+Ver 1.00.4.375
+##############
+
+[FORM Tronçon]
+liberation du controle detail tronçon
+correction bug mineur empechant l'enregistrement des modifications
+
+[FORM Liste Tronçon]
+Maj des largeurs de colone auto
+Correction sur entete de colone taux remplissage Mono / Multi
+
+[FORM Cable]
+Changement sur le mode de pose
+
+[Generation Parcours]
+Activation des controles sur le mode de pose
+
+##############
+Ver 1.00.4.325
+##############
+
+[Form Assoc]
+Correction interface mineur
+
+##############
+Ver 1.00.4.323
+##############
+
+[CODE]
+correction mineur
+
+##############
+Ver 1.00.4.322
+##############
+
+[CODE]
+ajout des fonctions dispose sur les forms de suppression assoc et troncons
+
+[CORE]
+Ajout dll Manquante
+
+
+##############
+Ver 1.00.4.320
+##############
+
+
+[BETA Supression Association tronçon]
+correction algo de supression des associations tronçons
+
+[BASE]
+Modif Majeur sur requette ctr_sup_assoc
+
+
+##############
+Ver 1.00.4.301
+##############
+
+[GENERATION Parcours]
+Ré activation des contrôle sur la pre-generation des parcours
+
+[Supression tronçon]
+Fianlisation outil de supression des tronçons
+
+[BETA Supression Association tronçon]
+BETA outil de supression des associations tronçons
+
+[CODE]
+Modification de la gestion de la memoire sur form Lst Troncon / troncon
+
+[Ajout des verous dur le mode utilisateur pour les tronçons]
+
+##############
+Ver 1.00.4.190
+##############
+
+[CODE]
+
+Correction Bug Majeur sur form tronçons
+
+##############
+Ver 1.00.4.190
+##############
+
+
+
+[Formulaire]
+
+=> troncons
+modification sur champ : qui / motif / date
+
+=> Modification
+ajout d'un formulaire BETA
+
+=> Principal
+alout d'un panel selection Modiication courante / user en ligne
+
+[BASE]
+ajout modification (FM / TS / etc)
+
+
+##############
+Ver 1.00.4.173
+##############
+
+
+
+[BASE]
+Modifications Majeur
+Ajout Rev Base
+Rev Edition
+Tables TS/FM
+Champ Terminal sur les troçons
+
+
+[Formulaire]
+=>Nouveau
+Bouton Support en haut à droite pour demande et declaration de bug
+
+=> Tronçon
+Refonte du code de calcul des taux de remplissage
+reprise des intitulé de colonnes dans le detail tronçons (liaisons presentes)
+
+
+
+
+##############
+Ver 1.00.4.154
+##############
+
+[BASE]
+Ajout du champ longueur_Note_Calcule
+Ajout Champ WARNING (ecart longueur Max / longueur parcourts ) sur procedure lst_cables
+
+[FORM]
+=> Liste Cable
+Prise en compte modification Base
+Ouverture du detail sur simple double click
+
+##############
+Ver 1.00.4.141
+##############
+
+[EDITION]=> carnet de deroulage
+Modification de la generation du carnet de deroulage
+Prise en compte de la ref Doc
+Cortrection de l'unité de longueur des parcours
+
+[DIVERS]
+corrections de bug mineurs
+
+##############
+Ver 1.00.4.117
+##############
+
+Divers maj suite demande Mr POTOCZNY ..
+
+##############
+Ver 1.00.4.100
+##############
+=> Form liste equipement
+
+ajout de la fonction tri / colone
+
+Ouverture du detail sur simple double click
+
+*** NOUVEAU
+##############
+ajout du tri par Valeurs
+
+=> Form equipement
+
+Modification de la fenetre et du comportement IHM
+
+Ajout du detail equipement pour vision segregation
+
+=> Form liste tronçons
+
+
+=> Form liste tronçons
+
+Modification des entetes de colone
+
+=> form tronçons
+
+correction du champ Virtuel qui resté par default à true
+Blocage des controle avant modification
+
+##############
+Ver 1.00.4.68
+##############
+=> form tronçons
+
+Modification du comportement à la creation d'un tronçon
+
+=> form Liste tronçons
+
+ouverture du formulaire detaillé au doubkle click sur une ligne
+
+=> Alert
+
+Mise en focus de la fenetre d'alerte
+##############
+Ver 1.00.4.59
+##############
+=> form tronçons
+correction de event handler affichant "Veuillez changer de salle"
+ajout d'un controle de valeur sur les chant reserve 1 et reserve 2 
+##############
+Ver 1.00.4.54
+##############
+Ajout d'une about Box pour information des correctifs et fonctions modifiées

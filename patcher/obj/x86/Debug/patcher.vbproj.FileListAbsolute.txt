@@ -1,0 +1,12 @@
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Debug\patcher.exe.config
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Debug\patcher.exe
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Debug\patcher.pdb
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Debug\patcher.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Debug\Ionic.Zip.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.vbprojResolveAssemblyReference.cache
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.Form1.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.Resources.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.vbproj.GenerateResource.Cache
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.exe
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Debug\patcher.pdb

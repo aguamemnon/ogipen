@@ -1,0 +1,12 @@
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Release\patcher.exe.config
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Release\patcher.exe
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Release\patcher.pdb
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Release\patcher.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\bin\Release\Ionic.Zip.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.Form1.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.Resources.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.vbproj.GenerateResource.Cache
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.exe
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.pdb
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\patcher\obj\x86\Release\patcher.vbprojResolveAssemblyReference.cache

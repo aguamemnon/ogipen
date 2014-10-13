@@ -1,0 +1,2611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E31711A1-BE48-4671-89D8-7C1419F689D2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>progelec.My.MyApplication</StartupObject>
+    <RootNamespace>progelec</RootNamespace>
+    <AssemblyName>progelec</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Optimize>false</Optimize>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Loading.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dataweb.NShape">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.ElectricalModelObjects">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.ElectricalModelObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.ElectricalShapes">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.ElectricalShapes.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.FlowChartShapes">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.FlowChartShapes.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.GeneralModelObjects">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.GeneralModelObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.GeneralShapes">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.GeneralShapes.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.SoftwareArchitectureShapes">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.SoftwareArchitectureShapes.dll</HintPath>
+    </Reference>
+    <Reference Include="Dataweb.NShape.WinFormsUI">
+      <HintPath>C:\Program Files (x86)\dataweb\NShape\bin\Dataweb.NShape.WinFormsUI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.Design, Version=11.6.0.3, Culture=neutral, PublicKeyToken=90f470f34c89ccaf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.Keyboard, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.Keyboard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.Layout, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.Layout.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.Layout.Design, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.Layout.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.Schedule, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.Schedule.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar.SuperGrid, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar.SuperGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.DotNetBar2, Version=11.6.0.3, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.Instrumentation, Version=11.6.0.3, Culture=neutral, PublicKeyToken=f90dc37c26666a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.Instrumentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.Instrumentation.Design, Version=11.6.0.3, Culture=neutral, PublicKeyToken=76cb4c6eb576bca5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.Instrumentation.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.SuperGrid.Design, Version=11.6.0.3, Culture=neutral, PublicKeyToken=26d81176cfa2b486, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.SuperGrid.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevComponents.TreeGX, Version=11.6.0.3, Culture=neutral, PublicKeyToken=055db68f670cfeab, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DotNetBar for Windows Forms\DevComponents.TreeGX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastReport, Version=2014.2.4.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\FastReports\FastReport.Net\FastReport.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastReport.Bars, Version=2014.2.4.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\FastReports\FastReport.Net\FastReport.Bars.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastReport.MySQL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b33a9a06fcc00c4c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\FastReports\FastReport.Net\Extras\Connections\FastReport.MySQL\bin\Release\FastReport.MySQL.dll</HintPath>
+    </Reference>
+    <Reference Include="GanttChart">
+      <HintPath>..\..\..\..\..\..\..\..\dev\logiciel\complements\ganttchart\GanttChart\bin\Release\GanttChart.dll</HintPath>
+    </Reference>
+    <Reference Include="Ludiosoft.ConfigurationFile">
+      <HintPath>..\..\..\..\..\..\..\..\dev\logiciel\complements\Ludiosoft.ConfigurationFile.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Nevron.Diagram">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nevron.Diagram.Shapes, Version=12.4.9.12, Culture=neutral, PublicKeyToken=532a56b211affb14, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nevron.Diagram.Templates, Version=12.4.9.12, Culture=neutral, PublicKeyToken=07832fe1e4f1af1f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nevron.Diagram.WinForm, Version=12.4.9.12, Culture=neutral, PublicKeyToken=8232c9976c3abc48, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nevron.Presentation, Version=12.4.9.12, Culture=neutral, PublicKeyToken=6656c5d1103e75cc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nevron.System, Version=12.4.9.12, Culture=neutral, PublicKeyToken=6a987feae5e496fd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WinSCPnet, Version=1.1.6.4433, Culture=neutral, PublicKeyToken=2271ec4a3c56d0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>reference\WinSCPnet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox1.Designer.vb">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AboutBox1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="action_module.vb" />
+    <Compile Include="AlertCustom.Designer.vb">
+      <DependentUpon>AlertCustom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AlertCustom.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="classsetting.vb" />
+    <Compile Include="Class_User.vb" />
+    <Compile Include="Cls_ErrorLogger.vb" />
+    <Compile Include="cls_touret.vb" />
+    <Compile Include="cls_troncons.vb" />
+    <Compile Include="AlertBases.Designer.vb">
+      <DependentUpon>AlertBases.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AlertBases.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMiseTourets.Designer.vb">
+      <DependentUpon>FormMiseTourets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMiseTourets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formposecompose.Designer.vb">
+      <DependentUpon>Formposecompose.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formposecompose.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSap.Designer.vb">
+      <DependentUpon>FormSap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAdministration.Designer.vb">
+      <DependentUpon>FormAdministration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAdministration.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormImportNoteCalcul.Designer.vb">
+      <DependentUpon>FormImportNoteCalcul.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormImportNoteCalcul.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPieceMarchandise.Designer.vb">
+      <DependentUpon>FormPieceMarchandise.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPieceMarchandise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_reseaux.Designer.vb">
+      <DependentUpon>Form_reseaux.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form_reseaux.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormArchi.Designer.vb">
+      <DependentUpon>FormArchi.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormArchi.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCtrlEtudes.Designer.vb">
+      <DependentUpon>FormCtrlEtudes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCtrlEtudes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formfourni_touret.Designer.vb">
+      <DependentUpon>Formfourni_touret.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formfourni_touret.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDsipoCheminements.Designer.vb">
+      <DependentUpon>FormDsipoCheminements.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDsipoCheminements.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formfourni_equip.Designer.vb">
+      <DependentUpon>Formfourni_equip.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formfourni_equip.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database_mod.vb" />
+    <Compile Include="FormDefBesoins.Designer.vb">
+      <DependentUpon>FormDefBesoins.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDefBesoins.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDispoEquip.Designer.vb">
+      <DependentUpon>FormDispoEquip.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDispoEquip.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDispoRaccordement.Designer.vb">
+      <DependentUpon>FormDispoRaccordement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDispoRaccordement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDispoSalle.Designer.vb">
+      <DependentUpon>FormDispoSalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDispoSalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDispoTirage.Designer.vb">
+      <DependentUpon>FormDispoTirage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDispoTirage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFournitures_lst.Designer.vb">
+      <DependentUpon>FormFournitures_lst.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormFournitures_lst.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGestUsers.Designer.vb">
+      <DependentUpon>FormGestUsers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormGestUsers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLst_Mat_Trc.Designer.vb">
+      <DependentUpon>FormLst_Mat_Trc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLst_Mat_Trc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMap.Designer.vb">
+      <DependentUpon>FormMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRapportProjet.Designer.vb">
+      <DependentUpon>FormRapportProjet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRapportProjet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSupAssocTroncon.Designer.vb">
+      <DependentUpon>FormSupAssocTroncon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSupAssocTroncon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBesoinCable.Designer.vb">
+      <DependentUpon>FormBesoinCable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormBesoinCable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLstEquipement.Designer.vb">
+      <DependentUpon>FormLstEquipement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLstEquipement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLstSalles.Designer.vb">
+      <DependentUpon>FormLstSalles.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLstSalles.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModification.Designer.vb">
+      <DependentUpon>FormModification.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormModification.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormOptions.Designer.vb">
+      <DependentUpon>FormOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormParcours.Designer.vb">
+      <DependentUpon>FormParcours.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormParcours.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAssocTroncons.Designer.vb">
+      <DependentUpon>FormAssocTroncons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAssocTroncons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCategorie.Designer.vb">
+      <DependentUpon>FormCategorie.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCategorie.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDonnees.Designer.vb">
+      <DependentUpon>FormDonnees.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDonnees.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLots.Designer.vb">
+      <DependentUpon>FormLots.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLots.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLstCables.Designer.vb">
+      <DependentUpon>FormLstCables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLstCables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLstTroncons.Designer.vb">
+      <DependentUpon>FormLstTroncons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLstTroncons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportParcours.Designer.vb">
+      <DependentUpon>FormReportParcours.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportParcours.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSalle.Designer.vb">
+      <DependentUpon>FormSalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSelectionMode.Designer.vb">
+      <DependentUpon>FormSelectionMode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSelectionMode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSelectProject.Designer.vb">
+      <DependentUpon>FormSelectProject.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSelectProject.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formserge.Designer.vb">
+      <DependentUpon>Formserge.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formserge.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShedule.Designer.vb">
+      <DependentUpon>FormShedule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormShedule.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSupport.Designer.vb">
+      <DependentUpon>FormSupport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSupport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSupTroncon.Designer.vb">
+      <DependentUpon>FormSupTroncon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSupTroncon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSynoptique.Designer.vb">
+      <DependentUpon>FormSynoptique.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSynoptique.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formtest.Designer.vb">
+      <DependentUpon>Formtest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formtest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTouretsDetail.Designer.vb">
+      <DependentUpon>FormTouretsDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTouretsDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTouretsliste.Designer.vb">
+      <DependentUpon>FormTouretsliste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTouretsliste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTypeCable.Designer.vb">
+      <DependentUpon>FormTypeCable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTypeCable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formfournitures.Designer.vb">
+      <DependentUpon>Formfournitures.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formfournitures.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_actions_globale.Designer.vb">
+      <DependentUpon>Form_actions_globale.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form_actions_globale.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Detail_equipement_alimentation.Designer.vb">
+      <DependentUpon>Form_Detail_equipement_alimentation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Detail_equipement_alimentation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Plg_Jalons.Designer.vb">
+      <DependentUpon>Form_Plg_Jalons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Plg_Jalons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modcables.vb" />
+    <Compile Include="clsCable.vb" />
+    <Compile Include="FormCable.Designer.vb">
+      <DependentUpon>FormCable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEquipement.Designer.vb">
+      <DependentUpon>FormEquipement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormEquipement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.vb">
+      <DependentUpon>FormMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTroncon.Designer.vb">
+      <DependentUpon>FormTroncon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTroncon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="main.vb" />
+    <Compile Include="Mod_users.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="mydbDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>mydbDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="progelecDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>progelecDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="progelecDataSet.vb">
+      <DependentUpon>progelecDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.vb" />
+    <Compile Include="SplashScreen.Designer.vb">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlertCustom.resx">
+      <DependentUpon>AlertCustom.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlertBases.resx">
+      <DependentUpon>AlertBases.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMiseTourets.resx">
+      <DependentUpon>FormMiseTourets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formposecompose.resx">
+      <DependentUpon>Formposecompose.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSap.resx">
+      <DependentUpon>FormSap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAdministration.resx">
+      <DependentUpon>FormAdministration.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormArchi.resx">
+      <DependentUpon>FormArchi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCtrlEtudes.resx">
+      <DependentUpon>FormCtrlEtudes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formfourni_touret.resx">
+      <DependentUpon>Formfourni_touret.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDispoRaccordement.resx">
+      <DependentUpon>FormDispoRaccordement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDispoTirage.resx">
+      <DependentUpon>FormDispoTirage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDsipoCheminements.resx">
+      <DependentUpon>FormDsipoCheminements.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formfourni_equip.resx">
+      <DependentUpon>Formfourni_equip.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBesoinCable.resx">
+      <DependentUpon>FormBesoinCable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDefBesoins.resx">
+      <DependentUpon>FormDefBesoins.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDispoEquip.resx">
+      <DependentUpon>FormDispoEquip.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDispoSalle.resx">
+      <DependentUpon>FormDispoSalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFournitures_lst.resx">
+      <DependentUpon>FormFournitures_lst.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGestUsers.resx">
+      <DependentUpon>FormGestUsers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormImportNoteCalcul.resx">
+      <DependentUpon>FormImportNoteCalcul.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLstCables.resx">
+      <DependentUpon>FormLstCables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLstEquipement.resx">
+      <DependentUpon>FormLstEquipement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLstSalles.resx">
+      <DependentUpon>FormLstSalles.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLst_Mat_Trc.resx">
+      <DependentUpon>FormLst_Mat_Trc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMap.resx">
+      <DependentUpon>FormMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormModification.resx">
+      <DependentUpon>FormModification.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOptions.resx">
+      <DependentUpon>FormOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormParcours.resx">
+      <DependentUpon>FormParcours.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAssocTroncons.resx">
+      <DependentUpon>FormAssocTroncons.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCable.resx">
+      <DependentUpon>FormCable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCategorie.resx">
+      <DependentUpon>FormCategorie.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDonnees.resx">
+      <DependentUpon>FormDonnees.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEquipement.resx">
+      <DependentUpon>FormEquipement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLots.resx">
+      <DependentUpon>FormLots.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLstTroncons.resx">
+      <DependentUpon>FormLstTroncons.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPieceMarchandise.resx">
+      <DependentUpon>FormPieceMarchandise.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRapportProjet.resx">
+      <DependentUpon>FormRapportProjet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportParcours.resx">
+      <DependentUpon>FormReportParcours.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSalle.resx">
+      <DependentUpon>FormSalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSelectionMode.resx">
+      <DependentUpon>FormSelectionMode.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSelectProject.resx">
+      <DependentUpon>FormSelectProject.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formserge.resx">
+      <DependentUpon>Formserge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShedule.resx">
+      <DependentUpon>FormShedule.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSupAssocTroncon.resx">
+      <DependentUpon>FormSupAssocTroncon.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSupport.resx">
+      <DependentUpon>FormSupport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSupTroncon.resx">
+      <DependentUpon>FormSupTroncon.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSynoptique.resx">
+      <DependentUpon>FormSynoptique.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formtest.resx">
+      <DependentUpon>Formtest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTouretsDetail.resx">
+      <DependentUpon>FormTouretsDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTouretsliste.resx">
+      <DependentUpon>FormTouretsliste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTroncon.resx">
+      <DependentUpon>FormTroncon.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTypeCable.resx">
+      <DependentUpon>FormTypeCable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formfournitures.resx">
+      <DependentUpon>Formfournitures.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_actions_globale.resx">
+      <DependentUpon>Form_actions_globale.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Detail_equipement_alimentation.resx">
+      <DependentUpon>Form_Detail_equipement_alimentation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Plg_Jalons.resx">
+      <DependentUpon>Form_Plg_Jalons.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_reseaux.resx">
+      <DependentUpon>Form_reseaux.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashScreen.resx">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="bin\Debug\certif-t3-231.pdf" />
+    <None Include="bin\Debug\certif-t4-36.pdf" />
+    <None Include="bin\Debug\certif-t4-99.pdf" />
+    <None Include="bin\Debug\config.ini" />
+    <None Include="bin\Debug\progelec.exe.config" />
+    <None Include="bin\Debug\progelec.vshost.exe.config" />
+    <None Include="bin\Debug\progelec.vshost.exe.manifest" />
+    <None Include="bin\Debug\test\stema\xxx.pdf" />
+    <None Include="bin\Debug\winscp.ini" />
+    <None Include="bin\Release\config.ini" />
+    <None Include="bin\Release\MyUpdate.dat" />
+    <None Include="bin\Release\progelec.exe.config" />
+    <None Include="bin\Release\progelec.vshost.exe.config" />
+    <None Include="bin\Release\progelec.vshost.exe.manifest" />
+    <None Include="bin\Release\test\Diadem\DIA-ACT-060-PRO-50068xx-BPO-EXE.pdf" />
+    <None Include="bin\Release\test\Diadem\DIA-ACT-060-PRO-50070xx-BPO-EXE.pdf" />
+    <None Include="bin\Release\test\stema\xxx.pdf" />
+    <None Include="bin\Release\test\stema\xxxx.pdf" />
+    <None Include="bin\Release\test\stema\xxxxxx.pdf" />
+    <None Include="bin\Release\update\debug.zip" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="config.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\DataSources\mydbEntities.datasource" />
+    <None Include="My Project\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="mydbDataSet.xsc">
+      <DependentUpon>mydbDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="mydbDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>mydbDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="mydbDataSet.xss">
+      <DependentUpon>mydbDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="progelecDataSet.xsc">
+      <DependentUpon>progelecDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="progelecDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>progelecDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="progelecDataSet.xss">
+      <DependentUpon>progelecDataSet.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\patcher\patcher.vbproj">
+      <Project>{14B77A30-FE81-4B3E-A27B-3DADDD22A970}</Project>
+      <Name>patcher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\updater\updater.vbproj">
+      <Project>{AE2647DA-DC5D-48E6-B442-CAA047DB1496}</Project>
+      <Name>updater</Name>
+    </ProjectReference>
+    <ProjectReference Include="reference\AutoUpdate\AutoUpdate.vbproj">
+      <Project>{8AFF060A-AF8F-4820-8C52-43F7B4EFD7E8}</Project>
+      <Name>AutoUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="reference\System.Algorithms\System.Algorithms\System.Algorithms.vbproj">
+      <Project>{B042CABE-F1B0-4948-AE72-7A7B1AA97495}</Project>
+      <Name>System.Algorithms</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\AutoUpdate.dll" />
+    <Content Include="bin\Debug\AutoUpdate.pdb" />
+    <Content Include="bin\Debug\Dataweb.NShape.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.ElectricalModelObjects.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.ElectricalShapes.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.FlowChartShapes.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.GeneralModelObjects.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.GeneralShapes.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.SoftwareArchitectureShapes.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.WinFormsUI.dll" />
+    <Content Include="bin\Debug\Dataweb.NShape.WinFormsUI.xml" />
+    <Content Include="bin\Debug\Dataweb.NShape.xml" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Design.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Keyboard.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Keyboard.xml" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Layout.Design.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Layout.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Layout.xml" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Schedule.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.Schedule.xml" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.SuperGrid.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar.SuperGrid.xml" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar2.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar2.xml" />
+    <Content Include="bin\Debug\DevComponents.Instrumentation.Design.dll" />
+    <Content Include="bin\Debug\DevComponents.Instrumentation.dll" />
+    <Content Include="bin\Debug\DevComponents.Instrumentation.xml" />
+    <Content Include="bin\Debug\DevComponents.SuperGrid.Design.dll" />
+    <Content Include="bin\Debug\DevComponents.TreeGX.dll" />
+    <Content Include="bin\Debug\FastReport.Bars.dll" />
+    <Content Include="bin\Debug\FastReport.dll" />
+    <Content Include="bin\Debug\FastReport.MySQL.dll" />
+    <Content Include="bin\Debug\FastReport.xml" />
+    <Content Include="bin\Debug\GanttChart.dll" />
+    <Content Include="bin\Debug\GanttChart.pdb" />
+    <Content Include="bin\Debug\GanttChart.xml" />
+    <Content Include="bin\Debug\Ionic.Zip.dll" />
+    <Content Include="bin\Debug\libicudecnumber.dll" />
+    <Content Include="bin\Debug\Ludiosoft.ConfigurationFile.dll" />
+    <Content Include="bin\Debug\MySql.Data.dll" />
+    <Content Include="bin\Debug\MySql.Data.Entity.dll" />
+    <Content Include="bin\Debug\Nevron.Diagram.dll" />
+    <Content Include="bin\Debug\Nevron.Diagram.Shapes.dll" />
+    <Content Include="bin\Debug\Nevron.Diagram.Shapes.xml" />
+    <Content Include="bin\Debug\Nevron.Diagram.Templates.dll" />
+    <Content Include="bin\Debug\Nevron.Diagram.Templates.xml" />
+    <Content Include="bin\Debug\Nevron.Diagram.WinForm.dll" />
+    <Content Include="bin\Debug\Nevron.Diagram.WinForm.xml" />
+    <Content Include="bin\Debug\Nevron.Diagram.xml" />
+    <Content Include="bin\Debug\Nevron.Presentation.dll" />
+    <Content Include="bin\Debug\Nevron.Presentation.xml" />
+    <Content Include="bin\Debug\Nevron.System.dll" />
+    <Content Include="bin\Debug\Nevron.System.xml" />
+    <Content Include="bin\Debug\patcher.exe" />
+    <Content Include="bin\Debug\patcher.pdb" />
+    <Content Include="bin\Debug\patcher.xml" />
+    <Content Include="bin\Debug\progelec.exe" />
+    <Content Include="bin\Debug\progelec.pdb" />
+    <Content Include="bin\Debug\progelec.vshost.exe" />
+    <Content Include="bin\Debug\System.Algorithms.dll" />
+    <Content Include="bin\Debug\System.Algorithms.pdb" />
+    <Content Include="bin\Debug\System.Algorithms.xml" />
+    <Content Include="bin\Debug\update.txt" />
+    <Content Include="bin\Debug\updater.exe" />
+    <Content Include="bin\Debug\updater.pdb" />
+    <Content Include="bin\Debug\WinSCP.exe" />
+    <Content Include="bin\Debug\WinSCPnet.dll" />
+    <Content Include="bin\Release\AutoUpdate.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.ElectricalModelObjects.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.ElectricalShapes.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.FlowChartShapes.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.GeneralModelObjects.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.GeneralShapes.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.SoftwareArchitectureShapes.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.WinFormsUI.dll" />
+    <Content Include="bin\Release\Dataweb.NShape.WinFormsUI.xml" />
+    <Content Include="bin\Release\Dataweb.NShape.xml" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Design.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Keyboard.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Keyboard.xml" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Layout.Design.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Layout.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Layout.xml" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Schedule.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.Schedule.xml" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.SuperGrid.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar.SuperGrid.xml" />
+    <Content Include="bin\Release\DevComponents.DotNetBar2.dll" />
+    <Content Include="bin\Release\DevComponents.DotNetBar2.xml" />
+    <Content Include="bin\Release\DevComponents.Instrumentation.Design.dll" />
+    <Content Include="bin\Release\DevComponents.Instrumentation.dll" />
+    <Content Include="bin\Release\DevComponents.Instrumentation.xml" />
+    <Content Include="bin\Release\DevComponents.SuperGrid.Design.dll" />
+    <Content Include="bin\Release\DevComponents.TreeGX.dll" />
+    <Content Include="bin\Release\FastReport.Bars.dll" />
+    <Content Include="bin\Release\FastReport.dll" />
+    <Content Include="bin\Release\FastReport.MySQL.dll" />
+    <Content Include="bin\Release\FastReport.xml" />
+    <Content Include="bin\Release\GanttChart.dll" />
+    <Content Include="bin\Release\GanttChart.pdb" />
+    <Content Include="bin\Release\GanttChart.xml" />
+    <Content Include="bin\Release\Ionic.Zip.dll" />
+    <Content Include="bin\Release\libicudecnumber.dll" />
+    <Content Include="bin\Release\Ludiosoft.ConfigurationFile.dll" />
+    <Content Include="bin\Release\MySql.Data.dll" />
+    <Content Include="bin\Release\MySql.Data.Entity.dll" />
+    <Content Include="bin\Release\Nevron.Diagram.dll" />
+    <Content Include="bin\Release\Nevron.Diagram.Shapes.dll" />
+    <Content Include="bin\Release\Nevron.Diagram.Shapes.xml" />
+    <Content Include="bin\Release\Nevron.Diagram.Templates.dll" />
+    <Content Include="bin\Release\Nevron.Diagram.Templates.xml" />
+    <Content Include="bin\Release\Nevron.Diagram.WinForm.dll" />
+    <Content Include="bin\Release\Nevron.Diagram.WinForm.xml" />
+    <Content Include="bin\Release\Nevron.Diagram.xml" />
+    <Content Include="bin\Release\Nevron.Presentation.dll" />
+    <Content Include="bin\Release\Nevron.Presentation.xml" />
+    <Content Include="bin\Release\Nevron.System.dll" />
+    <Content Include="bin\Release\Nevron.System.xml" />
+    <Content Include="bin\Release\patcher.exe" />
+    <Content Include="bin\Release\patcher.pdb" />
+    <Content Include="bin\Release\patcher.xml" />
+    <Content Include="bin\Release\progelec.exe" />
+    <Content Include="bin\Release\progelec.vshost.exe" />
+    <Content Include="bin\Release\System.Algorithms.dll" />
+    <Content Include="bin\Release\System.Algorithms.pdb" />
+    <Content Include="bin\Release\System.Algorithms.xml" />
+    <Content Include="bin\Release\update.txt" />
+    <Content Include="bin\Release\updater.exe" />
+    <Content Include="bin\Release\WinSCP.exe" />
+    <Content Include="bin\Release\WinSCPnet.dll" />
+    <Content Include="Loading.ico" />
+    <Content Include="WinSCP.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Wooden_Cable_Reel_8_jpg61919933-38f6-45f5-a2f7-171335b97366Large %28Personnalisé%29.jpg" />
+    <None Include="Resources\livraison %28Personnalisé%29.png" />
+    <None Include="Resources\User-Lock.png" />
+    <None Include="Resources\splash_266-double-2.png" />
+    <None Include="Resources\sap.png" />
+    <None Include="Resources\trefle.png" />
+    <None Include="Resources\1389364828_intranet-network-icon.png" />
+    <None Include="Resources\It-Infrastructure-Network-icon.png" />
+    <None Include="Resources\It-Infrastructure-Hub-icon.png" />
+    <None Include="Resources\It-Infrastructure-Hub-icon %28Personnalisé%29.png" />
+    <None Include="Resources\It-Infrastructure-Active-directory-icon %28Personnalisé%29.png" />
+    <None Include="Resources\planning %28Personnalisé%29.png" />
+    <None Include="Resources\Workers.png" />
+    <None Include="Resources\It-Infrastructure-Hub-icon %28Personnalisé%291.png" />
+    <Content Include="update.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Version 1.0.6.0.rtf" />
+    <None Include="Resources\word-32-32.png" />
+    <None Include="Resources\windows-32-32.png" />
+    <None Include="Resources\window-32-32.png" />
+    <None Include="Resources\window_up-32-32.png" />
+    <None Include="Resources\window_up_1-32-32.png" />
+    <None Include="Resources\window_search-32-32.png" />
+    <None Include="Resources\window_remove-32-32.png" />
+    <None Include="Resources\window_remove_1-32-32.png" />
+    <None Include="Resources\window_next-32-32.png" />
+    <None Include="Resources\window_next_1-32-32.png" />
+    <None Include="Resources\window_lock-32-32.png" />
+    <None Include="Resources\window_info-32-32.png" />
+    <None Include="Resources\window_edit-32-32.png" />
+    <None Include="Resources\window_edit_1-32-32.png" />
+    <None Include="Resources\window_down-32-32.png" />
+    <None Include="Resources\window_delete-32-32.png" />
+    <None Include="Resources\window_add-32-32.png" />
+    <None Include="Resources\window_add_1-32-32.png" />
+    <None Include="Resources\window_accept-32-32.png" />
+    <None Include="Resources\window_2-32-32.png" />
+    <None Include="Resources\window_1-32-32.png" />
+    <None Include="Resources\warning-32-32.png" />
+    <None Include="Resources\video-32-32.png" />
+    <None Include="Resources\users-32-32.png" />
+    <None Include="Resources\users_edit-32-32.png" />
+    <None Include="Resources\users_delete-32-32.png" />
+    <None Include="Resources\users_comments-32-32.png" />
+    <None Include="Resources\users_add-32-32.png" />
+    <None Include="Resources\users_accept-32-32.png" />
+    <None Include="Resources\users_1-32-32.png" />
+    <None Include="Resources\user-32-32.png" />
+    <None Include="Resources\user_search-32-32.png" />
+    <None Include="Resources\user_remove-32-32.png" />
+    <None Include="Resources\user_info-32-32.png" />
+    <None Include="Resources\user_edit-32-32.png" />
+    <None Include="Resources\user_delete-32-32.png" />
+    <None Include="Resources\user_comment-32-32.png" />
+    <None Include="Resources\user_add-32-32.png" />
+    <None Include="Resources\user_add_1-32-32.png" />
+    <None Include="Resources\user_accept-32-32.png" />
+    <None Include="Resources\user_accept_1-32-32.png" />
+    <None Include="Resources\user_2-32-32.png" />
+    <None Include="Resources\user_1-32-32.png" />
+    <None Include="Resources\usb_stick-32-32.png" />
+    <None Include="Resources\usb_stick_next-32-32.png" />
+    <None Include="Resources\usb_stick_down-32-32.png" />
+    <None Include="Resources\usb_stick_delete-32-32.png" />
+    <None Include="Resources\usb_stick_add-32-32.png" />
+    <None Include="Resources\usb_stick_accept-32-32.png" />
+    <None Include="Resources\up-32-32.png" />
+    <None Include="Resources\up_1-32-32.png" />
+    <None Include="Resources\unlock-32-32.png" />
+    <None Include="Resources\stop-32-32.png" />
+    <None Include="Resources\stop_1-32-32.png" />
+    <None Include="Resources\speaker-32-32.png" />
+    <None Include="Resources\speaker_remove-32-32.png" />
+    <None Include="Resources\speaker_delete-32-32.png" />
+    <None Include="Resources\speaker_accept-32-32.png" />
+    <None Include="Resources\sound-32-32.png" />
+    <None Include="Resources\sound_on-32-32.png" />
+    <None Include="Resources\sound_off-32-32.png" />
+    <None Include="Resources\sound_1-32-32.png" />
+    <None Include="Resources\skip_forward-32-32.png" />
+    <None Include="Resources\skip_forward_1-32-32.png" />
+    <None Include="Resources\skip_backward-32-32.png" />
+    <None Include="Resources\skip_backward_1-32-32.png" />
+    <None Include="Resources\shopping_cart-32-32.png" />
+    <None Include="Resources\shopping_cart_up-32-32.png" />
+    <None Include="Resources\shopping_cart_up_1-32-32.png" />
+    <None Include="Resources\shopping_cart_remove-32-32.png" />
+    <None Include="Resources\shopping_cart_previous-32-32.png" />
+    <None Include="Resources\shopping_cart_next-32-32.png" />
+    <None Include="Resources\shopping_cart_down-32-32.png" />
+    <None Include="Resources\shopping_cart_down_1-32-32.png" />
+    <None Include="Resources\shopping_cart_delete-32-32.png" />
+    <None Include="Resources\shopping_cart_add-32-32.png" />
+    <None Include="Resources\shopping_cart_accept-32-32.png" />
+    <None Include="Resources\shopping_cart_accept_1-32-32.png" />
+    <None Include="Resources\shopping_cart_1-32-32.png" />
+    <None Include="Resources\she_users-32-32.png" />
+    <None Include="Resources\she_user-32-32.png" />
+    <None Include="Resources\she_user_remove-32-32.png" />
+    <None Include="Resources\she_user_add-32-32.png" />
+    <None Include="Resources\she_user_accept-32-32.png" />
+    <None Include="Resources\search-32-32.png" />
+    <None Include="Resources\search_remove-32-32.png" />
+    <None Include="Resources\search_remove_1-32-32.png" />
+    <None Include="Resources\search_add-32-32.png" />
+    <None Include="Resources\search_add_1-32-32.png" />
+    <None Include="Resources\search_2-32-32.png" />
+    <None Include="Resources\search_1-32-32.png" />
+    <None Include="Resources\scanner-32-32.png" />
+    <None Include="Resources\scanner_next-32-32.png" />
+    <None Include="Resources\scanner_down-32-32.png" />
+    <None Include="Resources\scanner_delete-32-32.png" />
+    <None Include="Resources\scanner_add-32-32.png" />
+    <None Include="Resources\scanner_accept-32-32.png" />
+    <None Include="Resources\save-32-32.png" />
+    <None Include="Resources\rss-32-32.png" />
+    <None Include="Resources\rss_up-32-32.png" />
+    <None Include="Resources\rss_remove-32-32.png" />
+    <None Include="Resources\rss_previous-32-32.png" />
+    <None Include="Resources\rss_next-32-32.png" />
+    <None Include="Resources\rss_next_1-32-32.png" />
+    <None Include="Resources\rss_info-32-32.png" />
+    <None Include="Resources\rss_edit-32-32.png" />
+    <None Include="Resources\rss_down-32-32.png" />
+    <None Include="Resources\rss_delete-32-32.png" />
+    <None Include="Resources\rss_add-32-32.png" />
+    <None Include="Resources\rss_add_1-32-32.png" />
+    <None Include="Resources\rss_accept-32-32.png" />
+    <None Include="Resources\rss_2-32-32.png" />
+    <None Include="Resources\rss_1-32-32.png" />
+    <None Include="Resources\rewind-32-32.png" />
+    <None Include="Resources\rewind_1-32-32.png" />
+    <None Include="Resources\repeat-32-32.png" />
+    <None Include="Resources\repeat_1-32-32.png" />
+    <None Include="Resources\remove-32-32.png" />
+    <None Include="Resources\remove_1-32-32.png" />
+    <None Include="Resources\red_button-32-32.png" />
+    <None Include="Resources\record-32-32.png" />
+    <None Include="Resources\record_1-32-32.png" />
+    <None Include="Resources\process-32-32.png" />
+    <None Include="Resources\process_warning-32-32.png" />
+    <None Include="Resources\process_remove-32-32.png" />
+    <None Include="Resources\process_remove_1-32-32.png" />
+    <None Include="Resources\process_next-32-32.png" />
+    <None Include="Resources\process_lock-32-32.png" />
+    <None Include="Resources\process_info-32-32.png" />
+    <None Include="Resources\process_help-32-32.png" />
+    <None Include="Resources\process_down-32-32.png" />
+    <None Include="Resources\process_delete-32-32.png" />
+    <None Include="Resources\process_add-32-32.png" />
+    <None Include="Resources\process_add_1-32-32.png" />
+    <None Include="Resources\process_accept-32-32.png" />
+    <None Include="Resources\process_accept_1-32-32.png" />
+    <None Include="Resources\process_2-32-32.png" />
+    <None Include="Resources\process_1-32-32.png" />
+    <None Include="Resources\printer-32-32.png" />
+    <None Include="Resources\printer_warning-32-32.png" />
+    <None Include="Resources\printer_search-32-32.png" />
+    <None Include="Resources\printer_search_1-32-32.png" />
+    <None Include="Resources\printer_remove-32-32.png" />
+    <None Include="Resources\printer_info-32-32.png" />
+    <None Include="Resources\printer_accept-32-32.png" />
+    <None Include="Resources\printer_1-32-32.png" />
+    <None Include="Resources\previous-32-32.png" />
+    <None Include="Resources\play-32-32.png" />
+    <None Include="Resources\play_1-32-32.png" />
+    <None Include="Resources\pdf-32-32.png" />
+    <None Include="Resources\pause-32-32.png" />
+    <None Include="Resources\pages_warning-32-32.png" />
+    <None Include="Resources\pages_blank_warning-32-32.png" />
+    <None Include="Resources\pages_blank_add-32-32.png" />
+    <None Include="Resources\pages_add-32-32.png" />
+    <None Include="Resources\page-32-32.png" />
+    <None Include="Resources\page_warning-32-32.png" />
+    <None Include="Resources\page_up-32-32.png" />
+    <None Include="Resources\page_up_1-32-32.png" />
+    <None Include="Resources\page_search-32-32.png" />
+    <None Include="Resources\page_search_1-32-32.png" />
+    <None Include="Resources\page_remove-32-32.png" />
+    <None Include="Resources\page_remove_1-32-32.png" />
+    <None Include="Resources\page_process-32-32.png" />
+    <None Include="Resources\page_process_1-32-32.png" />
+    <None Include="Resources\page_previous-32-32.png" />
+    <None Include="Resources\page_previous_1-32-32.png" />
+    <None Include="Resources\page_preview-32-32.png" />
+    <None Include="Resources\page_next-32-32.png" />
+    <None Include="Resources\page_next_1-32-32.png" />
+    <None Include="Resources\page_lock-32-32.png" />
+    <None Include="Resources\page_info-32-32.png" />
+    <None Include="Resources\page_help-32-32.png" />
+    <None Include="Resources\page_edit-32-32.png" />
+    <None Include="Resources\page_edit_2-32-32.png" />
+    <None Include="Resources\page_edit_1-32-32.png" />
+    <None Include="Resources\page_down-32-32.png" />
+    <None Include="Resources\page_down_1-32-32.png" />
+    <None Include="Resources\page_delete-32-32.png" />
+    <None Include="Resources\page_blank-32-32.png" />
+    <None Include="Resources\page_add-32-32.png" />
+    <None Include="Resources\page_add_1-32-32.png" />
+    <None Include="Resources\page_accept-32-32.png" />
+    <None Include="Resources\page_accept_1-32-32.png" />
+    <None Include="Resources\page_1-32-32.png" />
+    <None Include="Resources\notes_edit-32-32.png" />
+    <None Include="Resources\notebook-32-32.png" />
+    <None Include="Resources\notebook_search-32-32.png" />
+    <None Include="Resources\notebook_lock-32-32.png" />
+    <None Include="Resources\notebook_edit-32-32.png" />
+    <None Include="Resources\notebook_delete-32-32.png" />
+    <None Include="Resources\notebook_add-32-32.png" />
+    <None Include="Resources\notebook_accept-32-32.png" />
+    <None Include="Resources\note_remove-32-32.png" />
+    <None Include="Resources\note_edit-32-32.png" />
+    <None Include="Resources\note_add-32-32.png" />
+    <None Include="Resources\note_accept-32-32.png" />
+    <None Include="Resources\next-32-32.png" />
+    <None Include="Resources\next_2-32-32.png" />
+    <None Include="Resources\next_1-32-32.png" />
+    <None Include="Resources\new_page-32-32.png" />
+    <None Include="Resources\new_mail-32-32.png" />
+    <None Include="Resources\new_mail_warning-32-32.png" />
+    <None Include="Resources\new_mail_up-32-32.png" />
+    <None Include="Resources\new_mail_search-32-32.png" />
+    <None Include="Resources\new_mail_remove-32-32.png" />
+    <None Include="Resources\new_mail_previous-32-32.png" />
+    <None Include="Resources\new_mail_next-32-32.png" />
+    <None Include="Resources\new_mail_edit-32-32.png" />
+    <None Include="Resources\new_mail_down-32-32.png" />
+    <None Include="Resources\new_mail_delete-32-32.png" />
+    <None Include="Resources\new_mail_add-32-32.png" />
+    <None Include="Resources\new_mail_accept-32-32.png" />
+    <None Include="Resources\movie_track-32-32.png" />
+    <None Include="Resources\movie_track_remove-32-32.png" />
+    <None Include="Resources\movie_track_next-32-32.png" />
+    <None Include="Resources\movie_track_add-32-32.png" />
+    <None Include="Resources\monitor-32-32.png" />
+    <None Include="Resources\mobile_phone-32-32.png" />
+    <None Include="Resources\mobile_phone_search-32-32.png" />
+    <None Include="Resources\mobile_phone_next-32-32.png" />
+    <None Include="Resources\mobile_phone_info-32-32.png" />
+    <None Include="Resources\mobile_phone_down-32-32.png" />
+    <None Include="Resources\mobile_phone_delete-32-32.png" />
+    <None Include="Resources\mobile_phone_add-32-32.png" />
+    <None Include="Resources\mobile_phone_accept-32-32.png" />
+    <None Include="Resources\mail-32-32.png" />
+    <None Include="Resources\mail_warning-32-32.png" />
+    <None Include="Resources\mail_up-32-32.png" />
+    <None Include="Resources\mail_sent-32-32.png" />
+    <None Include="Resources\mail_search-32-32.png" />
+    <None Include="Resources\mail_remove-32-32.png" />
+    <None Include="Resources\mail_remove_1-32-32.png" />
+    <None Include="Resources\mail_previous-32-32.png" />
+    <None Include="Resources\mail_next-32-32.png" />
+    <None Include="Resources\mail_next_1-32-32.png" />
+    <None Include="Resources\mail_info-32-32.png" />
+    <None Include="Resources\mail_edit-32-32.png" />
+    <None Include="Resources\mail_edit_1-32-32.png" />
+    <None Include="Resources\mail_down-32-32.png" />
+    <None Include="Resources\mail_delete-32-32.png" />
+    <None Include="Resources\mail_add-32-32.png" />
+    <None Include="Resources\mail_add_1-32-32.png" />
+    <None Include="Resources\mail_accept-32-32.png" />
+    <None Include="Resources\mail_accept_1-32-32.png" />
+    <None Include="Resources\mail_2-32-32.png" />
+    <None Include="Resources\mail_1-32-32.png" />
+    <None Include="Resources\lock-32-32.png" />
+    <None Include="Resources\lock_off-32-32.png" />
+    <None Include="Resources\lock_off_disabled-32-32.png" />
+    <None Include="Resources\lock_disabled-32-32.png" />
+    <None Include="Resources\lock_1-32-32.png" />
+    <None Include="Resources\ipod-32-32.png" />
+    <None Include="Resources\ipod_search-32-32.png" />
+    <None Include="Resources\ipod_next-32-32.png" />
+    <None Include="Resources\ipod_info-32-32.png" />
+    <None Include="Resources\ipod_down-32-32.png" />
+    <None Include="Resources\ipod_delete-32-32.png" />
+    <None Include="Resources\ipod_add-32-32.png" />
+    <None Include="Resources\ipod_accept-32-32.png" />
+    <None Include="Resources\info-32-32.png" />
+    <None Include="Resources\info_2-32-32.png" />
+    <None Include="Resources\info_1-32-32.png" />
+    <None Include="Resources\images-32-32.png" />
+    <None Include="Resources\image-32-32.png" />
+    <None Include="Resources\image_up-32-32.png" />
+    <None Include="Resources\image_up_1-32-32.png" />
+    <None Include="Resources\image_tif-32-32.png" />
+    <None Include="Resources\image_search-32-32.png" />
+    <None Include="Resources\image_remove-32-32.png" />
+    <None Include="Resources\image_remove_1-32-32.png" />
+    <None Include="Resources\image_previous-32-32.png" />
+    <None Include="Resources\image_next-32-32.png" />
+    <None Include="Resources\image_next_1-32-32.png" />
+    <None Include="Resources\image_multi-32-32.png" />
+    <None Include="Resources\image_lock-32-32.png" />
+    <None Include="Resources\image_jpg-32-32.png" />
+    <None Include="Resources\image_info-32-32.png" />
+    <None Include="Resources\image_edit-32-32.png" />
+    <None Include="Resources\image_edit_1-32-32.png" />
+    <None Include="Resources\image_down-32-32.png" />
+    <None Include="Resources\image_delete-32-32.png" />
+    <None Include="Resources\image_bmp-32-32.png" />
+    <None Include="Resources\image_add-32-32.png" />
+    <None Include="Resources\image_add_1-32-32.png" />
+    <None Include="Resources\image_accept-32-32.png" />
+    <None Include="Resources\image_1-32-32.png" />
+    <None Include="Resources\home-32-32.png" />
+    <None Include="Resources\home_warning-32-32.png" />
+    <None Include="Resources\home_search-32-32.png" />
+    <None Include="Resources\home_remove-32-32.png" />
+    <None Include="Resources\home_next-32-32.png" />
+    <None Include="Resources\home_info-32-32.png" />
+    <None Include="Resources\home_accept-32-32.png" />
+    <None Include="Resources\home_2-32-32.png" />
+    <None Include="Resources\home_1-32-32.png" />
+    <None Include="Resources\help-32-32.png" />
+    <None Include="Resources\help_1-32-32.png" />
+    <None Include="Resources\headphones-32-32.png" />
+    <None Include="Resources\headphones_delete-32-32.png" />
+    <None Include="Resources\headphones_add-32-32.png" />
+    <None Include="Resources\headphones_accept-32-32.png" />
+    <None Include="Resources\green_button-32-32.png" />
+    <None Include="Resources\globe-32-32.png" />
+    <None Include="Resources\globe_warning-32-32.png" />
+    <None Include="Resources\globe_up-32-32.png" />
+    <None Include="Resources\globe_search-32-32.png" />
+    <None Include="Resources\globe_remove-32-32.png" />
+    <None Include="Resources\globe_process-32-32.png" />
+    <None Include="Resources\globe_info-32-32.png" />
+    <None Include="Resources\globe_down-32-32.png" />
+    <None Include="Resources\globe_add-32-32.png" />
+    <None Include="Resources\globe_accept-32-32.png" />
+    <None Include="Resources\folder-32-32.png" />
+    <None Include="Resources\folder_warning-32-32.png" />
+    <None Include="Resources\folder_up-32-32.png" />
+    <None Include="Resources\folder_up_1-32-32.png" />
+    <None Include="Resources\folder_search-32-32.png" />
+    <None Include="Resources\folder_remove-32-32.png" />
+    <None Include="Resources\folder_remove_1-32-32.png" />
+    <None Include="Resources\folder_process-32-32.png" />
+    <None Include="Resources\folder_process_1-32-32.png" />
+    <None Include="Resources\folder_previous-32-32.png" />
+    <None Include="Resources\folder_previous_1-32-32.png" />
+    <None Include="Resources\folder_next-32-32.png" />
+    <None Include="Resources\folder_next_1-32-32.png" />
+    <None Include="Resources\folder_lock-32-32.png" />
+    <None Include="Resources\folder_info-32-32.png" />
+    <None Include="Resources\folder_help-32-32.png" />
+    <None Include="Resources\folder_empty-32-32.png" />
+    <None Include="Resources\folder_edit-32-32.png" />
+    <None Include="Resources\folder_edit_1-32-32.png" />
+    <None Include="Resources\folder_down-32-32.png" />
+    <None Include="Resources\folder_down_1-32-32.png" />
+    <None Include="Resources\folder_delete-32-32.png" />
+    <None Include="Resources\folder_add-32-32.png" />
+    <None Include="Resources\folder_add_2-32-32.png" />
+    <None Include="Resources\folder_add_1-32-32.png" />
+    <None Include="Resources\folder_accept-32-32.png" />
+    <None Include="Resources\folder_accept_1-32-32.png" />
+    <None Include="Resources\folder_2-32-32.png" />
+    <None Include="Resources\folder_1-32-32.png" />
+    <None Include="Resources\favorite-32-32.png" />
+    <None Include="Resources\favorite_remove-32-32.png" />
+    <None Include="Resources\favorite_remove_1-32-32.png" />
+    <None Include="Resources\favorite_add-32-32.png" />
+    <None Include="Resources\favorite_add_1-32-32.png" />
+    <None Include="Resources\favorite_1-32-32.png" />
+    <None Include="Resources\fast_forward-32-32.png" />
+    <None Include="Resources\fast_forward_1-32-32.png" />
+    <None Include="Resources\eject-32-32.png" />
+    <None Include="Resources\eject_1-32-32.png" />
+    <None Include="Resources\dvd-32-32.png" />
+    <None Include="Resources\down-32-32.png" />
+    <None Include="Resources\down_1-32-32.png" />
+    <None Include="Resources\digital_camcorder-32-32.png" />
+    <None Include="Resources\digital_camcorder_search-32-32.png" />
+    <None Include="Resources\digital_camcorder_next-32-32.png" />
+    <None Include="Resources\digital_camcorder_info-32-32.png" />
+    <None Include="Resources\digital_camcorder_down-32-32.png" />
+    <None Include="Resources\digital_camcorder_delete-32-32.png" />
+    <None Include="Resources\digital_camcorder_add-32-32.png" />
+    <None Include="Resources\digital_camcorder_accept-32-32.png" />
+    <None Include="Resources\delete-32-32.png" />
+    <None Include="Resources\delete_1-32-32.png" />
+    <None Include="Resources\database-32-32.png" />
+    <None Include="Resources\database_warning-32-32.png" />
+    <None Include="Resources\database_up-32-32.png" />
+    <None Include="Resources\database_up_1-32-32.png" />
+    <None Include="Resources\database_search-32-32.png" />
+    <None Include="Resources\database_search_1-32-32.png" />
+    <None Include="Resources\database_remove-32-32.png" />
+    <None Include="Resources\database_remove_1-32-32.png" />
+    <None Include="Resources\database_process-32-32.png" />
+    <None Include="Resources\database_process_1-32-32.png" />
+    <None Include="Resources\database_previous-32-32.png" />
+    <None Include="Resources\database_previous_1-32-32.png" />
+    <None Include="Resources\database_next-32-32.png" />
+    <None Include="Resources\database_next_1-32-32.png" />
+    <None Include="Resources\database_lock-32-32.png" />
+    <None Include="Resources\database_lock_1-32-32.png" />
+    <None Include="Resources\database_info-32-32.png" />
+    <None Include="Resources\database_help-32-32.png" />
+    <None Include="Resources\database_down-32-32.png" />
+    <None Include="Resources\database_down_1-32-32.png" />
+    <None Include="Resources\database_delete-32-32.png" />
+    <None Include="Resources\database_add-32-32.png" />
+    <None Include="Resources\database_add_1-32-32.png" />
+    <None Include="Resources\database_accept-32-32.png" />
+    <None Include="Resources\database_accept_1-32-32.png" />
+    <None Include="Resources\database_1-32-32.png" />
+    <None Include="Resources\computers-32-32.png" />
+    <None Include="Resources\computers_1-32-32.png" />
+    <None Include="Resources\computer-32-32.png" />
+    <None Include="Resources\computer_search-32-32.png" />
+    <None Include="Resources\computer_remove-32-32.png" />
+    <None Include="Resources\computer_process-32-32.png" />
+    <None Include="Resources\computer_network-32-32.png" />
+    <None Include="Resources\computer_delete-32-32.png" />
+    <None Include="Resources\computer_black-32-32.png" />
+    <None Include="Resources\computer_accept-32-32.png" />
+    <None Include="Resources\computer_accept_1-32-32.png" />
+    <None Include="Resources\computer_1-32-32.png" />
+    <None Include="Resources\comments-32-32.png" />
+    <None Include="Resources\comments_remove-32-32.png" />
+    <None Include="Resources\comments_add-32-32.png" />
+    <None Include="Resources\comments_1-32-32.png" />
+    <None Include="Resources\comment-32-32.png" />
+    <None Include="Resources\comment_remove-32-32.png" />
+    <None Include="Resources\comment_edit-32-32.png" />
+    <None Include="Resources\comment_edit_1-32-32.png" />
+    <None Include="Resources\comment_delete-32-32.png" />
+    <None Include="Resources\comment_add-32-32.png" />
+    <None Include="Resources\comment_add_1-32-32.png" />
+    <None Include="Resources\comment_accept-32-32.png" />
+    <None Include="Resources\comment_2-32-32.png" />
+    <None Include="Resources\comment_1-32-32.png" />
+    <None Include="Resources\clock-32-32.png" />
+    <None Include="Resources\chart-32-32.png" />
+    <None Include="Resources\chart_remove-32-32.png" />
+    <None Include="Resources\chart_info-32-32.png" />
+    <None Include="Resources\chart_delete-32-32.png" />
+    <None Include="Resources\chart_add-32-32.png" />
+    <None Include="Resources\chart_add_1-32-32.png" />
+    <None Include="Resources\chart_accept-32-32.png" />
+    <None Include="Resources\chart_accept_1-32-32.png" />
+    <None Include="Resources\chart_1-32-32.png" />
+    <None Include="Resources\cd-32-32.png" />
+    <None Include="Resources\cd_warning-32-32.png" />
+    <None Include="Resources\cd_rw-32-32.png" />
+    <None Include="Resources\cd_remove-32-32.png" />
+    <None Include="Resources\cd_info-32-32.png" />
+    <None Include="Resources\cd_down-32-32.png" />
+    <None Include="Resources\cd_delete-32-32.png" />
+    <None Include="Resources\cd_add-32-32.png" />
+    <None Include="Resources\cd_add_1-32-32.png" />
+    <None Include="Resources\cd_accept-32-32.png" />
+    <None Include="Resources\cd_accept_1-32-32.png" />
+    <None Include="Resources\cd_1-32-32.png" />
+    <None Include="Resources\calendar-32-32.png" />
+    <None Include="Resources\calendar_date-32-32.png" />
+    <None Include="Resources\calendar_date_1-32-32.png" />
+    <None Include="Resources\calendar_background-32-32.png" />
+    <None Include="Resources\calculator-32-32.png" />
+    <None Include="Resources\calculator_remove-32-32.png" />
+    <None Include="Resources\calculator_add-32-32.png" />
+    <None Include="Resources\calculator_accept-32-32.png" />
+    <None Include="Resources\business_user-32-32.png" />
+    <None Include="Resources\business_user_search-32-32.png" />
+    <None Include="Resources\business_user_info-32-32.png" />
+    <None Include="Resources\business_user_edit-32-32.png" />
+    <None Include="Resources\business_user_delete-32-32.png" />
+    <None Include="Resources\business_user_comment-32-32.png" />
+    <None Include="Resources\business_user_add-32-32.png" />
+    <None Include="Resources\business_user_accept-32-32.png" />
+    <None Include="Resources\blue_button-32-32.png" />
+    <None Include="Resources\back-32-32.png" />
+    <None Include="Resources\back_1-32-32.png" />
+    <None Include="Resources\attachment-32-32.png" />
+    <None Include="Resources\archive-32-32.png" />
+    <None Include="Resources\applications-32-32.png" />
+    <None Include="Resources\application-32-32.png" />
+    <None Include="Resources\application_up-32-32.png" />
+    <None Include="Resources\application_up_1-32-32.png" />
+    <None Include="Resources\application_search-32-32.png" />
+    <None Include="Resources\application_remove-32-32.png" />
+    <None Include="Resources\application_remove_1-32-32.png" />
+    <None Include="Resources\application_next-32-32.png" />
+    <None Include="Resources\application_next_1-32-32.png" />
+    <None Include="Resources\application_lock-32-32.png" />
+    <None Include="Resources\application_info-32-32.png" />
+    <None Include="Resources\application_edit-32-32.png" />
+    <None Include="Resources\application_edit_1-32-32.png" />
+    <None Include="Resources\application_down-32-32.png" />
+    <None Include="Resources\application_delete-32-32.png" />
+    <None Include="Resources\application_add-32-32.png" />
+    <None Include="Resources\application_add_1-32-32.png" />
+    <None Include="Resources\application_accept-32-32.png" />
+    <None Include="Resources\application_1-32-32.png" />
+    <None Include="Resources\add-32-32.png" />
+    <None Include="Resources\add_2-32-32.png" />
+    <None Include="Resources\add_1-32-32.png" />
+    <None Include="Resources\accept-32-32.png" />
+    <None Include="Resources\accept_2-32-32.png" />
+    <None Include="Resources\accept_1-32-32.png" />
+    <None Include="Resources\word-24-24.png" />
+    <None Include="Resources\windows-24-24.png" />
+    <None Include="Resources\window-24-24.png" />
+    <None Include="Resources\window_up-24-24.png" />
+    <None Include="Resources\window_up_1-24-24.png" />
+    <None Include="Resources\window_search-24-24.png" />
+    <None Include="Resources\window_remove-24-24.png" />
+    <None Include="Resources\window_remove_1-24-24.png" />
+    <None Include="Resources\window_next-24-24.png" />
+    <None Include="Resources\window_next_1-24-24.png" />
+    <None Include="Resources\window_lock-24-24.png" />
+    <None Include="Resources\window_info-24-24.png" />
+    <None Include="Resources\window_edit-24-24.png" />
+    <None Include="Resources\window_edit_1-24-24.png" />
+    <None Include="Resources\window_down-24-24.png" />
+    <None Include="Resources\window_delete-24-24.png" />
+    <None Include="Resources\window_add-24-24.png" />
+    <None Include="Resources\window_add_1-24-24.png" />
+    <None Include="Resources\window_accept-24-24.png" />
+    <None Include="Resources\window_2-24-24.png" />
+    <None Include="Resources\window_1-24-24.png" />
+    <None Include="Resources\warning-24-24.png" />
+    <None Include="Resources\video-24-24.png" />
+    <None Include="Resources\users-24-24.png" />
+    <None Include="Resources\users_edit-24-24.png" />
+    <None Include="Resources\users_delete-24-24.png" />
+    <None Include="Resources\users_comments-24-24.png" />
+    <None Include="Resources\users_add-24-24.png" />
+    <None Include="Resources\users_accept-24-24.png" />
+    <None Include="Resources\users_1-24-24.png" />
+    <None Include="Resources\user-24-24.png" />
+    <None Include="Resources\user_search-24-24.png" />
+    <None Include="Resources\user_remove-24-24.png" />
+    <None Include="Resources\user_info-24-24.png" />
+    <None Include="Resources\user_edit-24-24.png" />
+    <None Include="Resources\user_delete-24-24.png" />
+    <None Include="Resources\user_comment-24-24.png" />
+    <None Include="Resources\user_add-24-24.png" />
+    <None Include="Resources\user_add_1-24-24.png" />
+    <None Include="Resources\user_accept-24-24.png" />
+    <None Include="Resources\user_accept_1-24-24.png" />
+    <None Include="Resources\user_2-24-24.png" />
+    <None Include="Resources\user_1-24-24.png" />
+    <None Include="Resources\usb_stick-24-24.png" />
+    <None Include="Resources\usb_stick_next-24-24.png" />
+    <None Include="Resources\usb_stick_down-24-24.png" />
+    <None Include="Resources\usb_stick_delete-24-24.png" />
+    <None Include="Resources\usb_stick_add-24-24.png" />
+    <None Include="Resources\usb_stick_accept-24-24.png" />
+    <None Include="Resources\up-24-24.png" />
+    <None Include="Resources\up_1-24-24.png" />
+    <None Include="Resources\unlock-24-24.png" />
+    <None Include="Resources\stop-24-24.png" />
+    <None Include="Resources\stop_1-24-24.png" />
+    <None Include="Resources\speaker-24-24.png" />
+    <None Include="Resources\speaker_remove-24-24.png" />
+    <None Include="Resources\speaker_delete-24-24.png" />
+    <None Include="Resources\speaker_accept-24-24.png" />
+    <None Include="Resources\sound-24-24.png" />
+    <None Include="Resources\sound_on-24-24.png" />
+    <None Include="Resources\sound_off-24-24.png" />
+    <None Include="Resources\sound_1-24-24.png" />
+    <None Include="Resources\skip_forward-24-24.png" />
+    <None Include="Resources\skip_forward_1-24-24.png" />
+    <None Include="Resources\skip_backward-24-24.png" />
+    <None Include="Resources\skip_backward_1-24-24.png" />
+    <None Include="Resources\shopping_cart-24-24.png" />
+    <None Include="Resources\shopping_cart_up-24-24.png" />
+    <None Include="Resources\shopping_cart_up_1-24-24.png" />
+    <None Include="Resources\shopping_cart_remove-24-24.png" />
+    <None Include="Resources\shopping_cart_previous-24-24.png" />
+    <None Include="Resources\shopping_cart_next-24-24.png" />
+    <None Include="Resources\shopping_cart_down-24-24.png" />
+    <None Include="Resources\shopping_cart_down_1-24-24.png" />
+    <None Include="Resources\shopping_cart_delete-24-24.png" />
+    <None Include="Resources\shopping_cart_add-24-24.png" />
+    <None Include="Resources\shopping_cart_accept-24-24.png" />
+    <None Include="Resources\shopping_cart_accept_1-24-24.png" />
+    <None Include="Resources\shopping_cart_1-24-24.png" />
+    <None Include="Resources\she_users-24-24.png" />
+    <None Include="Resources\she_user-24-24.png" />
+    <None Include="Resources\she_user_remove-24-24.png" />
+    <None Include="Resources\she_user_add-24-24.png" />
+    <None Include="Resources\she_user_accept-24-24.png" />
+    <None Include="Resources\search-24-24.png" />
+    <None Include="Resources\search_remove-24-24.png" />
+    <None Include="Resources\search_remove_1-24-24.png" />
+    <None Include="Resources\search_add-24-24.png" />
+    <None Include="Resources\search_add_1-24-24.png" />
+    <None Include="Resources\search_2-24-24.png" />
+    <None Include="Resources\search_1-24-24.png" />
+    <None Include="Resources\scanner-24-24.png" />
+    <None Include="Resources\scanner_next-24-24.png" />
+    <None Include="Resources\scanner_down-24-24.png" />
+    <None Include="Resources\scanner_delete-24-24.png" />
+    <None Include="Resources\scanner_add-24-24.png" />
+    <None Include="Resources\scanner_accept-24-24.png" />
+    <None Include="Resources\save-24-24.png" />
+    <None Include="Resources\rss-24-24.png" />
+    <None Include="Resources\rss_up-24-24.png" />
+    <None Include="Resources\rss_remove-24-24.png" />
+    <None Include="Resources\rss_previous-24-24.png" />
+    <None Include="Resources\rss_next-24-24.png" />
+    <None Include="Resources\rss_next_1-24-24.png" />
+    <None Include="Resources\rss_info-24-24.png" />
+    <None Include="Resources\rss_edit-24-24.png" />
+    <None Include="Resources\rss_down-24-24.png" />
+    <None Include="Resources\rss_delete-24-24.png" />
+    <None Include="Resources\rss_add-24-24.png" />
+    <None Include="Resources\rss_add_1-24-24.png" />
+    <None Include="Resources\rss_accept-24-24.png" />
+    <None Include="Resources\rss_2-24-24.png" />
+    <None Include="Resources\rss_1-24-24.png" />
+    <None Include="Resources\rewind-24-24.png" />
+    <None Include="Resources\rewind_1-24-24.png" />
+    <None Include="Resources\repeat-24-24.png" />
+    <None Include="Resources\repeat_1-24-24.png" />
+    <None Include="Resources\remove-24-24.png" />
+    <None Include="Resources\remove_1-24-24.png" />
+    <None Include="Resources\red_button-24-24.png" />
+    <None Include="Resources\record-24-24.png" />
+    <None Include="Resources\record_1-24-24.png" />
+    <None Include="Resources\process-24-24.png" />
+    <None Include="Resources\process_warning-24-24.png" />
+    <None Include="Resources\process_remove-24-24.png" />
+    <None Include="Resources\process_remove_1-24-24.png" />
+    <None Include="Resources\process_next-24-24.png" />
+    <None Include="Resources\process_lock-24-24.png" />
+    <None Include="Resources\process_info-24-24.png" />
+    <None Include="Resources\process_help-24-24.png" />
+    <None Include="Resources\process_down-24-24.png" />
+    <None Include="Resources\process_delete-24-24.png" />
+    <None Include="Resources\process_add-24-24.png" />
+    <None Include="Resources\process_add_1-24-24.png" />
+    <None Include="Resources\process_accept-24-24.png" />
+    <None Include="Resources\process_accept_1-24-24.png" />
+    <None Include="Resources\process_2-24-24.png" />
+    <None Include="Resources\process_1-24-24.png" />
+    <None Include="Resources\printer-24-24.png" />
+    <None Include="Resources\printer_warning-24-24.png" />
+    <None Include="Resources\printer_search-24-24.png" />
+    <None Include="Resources\printer_search_1-24-24.png" />
+    <None Include="Resources\printer_remove-24-24.png" />
+    <None Include="Resources\printer_info-24-24.png" />
+    <None Include="Resources\printer_accept-24-24.png" />
+    <None Include="Resources\printer_1-24-24.png" />
+    <None Include="Resources\previous-24-24.png" />
+    <None Include="Resources\play-24-24.png" />
+    <None Include="Resources\play_1-24-24.png" />
+    <None Include="Resources\pdf-24-24.png" />
+    <None Include="Resources\pause-24-24.png" />
+    <None Include="Resources\pages_warning-24-24.png" />
+    <None Include="Resources\pages_blank_warning-24-24.png" />
+    <None Include="Resources\pages_blank_add-24-24.png" />
+    <None Include="Resources\pages_add-24-24.png" />
+    <None Include="Resources\page-24-24.png" />
+    <None Include="Resources\page_warning-24-24.png" />
+    <None Include="Resources\page_up-24-24.png" />
+    <None Include="Resources\page_up_1-24-24.png" />
+    <None Include="Resources\page_search-24-24.png" />
+    <None Include="Resources\page_search_1-24-24.png" />
+    <None Include="Resources\page_remove-24-24.png" />
+    <None Include="Resources\page_remove_1-24-24.png" />
+    <None Include="Resources\page_process-24-24.png" />
+    <None Include="Resources\page_process_1-24-24.png" />
+    <None Include="Resources\page_previous-24-24.png" />
+    <None Include="Resources\page_previous_1-24-24.png" />
+    <None Include="Resources\page_preview-24-24.png" />
+    <None Include="Resources\page_next-24-24.png" />
+    <None Include="Resources\page_next_1-24-24.png" />
+    <None Include="Resources\page_lock-24-24.png" />
+    <None Include="Resources\page_info-24-24.png" />
+    <None Include="Resources\page_help-24-24.png" />
+    <None Include="Resources\page_edit-24-24.png" />
+    <None Include="Resources\page_edit_2-24-24.png" />
+    <None Include="Resources\page_edit_1-24-24.png" />
+    <None Include="Resources\page_down-24-24.png" />
+    <None Include="Resources\page_down_1-24-24.png" />
+    <None Include="Resources\page_delete-24-24.png" />
+    <None Include="Resources\page_blank-24-24.png" />
+    <None Include="Resources\page_add-24-24.png" />
+    <None Include="Resources\page_add_1-24-24.png" />
+    <None Include="Resources\page_accept-24-24.png" />
+    <None Include="Resources\page_accept_1-24-24.png" />
+    <None Include="Resources\page_1-24-24.png" />
+    <None Include="Resources\notes_edit-24-24.png" />
+    <None Include="Resources\notebook-24-24.png" />
+    <None Include="Resources\notebook_search-24-24.png" />
+    <None Include="Resources\notebook_lock-24-24.png" />
+    <None Include="Resources\notebook_edit-24-24.png" />
+    <None Include="Resources\notebook_delete-24-24.png" />
+    <None Include="Resources\notebook_add-24-24.png" />
+    <None Include="Resources\notebook_accept-24-24.png" />
+    <None Include="Resources\note_remove-24-24.png" />
+    <None Include="Resources\note_edit-24-24.png" />
+    <None Include="Resources\note_add-24-24.png" />
+    <None Include="Resources\note_accept-24-24.png" />
+    <None Include="Resources\next-24-24.png" />
+    <None Include="Resources\next_2-24-24.png" />
+    <None Include="Resources\next_1-24-24.png" />
+    <None Include="Resources\new_page-24-24.png" />
+    <None Include="Resources\new_mail-24-24.png" />
+    <None Include="Resources\new_mail_warning-24-24.png" />
+    <None Include="Resources\new_mail_up-24-24.png" />
+    <None Include="Resources\new_mail_search-24-24.png" />
+    <None Include="Resources\new_mail_remove-24-24.png" />
+    <None Include="Resources\new_mail_previous-24-24.png" />
+    <None Include="Resources\new_mail_next-24-24.png" />
+    <None Include="Resources\new_mail_edit-24-24.png" />
+    <None Include="Resources\new_mail_down-24-24.png" />
+    <None Include="Resources\new_mail_delete-24-24.png" />
+    <None Include="Resources\new_mail_add-24-24.png" />
+    <None Include="Resources\new_mail_accept-24-24.png" />
+    <None Include="Resources\movie_track-24-24.png" />
+    <None Include="Resources\movie_track_remove-24-24.png" />
+    <None Include="Resources\movie_track_next-24-24.png" />
+    <None Include="Resources\movie_track_add-24-24.png" />
+    <None Include="Resources\monitor-24-24.png" />
+    <None Include="Resources\mobile_phone-24-24.png" />
+    <None Include="Resources\mobile_phone_search-24-24.png" />
+    <None Include="Resources\mobile_phone_next-24-24.png" />
+    <None Include="Resources\mobile_phone_info-24-24.png" />
+    <None Include="Resources\mobile_phone_down-24-24.png" />
+    <None Include="Resources\mobile_phone_delete-24-24.png" />
+    <None Include="Resources\mobile_phone_add-24-24.png" />
+    <None Include="Resources\mobile_phone_accept-24-24.png" />
+    <None Include="Resources\mail-24-24.png" />
+    <None Include="Resources\mail_warning-24-24.png" />
+    <None Include="Resources\mail_up-24-24.png" />
+    <None Include="Resources\mail_sent-24-24.png" />
+    <None Include="Resources\mail_search-24-24.png" />
+    <None Include="Resources\mail_remove-24-24.png" />
+    <None Include="Resources\mail_remove_1-24-24.png" />
+    <None Include="Resources\mail_previous-24-24.png" />
+    <None Include="Resources\mail_next-24-24.png" />
+    <None Include="Resources\mail_next_1-24-24.png" />
+    <None Include="Resources\mail_info-24-24.png" />
+    <None Include="Resources\mail_edit-24-24.png" />
+    <None Include="Resources\mail_edit_1-24-24.png" />
+    <None Include="Resources\mail_down-24-24.png" />
+    <None Include="Resources\mail_delete-24-24.png" />
+    <None Include="Resources\mail_add-24-24.png" />
+    <None Include="Resources\mail_add_1-24-24.png" />
+    <None Include="Resources\mail_accept-24-24.png" />
+    <None Include="Resources\mail_accept_1-24-24.png" />
+    <None Include="Resources\mail_2-24-24.png" />
+    <None Include="Resources\mail_1-24-24.png" />
+    <None Include="Resources\lock-24-24.png" />
+    <None Include="Resources\lock_off-24-24.png" />
+    <None Include="Resources\lock_off_disabled-24-24.png" />
+    <None Include="Resources\lock_disabled-24-24.png" />
+    <None Include="Resources\lock_1-24-24.png" />
+    <None Include="Resources\ipod-24-24.png" />
+    <None Include="Resources\ipod_search-24-24.png" />
+    <None Include="Resources\ipod_next-24-24.png" />
+    <None Include="Resources\ipod_info-24-24.png" />
+    <None Include="Resources\ipod_down-24-24.png" />
+    <None Include="Resources\ipod_delete-24-24.png" />
+    <None Include="Resources\ipod_add-24-24.png" />
+    <None Include="Resources\ipod_accept-24-24.png" />
+    <None Include="Resources\info-24-24.png" />
+    <None Include="Resources\info_2-24-24.png" />
+    <None Include="Resources\info_1-24-24.png" />
+    <None Include="Resources\images-24-24.png" />
+    <None Include="Resources\image-24-24.png" />
+    <None Include="Resources\image_up-24-24.png" />
+    <None Include="Resources\image_up_1-24-24.png" />
+    <None Include="Resources\image_tif-24-24.png" />
+    <None Include="Resources\image_search-24-24.png" />
+    <None Include="Resources\image_remove-24-24.png" />
+    <None Include="Resources\image_remove_1-24-24.png" />
+    <None Include="Resources\image_previous-24-24.png" />
+    <None Include="Resources\image_next-24-24.png" />
+    <None Include="Resources\image_next_1-24-24.png" />
+    <None Include="Resources\image_multi-24-24.png" />
+    <None Include="Resources\image_lock-24-24.png" />
+    <None Include="Resources\image_jpg-24-24.png" />
+    <None Include="Resources\image_info-24-24.png" />
+    <None Include="Resources\image_edit-24-24.png" />
+    <None Include="Resources\image_edit_1-24-24.png" />
+    <None Include="Resources\image_down-24-24.png" />
+    <None Include="Resources\image_delete-24-24.png" />
+    <None Include="Resources\image_bmp-24-24.png" />
+    <None Include="Resources\image_add-24-24.png" />
+    <None Include="Resources\image_add_1-24-24.png" />
+    <None Include="Resources\image_accept-24-24.png" />
+    <None Include="Resources\image_1-24-24.png" />
+    <None Include="Resources\home-24-24.png" />
+    <None Include="Resources\home_warning-24-24.png" />
+    <None Include="Resources\home_search-24-24.png" />
+    <None Include="Resources\home_remove-24-24.png" />
+    <None Include="Resources\home_next-24-24.png" />
+    <None Include="Resources\home_info-24-24.png" />
+    <None Include="Resources\home_accept-24-24.png" />
+    <None Include="Resources\home_2-24-24.png" />
+    <None Include="Resources\home_1-24-24.png" />
+    <None Include="Resources\help-24-24.png" />
+    <None Include="Resources\help_1-24-24.png" />
+    <None Include="Resources\headphones-24-24.png" />
+    <None Include="Resources\headphones_delete-24-24.png" />
+    <None Include="Resources\headphones_add-24-24.png" />
+    <None Include="Resources\headphones_accept-24-24.png" />
+    <None Include="Resources\green_button-24-24.png" />
+    <None Include="Resources\globe-24-24.png" />
+    <None Include="Resources\globe_warning-24-24.png" />
+    <None Include="Resources\globe_up-24-24.png" />
+    <None Include="Resources\globe_search-24-24.png" />
+    <None Include="Resources\globe_remove-24-24.png" />
+    <None Include="Resources\globe_process-24-24.png" />
+    <None Include="Resources\globe_info-24-24.png" />
+    <None Include="Resources\globe_down-24-24.png" />
+    <None Include="Resources\globe_add-24-24.png" />
+    <None Include="Resources\globe_accept-24-24.png" />
+    <None Include="Resources\folder-24-24.png" />
+    <None Include="Resources\folder_warning-24-24.png" />
+    <None Include="Resources\folder_up-24-24.png" />
+    <None Include="Resources\folder_up_1-24-24.png" />
+    <None Include="Resources\folder_search-24-24.png" />
+    <None Include="Resources\folder_remove-24-24.png" />
+    <None Include="Resources\folder_remove_1-24-24.png" />
+    <None Include="Resources\folder_process-24-24.png" />
+    <None Include="Resources\folder_process_1-24-24.png" />
+    <None Include="Resources\folder_previous-24-24.png" />
+    <None Include="Resources\folder_previous_1-24-24.png" />
+    <None Include="Resources\folder_next-24-24.png" />
+    <None Include="Resources\folder_next_1-24-24.png" />
+    <None Include="Resources\folder_lock-24-24.png" />
+    <None Include="Resources\folder_info-24-24.png" />
+    <None Include="Resources\folder_help-24-24.png" />
+    <None Include="Resources\folder_empty-24-24.png" />
+    <None Include="Resources\folder_edit-24-24.png" />
+    <None Include="Resources\folder_edit_1-24-24.png" />
+    <None Include="Resources\folder_down-24-24.png" />
+    <None Include="Resources\folder_down_1-24-24.png" />
+    <None Include="Resources\folder_delete-24-24.png" />
+    <None Include="Resources\folder_add-24-24.png" />
+    <None Include="Resources\folder_add_2-24-24.png" />
+    <None Include="Resources\folder_add_1-24-24.png" />
+    <None Include="Resources\folder_accept-24-24.png" />
+    <None Include="Resources\folder_accept_1-24-24.png" />
+    <None Include="Resources\folder_2-24-24.png" />
+    <None Include="Resources\folder_1-24-24.png" />
+    <None Include="Resources\favorite-24-24.png" />
+    <None Include="Resources\favorite_remove-24-24.png" />
+    <None Include="Resources\favorite_remove_1-24-24.png" />
+    <None Include="Resources\favorite_add-24-24.png" />
+    <None Include="Resources\favorite_add_1-24-24.png" />
+    <None Include="Resources\favorite_1-24-24.png" />
+    <None Include="Resources\fast_forward-24-24.png" />
+    <None Include="Resources\fast_forward_1-24-24.png" />
+    <None Include="Resources\eject-24-24.png" />
+    <None Include="Resources\eject_1-24-24.png" />
+    <None Include="Resources\dvd-24-24.png" />
+    <None Include="Resources\down-24-24.png" />
+    <None Include="Resources\down_1-24-24.png" />
+    <None Include="Resources\digital_camcorder-24-24.png" />
+    <None Include="Resources\digital_camcorder_search-24-24.png" />
+    <None Include="Resources\digital_camcorder_next-24-24.png" />
+    <None Include="Resources\digital_camcorder_info-24-24.png" />
+    <None Include="Resources\digital_camcorder_down-24-24.png" />
+    <None Include="Resources\digital_camcorder_delete-24-24.png" />
+    <None Include="Resources\digital_camcorder_add-24-24.png" />
+    <None Include="Resources\digital_camcorder_accept-24-24.png" />
+    <None Include="Resources\delete-24-24.png" />
+    <None Include="Resources\delete_1-24-24.png" />
+    <None Include="Resources\database-24-24.png" />
+    <None Include="Resources\database_warning-24-24.png" />
+    <None Include="Resources\database_up-24-24.png" />
+    <None Include="Resources\database_up_1-24-24.png" />
+    <None Include="Resources\database_search-24-24.png" />
+    <None Include="Resources\database_search_1-24-24.png" />
+    <None Include="Resources\database_remove-24-24.png" />
+    <None Include="Resources\database_remove_1-24-24.png" />
+    <None Include="Resources\database_process-24-24.png" />
+    <None Include="Resources\database_process_1-24-24.png" />
+    <None Include="Resources\database_previous-24-24.png" />
+    <None Include="Resources\database_previous_1-24-24.png" />
+    <None Include="Resources\database_next-24-24.png" />
+    <None Include="Resources\database_next_1-24-24.png" />
+    <None Include="Resources\database_lock-24-24.png" />
+    <None Include="Resources\database_lock_1-24-24.png" />
+    <None Include="Resources\database_info-24-24.png" />
+    <None Include="Resources\database_help-24-24.png" />
+    <None Include="Resources\database_down-24-24.png" />
+    <None Include="Resources\database_down_1-24-24.png" />
+    <None Include="Resources\database_delete-24-24.png" />
+    <None Include="Resources\database_add-24-24.png" />
+    <None Include="Resources\database_add_1-24-24.png" />
+    <None Include="Resources\database_accept-24-24.png" />
+    <None Include="Resources\database_accept_1-24-24.png" />
+    <None Include="Resources\database_1-24-24.png" />
+    <None Include="Resources\computers-24-24.png" />
+    <None Include="Resources\computers_1-24-24.png" />
+    <None Include="Resources\computer-24-24.png" />
+    <None Include="Resources\computer_search-24-24.png" />
+    <None Include="Resources\computer_remove-24-24.png" />
+    <None Include="Resources\computer_process-24-24.png" />
+    <None Include="Resources\computer_network-24-24.png" />
+    <None Include="Resources\computer_delete-24-24.png" />
+    <None Include="Resources\computer_black-24-24.png" />
+    <None Include="Resources\computer_accept-24-24.png" />
+    <None Include="Resources\computer_accept_1-24-24.png" />
+    <None Include="Resources\computer_1-24-24.png" />
+    <None Include="Resources\comments-24-24.png" />
+    <None Include="Resources\comments_remove-24-24.png" />
+    <None Include="Resources\comments_add-24-24.png" />
+    <None Include="Resources\comments_1-24-24.png" />
+    <None Include="Resources\comment-24-24.png" />
+    <None Include="Resources\comment_remove-24-24.png" />
+    <None Include="Resources\comment_edit-24-24.png" />
+    <None Include="Resources\comment_edit_1-24-24.png" />
+    <None Include="Resources\comment_delete-24-24.png" />
+    <None Include="Resources\comment_add-24-24.png" />
+    <None Include="Resources\comment_add_1-24-24.png" />
+    <None Include="Resources\comment_accept-24-24.png" />
+    <None Include="Resources\comment_2-24-24.png" />
+    <None Include="Resources\comment_1-24-24.png" />
+    <None Include="Resources\clock-24-24.png" />
+    <None Include="Resources\chart-24-24.png" />
+    <None Include="Resources\chart_remove-24-24.png" />
+    <None Include="Resources\chart_info-24-24.png" />
+    <None Include="Resources\chart_delete-24-24.png" />
+    <None Include="Resources\chart_add-24-24.png" />
+    <None Include="Resources\chart_add_1-24-24.png" />
+    <None Include="Resources\chart_accept-24-24.png" />
+    <None Include="Resources\chart_accept_1-24-24.png" />
+    <None Include="Resources\chart_1-24-24.png" />
+    <None Include="Resources\cd-24-24.png" />
+    <None Include="Resources\cd_warning-24-24.png" />
+    <None Include="Resources\cd_rw-24-24.png" />
+    <None Include="Resources\cd_remove-24-24.png" />
+    <None Include="Resources\cd_info-24-24.png" />
+    <None Include="Resources\cd_down-24-24.png" />
+    <None Include="Resources\cd_delete-24-24.png" />
+    <None Include="Resources\cd_add-24-24.png" />
+    <None Include="Resources\cd_add_1-24-24.png" />
+    <None Include="Resources\cd_accept-24-24.png" />
+    <None Include="Resources\cd_accept_1-24-24.png" />
+    <None Include="Resources\cd_1-24-24.png" />
+    <None Include="Resources\calendar-24-24.png" />
+    <None Include="Resources\calendar_date-24-24.png" />
+    <None Include="Resources\calendar_date_1-24-24.png" />
+    <None Include="Resources\calendar_background-24-24.png" />
+    <None Include="Resources\calculator-24-24.png" />
+    <None Include="Resources\calculator_remove-24-24.png" />
+    <None Include="Resources\calculator_add-24-24.png" />
+    <None Include="Resources\calculator_accept-24-24.png" />
+    <None Include="Resources\business_user-24-24.png" />
+    <None Include="Resources\business_user_search-24-24.png" />
+    <None Include="Resources\business_user_info-24-24.png" />
+    <None Include="Resources\business_user_edit-24-24.png" />
+    <None Include="Resources\business_user_delete-24-24.png" />
+    <None Include="Resources\business_user_comment-24-24.png" />
+    <None Include="Resources\business_user_add-24-24.png" />
+    <None Include="Resources\business_user_accept-24-24.png" />
+    <None Include="Resources\blue_button-24-24.png" />
+    <None Include="Resources\back-24-24.png" />
+    <None Include="Resources\back_1-24-24.png" />
+    <None Include="Resources\attachment-24-24.png" />
+    <None Include="Resources\archive-24-24.png" />
+    <None Include="Resources\applications-24-24.png" />
+    <None Include="Resources\application-24-24.png" />
+    <None Include="Resources\application_up-24-24.png" />
+    <None Include="Resources\application_up_1-24-24.png" />
+    <None Include="Resources\application_search-24-24.png" />
+    <None Include="Resources\application_remove-24-24.png" />
+    <None Include="Resources\application_remove_1-24-24.png" />
+    <None Include="Resources\application_next-24-24.png" />
+    <None Include="Resources\application_next_1-24-24.png" />
+    <None Include="Resources\application_lock-24-24.png" />
+    <None Include="Resources\application_info-24-24.png" />
+    <None Include="Resources\application_edit-24-24.png" />
+    <None Include="Resources\application_edit_1-24-24.png" />
+    <None Include="Resources\application_down-24-24.png" />
+    <None Include="Resources\application_delete-24-24.png" />
+    <None Include="Resources\application_add-24-24.png" />
+    <None Include="Resources\application_add_1-24-24.png" />
+    <None Include="Resources\application_accept-24-24.png" />
+    <None Include="Resources\application_1-24-24.png" />
+    <None Include="Resources\add-24-24.png" />
+    <None Include="Resources\add_2-24-24.png" />
+    <None Include="Resources\add_1-24-24.png" />
+    <None Include="Resources\accept-24-24.png" />
+    <None Include="Resources\accept_2-24-24.png" />
+    <None Include="Resources\accept_1-24-24.png" />
+    <None Include="Resources\word.png" />
+    <None Include="Resources\windows.png" />
+    <None Include="Resources\window_up_1.png" />
+    <None Include="Resources\window_up.png" />
+    <None Include="Resources\window_search.png" />
+    <None Include="Resources\window_remove_1.png" />
+    <None Include="Resources\window_remove.png" />
+    <None Include="Resources\window_next_1.png" />
+    <None Include="Resources\window_next.png" />
+    <None Include="Resources\window_lock.png" />
+    <None Include="Resources\window_info.png" />
+    <None Include="Resources\window_edit_1.png" />
+    <None Include="Resources\window_edit.png" />
+    <None Include="Resources\window_down.png" />
+    <None Include="Resources\window_delete.png" />
+    <None Include="Resources\window_add_1.png" />
+    <None Include="Resources\window_add.png" />
+    <None Include="Resources\window_accept.png" />
+    <None Include="Resources\window_2.png" />
+    <None Include="Resources\window_1.png" />
+    <None Include="Resources\window.png" />
+    <None Include="Resources\warning.png" />
+    <None Include="Resources\video.png" />
+    <None Include="Resources\users_edit.png" />
+    <None Include="Resources\users_delete.png" />
+    <None Include="Resources\users_comments.png" />
+    <None Include="Resources\users_add.png" />
+    <None Include="Resources\users_accept.png" />
+    <None Include="Resources\users_1.png" />
+    <None Include="Resources\users.png" />
+    <None Include="Resources\user_search.png" />
+    <None Include="Resources\user_remove.png" />
+    <None Include="Resources\user_info.png" />
+    <None Include="Resources\user_edit.png" />
+    <None Include="Resources\user_delete.png" />
+    <None Include="Resources\user_comment.png" />
+    <None Include="Resources\user_add_1.png" />
+    <None Include="Resources\user_add.png" />
+    <None Include="Resources\user_accept_1.png" />
+    <None Include="Resources\user_accept.png" />
+    <None Include="Resources\user_2.png" />
+    <None Include="Resources\user_1.png" />
+    <None Include="Resources\user.png" />
+    <None Include="Resources\usb_stick_next.png" />
+    <None Include="Resources\usb_stick_down.png" />
+    <None Include="Resources\usb_stick_delete.png" />
+    <None Include="Resources\usb_stick_add.png" />
+    <None Include="Resources\usb_stick_accept.png" />
+    <None Include="Resources\usb_stick.png" />
+    <None Include="Resources\up_1.png" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\unlock.png" />
+    <None Include="Resources\stop_1.png" />
+    <None Include="Resources\stop.png" />
+    <None Include="Resources\speaker_remove.png" />
+    <None Include="Resources\speaker_delete.png" />
+    <None Include="Resources\speaker_accept.png" />
+    <None Include="Resources\speaker.png" />
+    <None Include="Resources\sound_on.png" />
+    <None Include="Resources\sound_off.png" />
+    <None Include="Resources\sound_1.png" />
+    <None Include="Resources\sound.png" />
+    <None Include="Resources\skip_forward_1.png" />
+    <None Include="Resources\skip_forward.png" />
+    <None Include="Resources\skip_backward_1.png" />
+    <None Include="Resources\skip_backward.png" />
+    <None Include="Resources\shopping_cart_up_1.png" />
+    <None Include="Resources\shopping_cart_up.png" />
+    <None Include="Resources\shopping_cart_remove.png" />
+    <None Include="Resources\shopping_cart_previous.png" />
+    <None Include="Resources\shopping_cart_next.png" />
+    <None Include="Resources\shopping_cart_down_1.png" />
+    <None Include="Resources\shopping_cart_down.png" />
+    <None Include="Resources\shopping_cart_delete.png" />
+    <None Include="Resources\shopping_cart_add.png" />
+    <None Include="Resources\shopping_cart_accept_1.png" />
+    <None Include="Resources\shopping_cart_accept.png" />
+    <None Include="Resources\shopping_cart_1.png" />
+    <None Include="Resources\shopping_cart.png" />
+    <None Include="Resources\she_users.png" />
+    <None Include="Resources\she_user_remove.png" />
+    <None Include="Resources\she_user_add.png" />
+    <None Include="Resources\she_user_accept.png" />
+    <None Include="Resources\she_user.png" />
+    <None Include="Resources\search_remove_1.png" />
+    <None Include="Resources\search_remove.png" />
+    <None Include="Resources\search_add_1.png" />
+    <None Include="Resources\search_add.png" />
+    <None Include="Resources\search_2.png" />
+    <None Include="Resources\search_1.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\scanner_next.png" />
+    <None Include="Resources\scanner_down.png" />
+    <None Include="Resources\scanner_delete.png" />
+    <None Include="Resources\scanner_add.png" />
+    <None Include="Resources\scanner_accept.png" />
+    <None Include="Resources\scanner.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\rss_up.png" />
+    <None Include="Resources\rss_remove.png" />
+    <None Include="Resources\rss_previous.png" />
+    <None Include="Resources\rss_next_1.png" />
+    <None Include="Resources\rss_next.png" />
+    <None Include="Resources\rss_info.png" />
+    <None Include="Resources\rss_edit.png" />
+    <None Include="Resources\rss_down.png" />
+    <None Include="Resources\rss_delete.png" />
+    <None Include="Resources\rss_add_1.png" />
+    <None Include="Resources\rss_add.png" />
+    <None Include="Resources\rss_accept.png" />
+    <None Include="Resources\rss_2.png" />
+    <None Include="Resources\rss_1.png" />
+    <None Include="Resources\rss.png" />
+    <None Include="Resources\rewind_1.png" />
+    <None Include="Resources\rewind.png" />
+    <None Include="Resources\repeat_1.png" />
+    <None Include="Resources\repeat.png" />
+    <None Include="Resources\remove_1.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\red_button.png" />
+    <None Include="Resources\record_1.png" />
+    <None Include="Resources\record.png" />
+    <None Include="Resources\process_warning.png" />
+    <None Include="Resources\process_remove_1.png" />
+    <None Include="Resources\process_remove.png" />
+    <None Include="Resources\process_next.png" />
+    <None Include="Resources\process_lock.png" />
+    <None Include="Resources\process_info.png" />
+    <None Include="Resources\process_help.png" />
+    <None Include="Resources\process_down.png" />
+    <None Include="Resources\process_delete.png" />
+    <None Include="Resources\process_add_1.png" />
+    <None Include="Resources\process_add.png" />
+    <None Include="Resources\process_accept_1.png" />
+    <None Include="Resources\process_accept.png" />
+    <None Include="Resources\process_2.png" />
+    <None Include="Resources\process_1.png" />
+    <None Include="Resources\process.png" />
+    <None Include="Resources\printer_warning.png" />
+    <None Include="Resources\printer_search_1.png" />
+    <None Include="Resources\printer_search.png" />
+    <None Include="Resources\printer_remove.png" />
+    <None Include="Resources\printer_info.png" />
+    <None Include="Resources\printer_accept.png" />
+    <None Include="Resources\printer_1.png" />
+    <None Include="Resources\printer.png" />
+    <None Include="Resources\previous.png" />
+    <None Include="Resources\play_1.png" />
+    <None Include="Resources\play.png" />
+    <None Include="Resources\pdf.png" />
+    <None Include="Resources\pause.png" />
+    <None Include="Resources\pages_warning.png" />
+    <None Include="Resources\pages_blank_warning.png" />
+    <None Include="Resources\pages_blank_add.png" />
+    <None Include="Resources\pages_add.png" />
+    <None Include="Resources\page_warning.png" />
+    <None Include="Resources\page_up_1.png" />
+    <None Include="Resources\page_up.png" />
+    <None Include="Resources\page_search_1.png" />
+    <None Include="Resources\page_search.png" />
+    <None Include="Resources\page_remove_1.png" />
+    <None Include="Resources\page_remove.png" />
+    <None Include="Resources\page_process_1.png" />
+    <None Include="Resources\page_process.png" />
+    <None Include="Resources\page_previous_1.png" />
+    <None Include="Resources\page_previous.png" />
+    <None Include="Resources\page_preview.png" />
+    <None Include="Resources\page_next_1.png" />
+    <None Include="Resources\page_next.png" />
+    <None Include="Resources\page_lock.png" />
+    <None Include="Resources\page_info.png" />
+    <None Include="Resources\page_help.png" />
+    <None Include="Resources\page_edit_2.png" />
+    <None Include="Resources\page_edit_1.png" />
+    <None Include="Resources\page_edit.png" />
+    <None Include="Resources\page_down_1.png" />
+    <None Include="Resources\page_down.png" />
+    <None Include="Resources\page_delete.png" />
+    <None Include="Resources\page_blank.png" />
+    <None Include="Resources\page_add_1.png" />
+    <None Include="Resources\page_add.png" />
+    <None Include="Resources\page_accept_1.png" />
+    <None Include="Resources\page_accept.png" />
+    <None Include="Resources\page_1.png" />
+    <None Include="Resources\page.png" />
+    <None Include="Resources\notes_edit.png" />
+    <None Include="Resources\notebook_search.png" />
+    <None Include="Resources\notebook_lock.png" />
+    <None Include="Resources\notebook_edit.png" />
+    <None Include="Resources\notebook_delete.png" />
+    <None Include="Resources\notebook_add.png" />
+    <None Include="Resources\notebook_accept.png" />
+    <None Include="Resources\notebook.png" />
+    <None Include="Resources\note_remove.png" />
+    <None Include="Resources\note_edit.png" />
+    <None Include="Resources\note_add.png" />
+    <None Include="Resources\note_accept.png" />
+    <None Include="Resources\next_2.png" />
+    <None Include="Resources\next_1.png" />
+    <None Include="Resources\next.png" />
+    <None Include="Resources\new_page.png" />
+    <None Include="Resources\new_mail_warning.png" />
+    <None Include="Resources\new_mail_up.png" />
+    <None Include="Resources\new_mail_search.png" />
+    <None Include="Resources\new_mail_remove.png" />
+    <None Include="Resources\new_mail_previous.png" />
+    <None Include="Resources\new_mail_next.png" />
+    <None Include="Resources\new_mail_edit.png" />
+    <None Include="Resources\new_mail_down.png" />
+    <None Include="Resources\new_mail_delete.png" />
+    <None Include="Resources\new_mail_add.png" />
+    <None Include="Resources\new_mail_accept.png" />
+    <None Include="Resources\new_mail.png" />
+    <None Include="Resources\movie_track_remove.png" />
+    <None Include="Resources\movie_track_next.png" />
+    <None Include="Resources\movie_track_add.png" />
+    <None Include="Resources\movie_track.png" />
+    <None Include="Resources\monitor.png" />
+    <None Include="Resources\mobile_phone_search.png" />
+    <None Include="Resources\mobile_phone_next.png" />
+    <None Include="Resources\mobile_phone_info.png" />
+    <None Include="Resources\mobile_phone_down.png" />
+    <None Include="Resources\mobile_phone_delete.png" />
+    <None Include="Resources\mobile_phone_add.png" />
+    <None Include="Resources\mobile_phone_accept.png" />
+    <None Include="Resources\mobile_phone.png" />
+    <None Include="Resources\mail_warning.png" />
+    <None Include="Resources\mail_up.png" />
+    <None Include="Resources\mail_sent.png" />
+    <None Include="Resources\mail_search.png" />
+    <None Include="Resources\mail_remove_1.png" />
+    <None Include="Resources\mail_remove.png" />
+    <None Include="Resources\mail_previous.png" />
+    <None Include="Resources\mail_next_1.png" />
+    <None Include="Resources\mail_next.png" />
+    <None Include="Resources\mail_info.png" />
+    <None Include="Resources\mail_edit_1.png" />
+    <None Include="Resources\mail_edit.png" />
+    <None Include="Resources\mail_down.png" />
+    <None Include="Resources\mail_delete.png" />
+    <None Include="Resources\mail_add_1.png" />
+    <None Include="Resources\mail_add.png" />
+    <None Include="Resources\mail_accept_1.png" />
+    <None Include="Resources\mail_accept.png" />
+    <None Include="Resources\mail_2.png" />
+    <None Include="Resources\mail_1.png" />
+    <None Include="Resources\mail.png" />
+    <None Include="Resources\lock_off_disabled.png" />
+    <None Include="Resources\lock_off.png" />
+    <None Include="Resources\lock_disabled.png" />
+    <None Include="Resources\lock_1.png" />
+    <None Include="Resources\lock.png" />
+    <None Include="Resources\ipod_search.png" />
+    <None Include="Resources\ipod_next.png" />
+    <None Include="Resources\ipod_info.png" />
+    <None Include="Resources\ipod_down.png" />
+    <None Include="Resources\ipod_delete.png" />
+    <None Include="Resources\ipod_add.png" />
+    <None Include="Resources\ipod_accept.png" />
+    <None Include="Resources\ipod.png" />
+    <None Include="Resources\info_2.png" />
+    <None Include="Resources\info_1.png" />
+    <None Include="Resources\info.png" />
+    <None Include="Resources\images.png" />
+    <None Include="Resources\image_up_1.png" />
+    <None Include="Resources\image_up.png" />
+    <None Include="Resources\image_tif.png" />
+    <None Include="Resources\image_search.png" />
+    <None Include="Resources\image_remove_1.png" />
+    <None Include="Resources\image_remove.png" />
+    <None Include="Resources\image_previous.png" />
+    <None Include="Resources\image_next_1.png" />
+    <None Include="Resources\image_next.png" />
+    <None Include="Resources\image_multi.png" />
+    <None Include="Resources\image_lock.png" />
+    <None Include="Resources\image_jpg.png" />
+    <None Include="Resources\image_info.png" />
+    <None Include="Resources\image_edit_1.png" />
+    <None Include="Resources\image_edit.png" />
+    <None Include="Resources\image_down.png" />
+    <None Include="Resources\image_delete.png" />
+    <None Include="Resources\image_bmp.png" />
+    <None Include="Resources\image_add_1.png" />
+    <None Include="Resources\image_add.png" />
+    <None Include="Resources\image_accept.png" />
+    <None Include="Resources\image_1.png" />
+    <None Include="Resources\image.png" />
+    <None Include="Resources\home_warning.png" />
+    <None Include="Resources\home_search.png" />
+    <None Include="Resources\home_remove.png" />
+    <None Include="Resources\home_next.png" />
+    <None Include="Resources\home_info.png" />
+    <None Include="Resources\home_accept.png" />
+    <None Include="Resources\home_2.png" />
+    <None Include="Resources\home_1.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\help_1.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\headphones_delete.png" />
+    <None Include="Resources\headphones_add.png" />
+    <None Include="Resources\headphones_accept.png" />
+    <None Include="Resources\headphones.png" />
+    <None Include="Resources\green_button.png" />
+    <None Include="Resources\globe_warning.png" />
+    <None Include="Resources\globe_up.png" />
+    <None Include="Resources\globe_search.png" />
+    <None Include="Resources\globe_remove.png" />
+    <None Include="Resources\globe_process.png" />
+    <None Include="Resources\globe_info.png" />
+    <None Include="Resources\globe_down.png" />
+    <None Include="Resources\globe_add.png" />
+    <None Include="Resources\globe_accept.png" />
+    <None Include="Resources\globe.png" />
+    <None Include="Resources\folder_warning.png" />
+    <None Include="Resources\folder_up_1.png" />
+    <None Include="Resources\folder_up.png" />
+    <None Include="Resources\folder_search.png" />
+    <None Include="Resources\folder_remove_1.png" />
+    <None Include="Resources\folder_remove.png" />
+    <None Include="Resources\folder_process_1.png" />
+    <None Include="Resources\folder_process.png" />
+    <None Include="Resources\folder_previous_1.png" />
+    <None Include="Resources\folder_previous.png" />
+    <None Include="Resources\folder_next_1.png" />
+    <None Include="Resources\folder_next.png" />
+    <None Include="Resources\folder_lock.png" />
+    <None Include="Resources\folder_info.png" />
+    <None Include="Resources\folder_help.png" />
+    <None Include="Resources\folder_empty.png" />
+    <None Include="Resources\folder_edit_1.png" />
+    <None Include="Resources\folder_edit.png" />
+    <None Include="Resources\folder_down_1.png" />
+    <None Include="Resources\folder_down.png" />
+    <None Include="Resources\folder_delete.png" />
+    <None Include="Resources\folder_add_2.png" />
+    <None Include="Resources\folder_add_1.png" />
+    <None Include="Resources\folder_add.png" />
+    <None Include="Resources\folder_accept_1.png" />
+    <None Include="Resources\folder_accept.png" />
+    <None Include="Resources\folder_2.png" />
+    <None Include="Resources\folder_1.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\favorite_remove_1.png" />
+    <None Include="Resources\favorite_remove.png" />
+    <None Include="Resources\favorite_add_1.png" />
+    <None Include="Resources\favorite_add.png" />
+    <None Include="Resources\favorite_1.png" />
+    <None Include="Resources\favorite.png" />
+    <None Include="Resources\fast_forward_1.png" />
+    <None Include="Resources\fast_forward.png" />
+    <None Include="Resources\eject_1.png" />
+    <None Include="Resources\eject.png" />
+    <None Include="Resources\dvd.png" />
+    <None Include="Resources\down_1.png" />
+    <None Include="Resources\down.png" />
+    <None Include="Resources\digital_camcorder_search.png" />
+    <None Include="Resources\digital_camcorder_next.png" />
+    <None Include="Resources\digital_camcorder_info.png" />
+    <None Include="Resources\digital_camcorder_down.png" />
+    <None Include="Resources\digital_camcorder_delete.png" />
+    <None Include="Resources\digital_camcorder_add.png" />
+    <None Include="Resources\digital_camcorder_accept.png" />
+    <None Include="Resources\digital_camcorder.png" />
+    <None Include="Resources\delete_1.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\database_warning.png" />
+    <None Include="Resources\database_up_1.png" />
+    <None Include="Resources\database_up.png" />
+    <None Include="Resources\database_search_1.png" />
+    <None Include="Resources\database_search.png" />
+    <None Include="Resources\database_remove_1.png" />
+    <None Include="Resources\database_remove.png" />
+    <None Include="Resources\database_process_1.png" />
+    <None Include="Resources\database_process.png" />
+    <None Include="Resources\database_previous_1.png" />
+    <None Include="Resources\database_previous.png" />
+    <None Include="Resources\database_next_1.png" />
+    <None Include="Resources\database_next.png" />
+    <None Include="Resources\database_lock_1.png" />
+    <None Include="Resources\database_lock.png" />
+    <None Include="Resources\database_info.png" />
+    <None Include="Resources\database_help.png" />
+    <None Include="Resources\database_down_1.png" />
+    <None Include="Resources\database_down.png" />
+    <None Include="Resources\database_delete.png" />
+    <None Include="Resources\database_add_1.png" />
+    <None Include="Resources\database_add.png" />
+    <None Include="Resources\database_accept_1.png" />
+    <None Include="Resources\database_accept.png" />
+    <None Include="Resources\database_1.png" />
+    <None Include="Resources\database.png" />
+    <None Include="Resources\computers_1.png" />
+    <None Include="Resources\computers.png" />
+    <None Include="Resources\computer_search.png" />
+    <None Include="Resources\computer_remove.png" />
+    <None Include="Resources\computer_process.png" />
+    <None Include="Resources\computer_network.png" />
+    <None Include="Resources\computer_delete.png" />
+    <None Include="Resources\computer_black.png" />
+    <None Include="Resources\computer_accept_1.png" />
+    <None Include="Resources\computer_accept.png" />
+    <None Include="Resources\computer_1.png" />
+    <None Include="Resources\computer.png" />
+    <None Include="Resources\comments_remove.png" />
+    <None Include="Resources\comments_add.png" />
+    <None Include="Resources\comments_1.png" />
+    <None Include="Resources\comments.png" />
+    <None Include="Resources\comment_remove.png" />
+    <None Include="Resources\comment_edit_1.png" />
+    <None Include="Resources\comment_edit.png" />
+    <None Include="Resources\comment_delete.png" />
+    <None Include="Resources\comment_add_1.png" />
+    <None Include="Resources\comment_add.png" />
+    <None Include="Resources\comment_accept.png" />
+    <None Include="Resources\comment_2.png" />
+    <None Include="Resources\comment_1.png" />
+    <None Include="Resources\comment.png" />
+    <None Include="Resources\clock.png" />
+    <None Include="Resources\chart_remove.png" />
+    <None Include="Resources\chart_info.png" />
+    <None Include="Resources\chart_delete.png" />
+    <None Include="Resources\chart_add_1.png" />
+    <None Include="Resources\chart_add.png" />
+    <None Include="Resources\chart_accept_1.png" />
+    <None Include="Resources\chart_accept.png" />
+    <None Include="Resources\chart_1.png" />
+    <None Include="Resources\chart.png" />
+    <None Include="Resources\cd_warning.png" />
+    <None Include="Resources\cd_rw.png" />
+    <None Include="Resources\cd_remove.png" />
+    <None Include="Resources\cd_info.png" />
+    <None Include="Resources\cd_down.png" />
+    <None Include="Resources\cd_delete.png" />
+    <None Include="Resources\cd_add_1.png" />
+    <None Include="Resources\cd_add.png" />
+    <None Include="Resources\cd_accept_1.png" />
+    <None Include="Resources\cd_accept.png" />
+    <None Include="Resources\cd_1.png" />
+    <None Include="Resources\cd.png" />
+    <None Include="Resources\calendar_date_1.png" />
+    <None Include="Resources\calendar_date.png" />
+    <None Include="Resources\calendar_background.png" />
+    <None Include="Resources\calendar.png" />
+    <None Include="Resources\calculator_remove.png" />
+    <None Include="Resources\calculator_add.png" />
+    <None Include="Resources\calculator_accept.png" />
+    <None Include="Resources\calculator.png" />
+    <None Include="Resources\business_user_search.png" />
+    <None Include="Resources\business_user_info.png" />
+    <None Include="Resources\business_user_edit.png" />
+    <None Include="Resources\business_user_delete.png" />
+    <None Include="Resources\business_user_comment.png" />
+    <None Include="Resources\business_user_add.png" />
+    <None Include="Resources\business_user_accept.png" />
+    <None Include="Resources\business_user.png" />
+    <None Include="Resources\blue_button.png" />
+    <None Include="Resources\back_1.png" />
+    <None Include="Resources\back.png" />
+    <None Include="Resources\attachment.png" />
+    <None Include="Resources\archive.png" />
+    <None Include="Resources\applications.png" />
+    <None Include="Resources\application_up_1.png" />
+    <None Include="Resources\application_up.png" />
+    <None Include="Resources\application_search.png" />
+    <None Include="Resources\application_remove_1.png" />
+    <None Include="Resources\application_remove.png" />
+    <None Include="Resources\application_next_1.png" />
+    <None Include="Resources\application_next.png" />
+    <None Include="Resources\application_lock.png" />
+    <None Include="Resources\application_info.png" />
+    <None Include="Resources\application_edit_1.png" />
+    <None Include="Resources\application_edit.png" />
+    <None Include="Resources\application_down.png" />
+    <None Include="Resources\application_delete.png" />
+    <None Include="Resources\application_add_1.png" />
+    <None Include="Resources\application_add.png" />
+    <None Include="Resources\application_accept.png" />
+    <None Include="Resources\application_1.png" />
+    <None Include="Resources\application.png" />
+    <None Include="Resources\add_2.png" />
+    <None Include="Resources\add_1.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\accept_2.png" />
+    <None Include="Resources\accept_1.png" />
+    <None Include="Resources\accept.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

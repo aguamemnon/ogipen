@@ -1,0 +1,6 @@
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\bin\Release\updater.exe.config
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\bin\Release\updater.exe
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\obj\x86\Release\updater.Form1.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\obj\x86\Release\updater.Resources.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\obj\x86\Release\updater.vbproj.GenerateResource.Cache
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\updater\obj\x86\Release\updater.exe

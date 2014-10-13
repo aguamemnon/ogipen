@@ -1,0 +1,242 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+System.Algorithms
+</name>
+</assembly>
+<members>
+<member name="P:System.Algorithms.My.Resources.Resources.ResourceManager">
+	<summary>
+  Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+</summary>
+</member><member name="P:System.Algorithms.My.Resources.Resources.Culture">
+	<summary>
+  Remplace la propriété CurrentUICulture du thread actuel pour toutes
+  les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+</summary>
+</member><member name="T:System.Algorithms.My.Resources.Resources">
+	<summary>
+  Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+</summary>
+</member><member name="P:System.Algorithms.Dijkstra.Edge.Graph">
+	<summary>
+ Gets the Graph that contains this Edge.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Edge.First">
+	<summary>
+ Gets the first Vertex of this Edge.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Edge.Second">
+	<summary>
+ Gets the second Vertex of this Edge.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Edge.Index">
+	<summary>
+ Gets the zero-based index of the Edge in the Graph.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Edge.Distance">
+	<summary>
+ Gets or sets the distance between the two verticies.
+ </summary>
+</member><member name="T:System.Algorithms.Dijkstra.Edge">
+	<summary>
+ Represents an object that specifies the distance between two vertices.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Graph">
+	<summary>
+ Gets the Graph that contains the Vertex.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Neighbors">
+	<summary>
+ Gets an array of verticies that are neighbored with the Vertex.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Index">
+	<summary>
+ Gets the zero-based index of the Vertex in the Graph.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Key">
+	<summary>
+ Gets or sets an identifier for the Vertex.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Visited">
+	<summary>
+ Gets a value indicating whether this Vertex has been visited.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Distance">
+	<summary>
+ Gets the distance that this Vertex is from the initial Vertex.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Vertex.Tag">
+	<summary>
+ Gets or sets an object that contains data about the current instance.
+ </summary>
+</member><member name="T:System.Algorithms.Dijkstra.Vertex">
+	<summary>
+ Represents an object that specifies a point in a graph.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Graph.Verticies">
+	<summary>
+ Gets the verticies associated with this graph.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Graph.Finished">
+	<summary>
+ Gets a value that indicates whether all the verticies in the graph are visited.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.Graph.Edges">
+	<summary>
+ Gets the edges associated with this graph's verticies.
+ </summary>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.AddVertex(System.String)">
+	<summary>
+ Adds a Vertex to the end of the collection.
+ </summary>
+	<param name="key">The key used as an identifier for the Vertex. Can be null.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.RemoveVertex(System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Removes the specified Vertex from the collection.
+ </summary>
+	<param name="vertex">The Vertex to remove.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.AddEdge(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex,System.Double)">
+	<summary>
+ Adds an Edge to the end of the collection.
+ </summary>
+	<param name="first">The first Vertex for this Edge.</param>
+	<param name="second">The second Vertex for this Edge.</param>
+	<param name="distance">The distance between the two vertices.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.AddEdge(System.String,System.String,System.Double)">
+	<summary>
+ Adds an Edge to the end of the collection.
+ </summary>
+	<param name="firstKey">The key of the first Vertex for this Edge.</param>
+	<param name="secondKey">The key of the second Vertex for this Edge.</param>
+	<param name="distance">The distance between the two vertices.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.RemoveEdge(System.Algorithms.Dijkstra.Edge)">
+	<summary>
+ Removes the specified Edge from the collection.
+ </summary>
+	<param name="edge">The Edge to remove.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.Calculate(System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Calculates the Graph using the specified Vertex as the starting point.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.Reset">
+	<summary>
+ Resets the Graph by clearing all verticies and edges.
+ </summary>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.Save(System.String)">
+	<summary>
+ Serializes this Graph to a file.
+ </summary>
+	<param name="fileName">A string that contains the name of the file.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.Load(System.String)">
+	<summary>
+ Creates a new Graph from a file.
+ </summary>
+	<param name="fileName"></param>
+	<remarks></remarks>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetDistance(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Gets the shortest distance between two verticies in the graph.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+	<param name="endingVertex">The ending Vertex to calculate to.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetPath(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Gets a string representation of the shortest path's order of verticies to follow.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+	<param name="endingVertex">The ending Vertex to calculate to.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetPath(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex,System.Boolean)">
+	<summary>
+ Gets a string representation of the shortest path's order of verticies to follow.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+	<param name="endingVertex">The ending Vertex to calculate to.</param>
+	<param name="reverse">Indicates whether the direction of the string should start at the end.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetElapsed(System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Gets a System.TimeSpan object that represents the time it takes to calculate the current instance.
+ </summary>
+	<param name="initialVertex">The Vertex to start the calculation from.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetVerticies(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Gets an array of the verticies that are used for the shortest path.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+	<param name="endingVertex">The ending Vertex to calculate to.</param>
+</member><member name="M:System.Algorithms.Dijkstra.Graph.GetVerticies(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex,System.Boolean)">
+	<summary>
+ Gets an array of the verticies that are used for the shortest path.
+ </summary>
+	<param name="initialVertex">The starting vertex to calculate from.</param>
+	<param name="endingVertex">The ending Vertex to calculate to.</param>
+	<param name="reverse">Indicates whether the order of the verticies should be from end to start.</param>
+</member><member name="T:System.Algorithms.Dijkstra.Graph">
+	<summary>
+ Represents a collection of Vertex objects and Edge objects.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.VertexCollection.Item(System.String)">
+	<summary>
+ Gets the first Vertex in the collection with the specified key.
+ </summary>
+	<param name="key">The key of the vertex to retrieve.</param>
+</member><member name="P:System.Algorithms.Dijkstra.VertexCollection.Finished">
+	<summary>
+ Gets a value indicating whether this collection's verticies are all visited.
+ </summary>
+</member><member name="M:System.Algorithms.Dijkstra.VertexCollection.ContainsKey(System.String)">
+	<summary>
+ Gets a value that indicates whether an element with the specified key exists in the collection.
+ </summary>
+	<param name="key">The key to search for.</param>
+</member><member name="M:System.Algorithms.Dijkstra.VertexCollection.IndexOfKey(System.String)">
+	<summary>
+ Gets thezero-based index of the first element with the specified key.
+ </summary>
+	<param name="key">The key to search for.</param>
+</member><member name="T:System.Algorithms.Dijkstra.VertexCollection">
+	<summary>
+ Represents a colleciton of Vertex objects.
+ </summary>
+</member><member name="P:System.Algorithms.Dijkstra.BaseCollection`1.Item(System.Int32)">
+	<summary>
+ Gets the element at the specified index.
+ </summary>
+	<param name="index">The index of the element to retrieve.</param>
+</member><member name="P:System.Algorithms.Dijkstra.BaseCollection`1.Graph">
+	<summary>
+ Gets the Graph that contains the current instance.
+ </summary>
+</member><member name="M:System.Algorithms.Dijkstra.BaseCollection`1.Contains(`0)">
+	<summary>
+ Gets a value that indicates whether the specified element exists in the collection.
+ </summary>
+	<param name="element">The element to look for.</param>
+</member><member name="M:System.Algorithms.Dijkstra.BaseCollection`1.IndexOf(`0)">
+	<summary>
+ Retrieves the zero-based index of the specified element.
+ </summary>
+	<param name="element">The element to get the index for.</param>
+</member><member name="T:System.Algorithms.Dijkstra.BaseCollection`1">
+	<summary>
+ Represents the base collection.
+ </summary>
+	<typeparam name="T">The type of element.</typeparam>
+</member><member name="P:System.Algorithms.Dijkstra.EdgeCollection.Item(System.Algorithms.Dijkstra.Vertex,System.Algorithms.Dijkstra.Vertex)">
+	<summary>
+ Gets the first Edge in the collection that contains both of the specified vertices in either the first or second position. See Remarks..
+ </summary>
+	<param name="first">The first Vertex to look for.</param>
+	<param name="second">The second Vertex to look for.</param>
+	<remarks>The order of the parameters are interchangable, as in, the search finds an element if the Edge has both of the specified verticies.</remarks>
+</member><member name="T:System.Algorithms.Dijkstra.EdgeCollection">
+	<summary>
+ Represents a collection of Edge objects.
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

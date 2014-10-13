@@ -1,0 +1,8 @@
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\bin\Release\System.Algorithms.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\bin\Release\System.Algorithms.pdb
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\bin\Release\System.Algorithms.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\obj\Release\System.Algorithms.Resources.resources
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\obj\Release\System.Algorithms.vbproj.GenerateResource.Cache
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\obj\Release\System.Algorithms.dll
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\obj\Release\System.Algorithms.xml
+D:\Users\lverhaeghe.CFB\Documents\Visual Studio 2012\Projects\progelec(1)\progelecv1\progelec\reference\System.Algorithms\System.Algorithms\obj\Release\System.Algorithms.pdb
