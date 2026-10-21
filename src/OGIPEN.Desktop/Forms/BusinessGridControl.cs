@@ -59,8 +59,7 @@ public sealed class BusinessGridControl : UserControl
         {
             Width = 285,
             Height = 29,
-            Text = "",
-            CueHint = "Filtrer la liste..."
+            Text = ""
         };
         _search.TextChanged += (_, _) => ApplyFilter();
         tools.Controls.Add(_search);
@@ -80,7 +79,7 @@ public sealed class BusinessGridControl : UserControl
         };
         copy.Click += (_, _) =>
         {
-            if (_grid.GetCellCount(DataGridViewElementStates.Selected) > 0)
+            if (_grid?.GetCellCount(DataGridViewElementStates.Selected) > 0)
             {
                 var data = _grid.GetClipboardContent();
                 if (data is not null) Clipboard.SetDataObject(data);
