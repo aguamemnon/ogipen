@@ -18,6 +18,7 @@ public sealed class MainMdiForm : KryptonForm
 {
     private readonly UserSession _session;
     private readonly ProjectAccess _project;
+    private readonly ProjectScope _scope;
     private readonly ClientConfiguration _config;
     private readonly KryptonRibbon _ribbon = new();
     private readonly KryptonManager _themeManager = new();
@@ -36,8 +37,7 @@ public sealed class MainMdiForm : KryptonForm
         _session = session;
         _project = project;
         _config = config;
-        if (!_session.Projects.Any(p => ReferenceEquals(p, project)))
-            throw new InvalidOperationException("Projet hors de la session.");
+        _scope = ProjectScope.Open(_session, _project);
 
         // Palette sombre de la suite Krypton, en cohérence avec Ui.Background/Ui.Panel
         // utilisés par LoginForm et SplashForm.
@@ -265,6 +265,30 @@ public sealed class MainMdiForm : KryptonForm
 
     private void ExecuteAction(string action)
     {
+        // Le contrôle local masque/refuse les commandes interdites, mais le
+        // serveur doit refaire cette vérification lors de chaque opération.
+        if (!_session.IsPreview)
+        {
+            string? required = action switch
+            {
+                "cables" => ProjectPermissions.CableRead,
+                "equipments" => ProjectPermissions.EquipmentRead,
+                "segments" => ProjectPermissions.SegmentRead,
+                "progress" => ProjectPermissions.ProgressRead,
+                "users" => ProjectPermissions.UsersManage,
+                "permissions" => ProjectPermissions.RightsManage,
+                _ => null
+            };
+            if (required is not null && !_scope.Can(required))
+            {
+                MessageBox.Show(this,
+                    "Ce poste n'a pas la permission « " + required + " » sur ce projet.",
+                    "OGIPEN — accès refusé", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
         switch (action)
         {
             case "close-document":
