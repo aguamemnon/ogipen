@@ -4,18 +4,32 @@ on:
     branches: [modernisation-csharp]
     paths:
       - 'src/OGIPEN.Desktop/**'
+      - 'src/OGIPEN.Core/**'
+      - 'tests/OGIPEN.Core.Checks/**'
       - 'tests/OGIPEN.Desktop.Smoke/**'
       - 'OGIPEN.CSharp.sln'
       - '.github/workflows/ogipen-csharp.yml'
   pull_request:
     paths:
       - 'src/OGIPEN.Desktop/**'
+      - 'src/OGIPEN.Core/**'
+      - 'tests/OGIPEN.Core.Checks/**'
       - 'tests/OGIPEN.Desktop.Smoke/**'
       - 'OGIPEN.CSharp.sln'
       - '.github/workflows/ogipen-csharp.yml'
 permissions:
   contents: read
 jobs:
+  core-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate OGIPEN.Core on Linux
+        run: dotnet run --project tests/OGIPEN.Core.Checks/OGIPEN.Core.Checks.csproj --configuration Release --no-launch-profile
+
   build:
     runs-on: windows-latest
     steps:
