@@ -1,4 +1,5 @@
 using System.Data;
+using OGIPEN.Core.Licensing;
 using Krypton.Docking;
 using Krypton.Navigator;
 using Krypton.Ribbon;
@@ -160,6 +161,10 @@ public sealed class MainMdiForm : KryptonForm
         _shell.BackColor = Ui.Background;
         _workspace.BackColor = Ui.Background;
         _shell.Controls.Add(_workspace);
+        var licenseNotice = new LicenseNoticePanel();
+        licenseNotice.Display(LicenseAlertEvaluator.Evaluate(
+            null, false, DateOnly.FromDateTime(DateTime.UtcNow)), _session.IsPreview);
+        _shell.Controls.Add(licenseNotice);
         Controls.Add(_shell);
         Controls.Add(_ribbon);
         Controls.Add(status);
