@@ -18,6 +18,9 @@
     <PackageReference Include="Krypton.Docking" Version="105.26.7.201" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../OGIPEN.Core/OGIPEN.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <!-- Conserver le visuel du SplashScreen VB.NET d'origine. -->
     <Content Include="../../progelec/Resources/splash_266-double-2.png" Link="Assets/SplashLegacy.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
