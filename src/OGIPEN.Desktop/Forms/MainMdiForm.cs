@@ -113,19 +113,24 @@ public sealed class MainMdiForm : KryptonForm
         foreach (var (groupTitle, buttons) in groups)
         {
             var group = new KryptonRibbonGroup { TextLine1 = groupTitle };
-            var triple = new KryptonRibbonGroupTriple
+            // KryptonRibbonGroupTriple accepte strictement trois éléments.
+            // Créer plusieurs conteneurs pour les rubans à quatre boutons ou plus.
+            for (var start = 0; start < buttons.Length; start += 3)
             {
-                MinimumSize = GroupItemSize.Medium,
-                MaximumSize = GroupItemSize.Medium
-            };
-            foreach (var (buttonTitle, action) in buttons)
-            {
-                var button = new KryptonRibbonGroupButton { TextLine1 = buttonTitle };
-                string selectedAction = action;
-                button.Click += (_, _) => ExecuteAction(selectedAction);
-                triple.Items!.Add(button);
+                var triple = new KryptonRibbonGroupTriple
+                {
+                    MinimumSize = GroupItemSize.Medium,
+                    MaximumSize = GroupItemSize.Medium
+                };
+                foreach (var (buttonTitle, action) in buttons.Skip(start).Take(3))
+                {
+                    var button = new KryptonRibbonGroupButton { TextLine1 = buttonTitle };
+                    string selectedAction = action;
+                    button.Click += (_, _) => ExecuteAction(selectedAction);
+                    triple.Items!.Add(button);
+                }
+                group.Items.Add(triple);
             }
-            group.Items.Add(triple);
             tab.Groups.Add(group);
         }
         _ribbon.RibbonTabs.Add(tab);
