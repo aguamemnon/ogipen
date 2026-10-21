@@ -106,11 +106,20 @@ public sealed class BusinessGridControl : UserControl
             ColumnHeadersHeight = 40,
             ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing,
             BackgroundColor = Ui.Background,
+            ForeColor = Ui.Text,
+            EnableHeadersVisualStyles = false,
             GridColor = Color.FromArgb(59, 70, 83),
             BorderStyle = BorderStyle.None
         };
         _grid.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-        _grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(234, 239, 247);
+        _grid.DefaultCellStyle.BackColor = Ui.Background;
+        _grid.DefaultCellStyle.ForeColor = Ui.Text;
+        _grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(40, 87, 132);
+        _grid.DefaultCellStyle.SelectionForeColor = Color.White;
+        _grid.AlternatingRowsDefaultCellStyle.BackColor = Ui.Panel;
+        _grid.AlternatingRowsDefaultCellStyle.ForeColor = Ui.Text;
+        _grid.ColumnHeadersDefaultCellStyle.BackColor = Ui.Panel;
+        _grid.ColumnHeadersDefaultCellStyle.ForeColor = Ui.Text;
         _grid.DataBindingComplete += (_, _) => UpdateCount();
 
         var footer = new Panel { Dock = DockStyle.Bottom, Height = 30, BackColor = Ui.Panel };
