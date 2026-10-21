@@ -20,6 +20,10 @@ public sealed class MainMdiForm : KryptonForm
     private readonly ProjectAccess _project;
     private readonly ClientConfiguration _config;
     private readonly KryptonRibbon _ribbon = new();
+    private readonly KryptonManager _themeManager = new();
+
+    // Déconnexion : le contexte WinForms réouvre le login sans arrêter l'application.
+    public event EventHandler? LogoutRequested;
     private readonly KryptonPanel _shell = new() { Dock = DockStyle.Fill };
     private readonly KryptonDockableWorkspace _workspace = new() { Dock = DockStyle.Fill };
     private readonly KryptonDockingManager _docking = new();
@@ -35,7 +39,24 @@ public sealed class MainMdiForm : KryptonForm
         if (!_session.Projects.Any(p => ReferenceEquals(p, project)))
             throw new InvalidOperationException("Projet hors de la session.");
 
+        // Palette sombre de la suite Krypton, en cohérence avec Ui.Background/Ui.Panel
+        // utilisés par LoginForm et SplashForm.
+        _themeManager.GlobalPaletteMode = PaletteMode.Microsoft365BlackDarkMode;
         Text = $"O.G.I.P.E.N.  |  {project.Name}";
+        FormBorderStyle = FormBorderStyle.Sizable;
+        ControlBox = true;
+        MinimizeBox = true;
+        MaximizeBox = true;
+        ShowInTaskbar = true;
+        BackColor = Ui.Background;
+        ForeColor = Ui.Text;
+        KeyPreview = true;
+        _workspace.WorkspaceCellAdding += (_, e) =>
+        {
+            // Le X des documents (pas seulement celui du formulaire principal).
+            e.Cell.Button.CloseButtonDisplay = ButtonDisplay.ShowEnabled;
+            e.Cell.Button.CloseButtonAction = CloseButtonAction.RemovePageAndDispose;
+        };
         WindowState = FormWindowState.Maximized;
         MinimumSize = new Size(1100, 700);
         StartPosition = FormStartPosition.CenterScreen;
@@ -51,6 +72,12 @@ public sealed class MainMdiForm : KryptonForm
         _ribbon.Dock = DockStyle.Top;
         _ribbon.QATLocation = QATLocation.Hidden;
         _ribbon.RibbonFileAppButton.AppButtonShowRecentDocs = false;
+        var logout = new KryptonContextMenuItem { Text = "Déconnexion" };
+        logout.Click += (_, _) => LogoutRequested?.Invoke(this, EventArgs.Empty);
+        var quit = new KryptonContextMenuItem { Text = "Quitter" };
+        quit.Click += (_, _) => Close();
+        _ribbon.RibbonFileAppButton.AppButtonMenuItems.Add(logout);
+        _ribbon.RibbonFileAppButton.AppButtonMenuItems.Add(quit);
 
         var home = AddTab("Accueil",
             ("Projet", new[] { ("Tableau de bord", "dashboard"), ("Projets", "projects"), ("Actualiser", "refresh") }),
@@ -73,7 +100,7 @@ public sealed class MainMdiForm : KryptonForm
             ("Projet", new[] { ("Utilisateurs", "users"), ("Droits", "permissions"), ("Maintenance", "maintenance") }),
             ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about") }));
         AddTab("Affichage",
-            ("Documents", new[] { ("Onglets", "tabs"), ("Côte à côte", "split-left-right"), ("Haut / bas", "split-top-bottom") }),
+            ("Documents", new[] { ("Onglets", "tabs"), ("Côte à côte", "split-left-right"), ("Haut / bas", "split-top-bottom"), ("Fermer l'onglet", "close-document") }),
             ("Fenêtres", new[] { ("Explorateur", "explorer"), ("Propriétés", "properties"), ("Journal", "activity") }));
 
         _ribbon.SelectedTab = home;
@@ -123,6 +150,8 @@ public sealed class MainMdiForm : KryptonForm
             ? "APERÇU — aucune donnée réelle"
             : "Client connecté — modules métier non migrés"));
 
+        _shell.BackColor = Ui.Background;
+        _workspace.BackColor = Ui.Background;
         _shell.Controls.Add(_workspace);
         Controls.Add(_shell);
         Controls.Add(_ribbon);
@@ -231,6 +260,10 @@ public sealed class MainMdiForm : KryptonForm
     {
         switch (action)
         {
+            case "close-document":
+                if (_workspace.ActivePage is KryptonPage selected)
+                    _workspace.ClosePage(selected);
+                return;
             case "tabs":
                 _workspace.ApplySingleCell();
                 return;
