@@ -1,0 +1,27 @@
+name: OGIPEN C# desktop build
+on:
+  push:
+    branches: [modernisation-csharp]
+    paths:
+      - 'src/OGIPEN.Desktop/**'
+      - 'OGIPEN.CSharp.sln'
+      - '.github/workflows/ogipen-csharp.yml'
+  pull_request:
+    paths:
+      - 'src/OGIPEN.Desktop/**'
+      - 'OGIPEN.CSharp.sln'
+      - '.github/workflows/ogipen-csharp.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore OGIPEN.CSharp.sln
+      - name: Build
+        run: dotnet build OGIPEN.CSharp.sln --configuration Release --no-restore -warnaserror
