@@ -14,12 +14,81 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         Application.Run(new StartupApplicationContext());
     }
+
+    private static (UserSession Session, ProjectAccess Project)? RequestSession(
+        ClientConfiguration config, Uri? endpoint, ServerPreflightResult server)
+    {
+        using var login = new LoginForm(config, endpoint, server);
+        if (login.ShowDialog() != DialogResult.OK || login.Session is null)
+            return null;
+
+        var session = login.Session;
+        using var chooseProject = new ProjectSelectionForm(session);
+        if (chooseProject.ShowDialog() != DialogResult.OK ||
+            chooseProject.SelectedProject is null)
+            return null;
+
+        return (session, chooseProject.SelectedProject);
+    }
+
+    private void ShowMainWindow(UserSession session, ProjectAccess project, ClientConfiguration config)
+    {
+        var main = new MainMdiForm(session, project, config);
+        main.LogoutRequested += OnLogoutRequested;
+        MainForm = main;
+        main.Show();
+    }
+
+    // La déconnexion efface l'ancienne session en fermant le shell, puis
+    // réaffiche LoginForm et la sélection du projet. Aucun accès au projet
+    // précédent n'est possible à partir du nouveau shell.
+    private async void OnLogoutRequested(object? sender, EventArgs args)
+    {
+        if (_changingUser || sender is not MainMdiForm previous ||
+            _configuration is null)
+            return;
+
+        _changingUser = true;
+        previous.Hide();
+
+        try
+        {
+            // On reteste le service pour ne pas réutiliser un ancien état de maintenance.
+            _preflight = await StartupChecks.CheckServerAsync(
+                _configuration, _serverEndpoint, CancellationToken.None);
+            var selected = RequestSession(_configuration, _serverEndpoint, _preflight);
+            if (selected is null)
+            {
+                previous.Close();
+                ExitThread();
+                return;
+            }
+
+            ShowMainWindow(selected.Value.Session, selected.Value.Project, _configuration);
+            previous.Close();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Échec de la reconnexion : " + ex.Message,
+                "OGIPEN — connexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            previous.Close();
+            ExitThread();
+        }
+        finally
+        {
+            _changingUser = false;
+        }
+    }
 }
 
 internal sealed class StartupApplicationContext : ApplicationContext
 {
     private readonly SplashForm _splash = new();
     private bool _started;
+    private bool _changingUser;
+    private ClientConfiguration? _configuration;
+    private Uri? _serverEndpoint;
+    private ServerPreflightResult? _preflight;
 
     public StartupApplicationContext()
     {
@@ -40,12 +109,15 @@ internal sealed class StartupApplicationContext : ApplicationContext
 
             _splash.Report("Chargement de la configuration du site...", 25);
             Uri? endpoint = config.SecureApiEndpoint();
+            _configuration = config;
+            _serverEndpoint = endpoint;
             await Task.Yield();
 
             _splash.Report("Test de présence du serveur...", 45);
             ServerPreflightResult result =
                 await StartupChecks.CheckServerAsync(config, endpoint, CancellationToken.None);
 
+            _preflight = result;
             _splash.Report(result.Message, 65);
             await Task.Yield();
 
@@ -69,34 +141,13 @@ internal sealed class StartupApplicationContext : ApplicationContext
             await Task.Yield();
             _splash.Hide();
 
-            using var login = new LoginForm(config, endpoint, result);
-            if (login.ShowDialog() != DialogResult.OK || login.Session is null)
+            var selected = RequestSession(config, endpoint, result);
+            if (selected is null)
             {
                 _splash.Close();
                 return;
             }
-
-            UserSession session = login.Session;
-            ProjectAccess? project;
-            using (var selector = new ProjectSelectionForm(session))
-            {
-                if (selector.ShowDialog() != DialogResult.OK)
-                {
-                    _splash.Close();
-                    return;
-                }
-                project = selector.SelectedProject;
-            }
-
-            if (project is null)
-            {
-                _splash.Close();
-                return;
-            }
-
-            var mdi = new MainMdiForm(session, project, config);
-            MainForm = mdi; // retirer le splash comme fenêtre principale AVANT de le fermer
-            mdi.Show();
+            ShowMainWindow(selected.Value.Session, selected.Value.Project, config);
             _splash.Close();
         }
         catch (Exception ex)
