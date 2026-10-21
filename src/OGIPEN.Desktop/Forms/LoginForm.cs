@@ -1,3 +1,4 @@
+using OGIPEN.Core.Licensing;
 using OGIPEN.Desktop.Infrastructure;
 using OGIPEN.Desktop.Models;
 
@@ -21,7 +22,7 @@ public sealed class LoginForm : Form
         _serverAvailable = server.ApiAvailable && !server.Maintenance;
 
         Text = "OGIPEN — Identification";
-        ClientSize = new Size(540, 500);
+        ClientSize = new Size(540, 563);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
@@ -75,6 +76,15 @@ public sealed class LoginForm : Form
         };
         Controls.Add(help);
         Controls.Add(Ui.Label("L'aperçu ne donne accès à aucune donnée réelle.", 36, 462, 450));
+        var notice = new LicenseNoticePanel
+        {
+            Dock = DockStyle.None,
+            Location = new Point(0, 505),
+            Size = new Size(540, 58)
+        };
+        notice.Display(LicenseAlertEvaluator.Evaluate(
+            null, false, DateOnly.FromDateTime(DateTime.UtcNow)), true);
+        Controls.Add(notice);
         AcceptButton = _connect;
     }
 
