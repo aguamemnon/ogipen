@@ -28,6 +28,41 @@ internal static class Program
                 throw new Exception("La croix de fermeture du MainForm est masquée.");
             if (!main.ControlBox || !main.CloseBox)
                 throw new Exception("Les boutons Windows de fermeture sont désactivés.");
+            var previewScope = ProjectScope.Open(session, session.Projects[0]);
+            if (previewScope.Can(ProjectPermissions.CableRead))
+                throw new Exception("L'aperçu local ne doit accorder aucun droit métier.");
+            var authorized = UserSession.FromReply(new LoginReply
+            {
+                AccessToken = "jeton-de-test",
+                DisplayName = "Technicien de test",
+                Projects = new List<ProjectAccess>
+                {
+                    new()
+                    {
+                        Id = "projet-a",
+                        Name = "Projet A",
+                        Role = "Technicien",
+                        Permissions = new List<string> { ProjectPermissions.CableRead }
+                    }
+                }
+            });
+            var scope = ProjectScope.Open(authorized, authorized.Projects[0]);
+            if (!scope.Can(ProjectPermissions.CableRead) ||
+                 scope.Can(ProjectPermissions.ProgressWrite))
+                throw new Exception("Les permissions ne sont pas isolées par projet.");
+            try
+            {
+                ProjectScope.Open(authorized, new ProjectAccess
+                {
+                    Id = "projet-b",
+                    Name = "Projet non attribué"
+                });
+                throw new Exception("Un projet extérieur à la session a été accepté.");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Refus attendu.
+            }
 
             Console.WriteLine("OK — MainForm, ruban Krypton et 7 onglets construits.");
             return 0;
