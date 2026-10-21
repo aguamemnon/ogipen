@@ -4,11 +4,13 @@ on:
     branches: [modernisation-csharp]
     paths:
       - 'src/OGIPEN.Desktop/**'
+      - 'tests/OGIPEN.Desktop.Smoke/**'
       - 'OGIPEN.CSharp.sln'
       - '.github/workflows/ogipen-csharp.yml'
   pull_request:
     paths:
       - 'src/OGIPEN.Desktop/**'
+      - 'tests/OGIPEN.Desktop.Smoke/**'
       - 'OGIPEN.CSharp.sln'
       - '.github/workflows/ogipen-csharp.yml'
 permissions:
@@ -25,6 +27,9 @@ jobs:
         run: dotnet restore OGIPEN.CSharp.sln
       - name: Build
         run: dotnet build OGIPEN.CSharp.sln --configuration Release --no-restore -warnaserror
+      - name: Smoke test — construction du ruban et du MainForm
+        run: dotnet run --project tests/OGIPEN.Desktop.Smoke/OGIPEN.Desktop.Smoke.csproj --configuration Release --no-launch-profile
+
       - name: Publish Windows x64 standalone
         if: github.event_name == 'push'
         shell: pwsh
