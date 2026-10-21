@@ -24,6 +24,10 @@ internal static class Program
             var ribbon = main.Controls.OfType<KryptonRibbon>().Single();
             if (ribbon.RibbonTabs.Count != 7)
                 throw new Exception("Nombre inattendu d'onglets dans le ruban.");
+            if (!ribbon.RibbonFileAppButton.FormCloseBoxVisible)
+                throw new Exception("La croix de fermeture du MainForm est masquée.");
+            if (!main.ControlBox || !main.CloseBox)
+                throw new Exception("Les boutons Windows de fermeture sont désactivés.");
 
             Console.WriteLine("OK — MainForm, ruban Krypton et 7 onglets construits.");
             return 0;
