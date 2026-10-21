@@ -96,7 +96,7 @@ public sealed class MainMdiForm : KryptonForm
                 var button = new KryptonRibbonGroupButton { TextLine1 = buttonTitle };
                 string selectedAction = action;
                 button.Click += (_, _) => ExecuteAction(selectedAction);
-                triple.Items.Add(button);
+                triple.Items!.Add(button);
             }
             group.Items.Add(triple);
             tab.Groups.Add(group);
@@ -191,7 +191,7 @@ public sealed class MainMdiForm : KryptonForm
         if (active is null)
         {
             active = new KryptonWorkspaceCell();
-            _workspace.Root.Children.Add(active);
+            _workspace.Root!.Children.Add(active);
         }
         active.Pages.Add(page);
         active.SelectedPage = page;
@@ -339,7 +339,7 @@ public sealed class MainMdiForm : KryptonForm
         root.Expand();
         tree.NodeMouseDoubleClick += (_, e) =>
         {
-            if (e.Node.Tag is string act) ExecuteAction(act);
+            if (e.Node?.Tag is string act) ExecuteAction(act);
         };
         return tree;
     }
