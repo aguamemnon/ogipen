@@ -71,6 +71,8 @@ public sealed class MainMdiForm : KryptonForm
     {
         _ribbon.Dock = DockStyle.Top;
         _ribbon.QATLocation = QATLocation.Hidden;
+        // La fusion Krypton Ribbon/Form masque le X par défaut, même avec ControlBox=true.
+        _ribbon.RibbonFileAppButton.FormCloseBoxVisible = true;
         _ribbon.RibbonFileAppButton.AppButtonShowRecentDocs = false;
         var logout = new KryptonContextMenuItem { Text = "Déconnexion" };
         logout.Click += (_, _) => LogoutRequested?.Invoke(this, EventArgs.Empty);
