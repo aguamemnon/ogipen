@@ -9,6 +9,10 @@ public sealed class ProjectAccess
     [JsonPropertyName("id")] public string Id { get; set; } = "";
     [JsonPropertyName("name")] public string Name { get; set; } = "";
     [JsonPropertyName("role")] public string Role { get; set; } = "";
+    // Permissions explicites calculées par le serveur pour CE projet.
+    // Le poste affiché dans Role ne confère aucun droit implicite.
+    [JsonPropertyName("permissions")]
+    public List<string> Permissions { get; set; } = new();
 }
 
 public sealed class LoginReply
@@ -40,7 +44,10 @@ public sealed class UserSession
         if (string.IsNullOrWhiteSpace(reply.AccessToken) || string.IsNullOrWhiteSpace(reply.DisplayName))
             throw new InvalidOperationException("Réponse d'authentification invalide.");
         if (reply.Projects.Any(p => string.IsNullOrWhiteSpace(p.Id) ||
-                                    string.IsNullOrWhiteSpace(p.Name)) ||
+                                    string.IsNullOrWhiteSpace(p.Name) ||
+                                    p.Permissions is null ||
+                                    p.Permissions.Any(permission =>
+                                        string.IsNullOrWhiteSpace(permission))) ||
             reply.Projects.Select(p => p.Id).Distinct(StringComparer.Ordinal).Count() != reply.Projects.Count)
             throw new InvalidOperationException("Liste de projets invalide.");
         return new UserSession(reply.AccessToken, reply.DisplayName, reply.Projects, false);
