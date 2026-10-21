@@ -11,6 +11,14 @@
     <RootNamespace>OGIPEN.Desktop</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Krypton.Toolkit" Version="105.26.7.201" />
+    <PackageReference Include="Krypton.Ribbon" Version="105.26.7.201" />
+    <PackageReference Include="Krypton.Navigator" Version="105.26.7.201" />
+    <PackageReference Include="Krypton.Workspace" Version="105.26.7.201" />
+    <PackageReference Include="Krypton.Docking" Version="105.26.7.201" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Conserver le visuel du SplashScreen VB.NET d'origine. -->
     <Content Include="../../progelec/Resources/splash_266-double-2.png" Link="Assets/SplashLegacy.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
