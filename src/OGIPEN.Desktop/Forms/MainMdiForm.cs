@@ -191,7 +191,7 @@ public sealed class MainMdiForm : KryptonForm
         if (active is null)
         {
             active = new KryptonWorkspaceCell();
-            _workspace.Root!.Children.Add(active);
+            _workspace.Root!.Children!.Add(active);
         }
         active.Pages.Add(page);
         active.SelectedPage = page;
