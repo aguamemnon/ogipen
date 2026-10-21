@@ -59,3 +59,76 @@ Les sources n'ont pas été compilées dans l'environnement d'édition : SDK
 .NET absent. Vérifier le build sur Windows avant d'envisager une distribution.
 Aucun mécanisme d'authentification, mise à jour ou licence n'est simulé en
 tant que protection de production. `master` est inchangée.
+
+
+## Correctif démarrage — 21 octobre 2026
+
+### Blocage du splash (corrigé dans les sources)
+
+La première version appelait `await Task.Delay(...)` après `splash.Show()` mais avant
+`Application.Run(...)`. Les continuations du thread graphique pouvaient rester
+bloquées faute de boucle de messages WinForms.
+
+Le démarrage utilise désormais `Application.Run(new StartupApplicationContext())`.
+Le splash devient la première fenêtre de cette boucle, et les contrôles démarrent
+dans son événement `Shown`. Le lancement suit :
+
+1. Lire `%APPDATA%\OGIPEN\clientsettings.json` et, si présent, l'ancien
+   `config.ini` situé à côté de l'exécutable (**adresse serveur uniquement**).
+2. Tester la disponibilité de l'API HTTPS via `GET /api/v1/health`
+   (timeout de 5 secondes) et recevoir l'état `maintenance`.
+3. Si disponible, rechercher une mise à jour via
+   `GET /api/v1/client/update?version=...` (timeout de 4 secondes).
+4. Fermer/masquer le splash et afficher le login.
+5. Charger la liste de projets autorisés, puis afficher le MDI.
+
+**L'API serveur n'existe pas encore dans cette branche.** Les contrôles
+ne passent donc au vert que si tu configures un service réel répondant à :
+
+```json
+{"status":"ok","maintenance":false}
+```
+
+En cas de serveur indisponible ou de maintenance, le login affiche l'erreur et
+permet de **Retester le serveur**. L'aperçu local reste utilisable sans accès
+MySQL. La mise à jour est uniquement *détectée* : aucun package non signé
+n'est exécuté ; l'installation sécurisée reste à développer.
+
+### Test du serveur MySQL historique
+
+Si aucune API HTTPS n'est configurée, le client peut vérifier que le port
+TCP MySQL est joignable (sans authentification SQL ni lecture de tables).
+Le test reprend l'adresse de l'ancien `config.ini` s'il est présent à côté
+de l'exécutable, ou les champs suivants dans le JSON utilisateur :
+
+```json
+{
+  "ApiBaseUrl": "",
+  "SiteName": "Chantier",
+  "LegacyDatabaseServer": "nom-dns-ou-adresse-du-serveur",
+  "LegacyDatabasePort": 3306
+}
+```
+
+Ce contrôle TCP n'établit **pas** qu'une authentification SQL est possible
+ou que `progelec.maintenance` est accessible. Pour reproduire ce dernier
+contrôle sans distribuer les identifiants administrateur dans un client,
+le serveur OGIPEN devra fournir cet état via l'API.
+
+**Ne copie pas les mots de passe** de l'ancien `config.ini` vers
+`clientsettings.json`. L'ancienne configuration Git contient déjà des
+secrets en clair qui doivent être révoqués s'ils sont encore valides.
+
+### Pour tester
+
+```powershell
+git checkout modernisation-csharp
+git pull
+dotnet clean OGIPEN.CSharp.sln
+dotnet run --project src/OGIPEN.Desktop/OGIPEN.Desktop.csproj
+```
+
+Le splash ne doit plus se figer à 5 % et l'écran de connexion doit apparaître,
+même sans serveur configuré. La compilation Windows est surveillée dans
+GitHub Actions ; elle n'a pas encore été confirmée dans le poste de
+développement utilisé pour ces modifications.
