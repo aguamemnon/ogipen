@@ -15,70 +15,7 @@ internal static class Program
         Application.Run(new StartupApplicationContext());
     }
 
-    private static (UserSession Session, ProjectAccess Project)? RequestSession(
-        ClientConfiguration config, Uri? endpoint, ServerPreflightResult server)
-    {
-        using var login = new LoginForm(config, endpoint, server);
-        if (login.ShowDialog() != DialogResult.OK || login.Session is null)
-            return null;
 
-        var session = login.Session;
-        using var chooseProject = new ProjectSelectionForm(session);
-        if (chooseProject.ShowDialog() != DialogResult.OK ||
-            chooseProject.SelectedProject is null)
-            return null;
-
-        return (session, chooseProject.SelectedProject);
-    }
-
-    private void ShowMainWindow(UserSession session, ProjectAccess project, ClientConfiguration config)
-    {
-        var main = new MainMdiForm(session, project, config);
-        main.LogoutRequested += OnLogoutRequested;
-        MainForm = main;
-        main.Show();
-    }
-
-    // La déconnexion efface l'ancienne session en fermant le shell, puis
-    // réaffiche LoginForm et la sélection du projet. Aucun accès au projet
-    // précédent n'est possible à partir du nouveau shell.
-    private async void OnLogoutRequested(object? sender, EventArgs args)
-    {
-        if (_changingUser || sender is not MainMdiForm previous ||
-            _configuration is null)
-            return;
-
-        _changingUser = true;
-        previous.Hide();
-
-        try
-        {
-            // On reteste le service pour ne pas réutiliser un ancien état de maintenance.
-            _preflight = await StartupChecks.CheckServerAsync(
-                _configuration, _serverEndpoint, CancellationToken.None);
-            var selected = RequestSession(_configuration, _serverEndpoint, _preflight);
-            if (selected is null)
-            {
-                previous.Close();
-                ExitThread();
-                return;
-            }
-
-            ShowMainWindow(selected.Value.Session, selected.Value.Project, _configuration);
-            previous.Close();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Échec de la reconnexion : " + ex.Message,
-                "OGIPEN — connexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            previous.Close();
-            ExitThread();
-        }
-        finally
-        {
-            _changingUser = false;
-        }
-    }
 }
 
 internal sealed class StartupApplicationContext : ApplicationContext
@@ -158,6 +95,70 @@ internal sealed class StartupApplicationContext : ApplicationContext
                 "OGIPEN — démarrage", MessageBoxButtons.OK, MessageBoxIcon.Error);
             _splash.Close();
             ExitThread();
+        }
+    }
+    private static (UserSession Session, ProjectAccess Project)? RequestSession(
+        ClientConfiguration config, Uri? endpoint, ServerPreflightResult server)
+    {
+        using var login = new LoginForm(config, endpoint, server);
+        if (login.ShowDialog() != DialogResult.OK || login.Session is null)
+            return null;
+
+        var session = login.Session;
+        using var chooseProject = new ProjectSelectionForm(session);
+        if (chooseProject.ShowDialog() != DialogResult.OK ||
+            chooseProject.SelectedProject is null)
+            return null;
+
+        return (session, chooseProject.SelectedProject);
+    }
+
+    private void ShowMainWindow(UserSession session, ProjectAccess project, ClientConfiguration config)
+    {
+        var main = new MainMdiForm(session, project, config);
+        main.LogoutRequested += OnLogoutRequested;
+        MainForm = main;
+        main.Show();
+    }
+
+    // La déconnexion efface l'ancienne session en fermant le shell, puis
+    // réaffiche LoginForm et la sélection du projet. Aucun accès au projet
+    // précédent n'est possible à partir du nouveau shell.
+    private async void OnLogoutRequested(object? sender, EventArgs args)
+    {
+        if (_changingUser || sender is not MainMdiForm previous ||
+            _configuration is null)
+            return;
+
+        _changingUser = true;
+        previous.Hide();
+
+        try
+        {
+            // On reteste le service pour ne pas réutiliser un ancien état de maintenance.
+            _preflight = await StartupChecks.CheckServerAsync(
+                _configuration, _serverEndpoint, CancellationToken.None);
+            var selected = RequestSession(_configuration, _serverEndpoint, _preflight);
+            if (selected is null)
+            {
+                previous.Close();
+                ExitThread();
+                return;
+            }
+
+            ShowMainWindow(selected.Value.Session, selected.Value.Project, _configuration);
+            previous.Close();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Échec de la reconnexion : " + ex.Message,
+                "OGIPEN — connexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            previous.Close();
+            ExitThread();
+        }
+        finally
+        {
+            _changingUser = false;
         }
     }
 }
