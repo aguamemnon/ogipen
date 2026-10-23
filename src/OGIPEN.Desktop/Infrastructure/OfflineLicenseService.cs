@@ -43,10 +43,9 @@ public static class OfflineLicenseService
                     KeyUsage = CngKeyUsages.Signing
                 });
         }
-        using (key)
-        {
-            return new ECDsaCng(key);
-        }
+        // ECDsaCng takes ownership of the key handle for the lifetime of
+        // the signing instance. Do not dispose the CngKey before signing.
+        return new ECDsaCng(key);
     }
 
     public static void ExportRequest(string destination, int softwareId)
