@@ -7,6 +7,10 @@ public sealed class ClientConfiguration
     public string ApiBaseUrl { get; set; } = "";
     public string SiteName { get; set; } = "Site non configuré";
 
+    // Identifiant du logiciel dans le catalogue SLM Plus, par exemple l'ID
+    // numérique du post Progelec. Ne stocke aucune clé privée ici.
+    public int OfflineSoftwareId { get; set; } = 0;
+
     // Adresse de l'ancien serveur lue pour un diagnostic TCP, jamais pour
     // utiliser le compte SQL root ou accéder aux bases de projets.
     public string LegacyDatabaseServer { get; set; } = "";
@@ -30,6 +34,9 @@ public sealed class ClientConfiguration
         {
             result = new ClientConfiguration();
         }
+
+        if (result.OfflineSoftwareId < 0)
+            throw new InvalidOperationException("Identifiant logiciel hors ligne invalide.");
 
         if (result.LegacyDatabasePort < 1 || result.LegacyDatabasePort > 65535)
             throw new InvalidOperationException("Le port de l'ancien serveur est invalide.");
