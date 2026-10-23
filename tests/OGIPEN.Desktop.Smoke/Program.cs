@@ -1,4 +1,5 @@
 using Krypton.Ribbon;
+using OGIPEN.Core.Security;
 using OGIPEN.Desktop.Forms;
 using OGIPEN.Desktop.Infrastructure;
 using OGIPEN.Desktop.Models;
@@ -64,6 +65,24 @@ internal static class Program
                 // Refus attendu.
             }
 
+            var requestFile = Path.Combine(Path.GetTempPath(),
+                "ogipen-offline-smoke-" + Guid.NewGuid().ToString("N") + ".ogreq");
+            try
+            {
+                OfflineLicenseService.ExportRequest(requestFile, 42);
+                var contents = File.ReadAllText(requestFile);
+                if (!OfflineLicenseActivation.TryParseRequest(contents,
+                    out int software, out int major, out _, out var fingerprint) ||
+                    software != 42 || major != 1 || fingerprint.Length != 64)
+                {
+                    throw new Exception("La demande hors ligne CNG n'a pas pu être validée.");
+                }
+            }
+            finally
+            {
+                if (File.Exists(requestFile)) File.Delete(requestFile);
+            }
+            Console.WriteLine("OK — Demande d'activation générée avec une clé Windows CNG.");
             Console.WriteLine("OK — MainForm, ruban Krypton et 7 onglets construits.");
             return 0;
         }
