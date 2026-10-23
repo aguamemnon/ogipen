@@ -32,11 +32,12 @@ public sealed class OfflineActivationForm : Form
         _softwareId = new NumericUpDown
         {
             Location = new Point(335, 108), Size = new Size(150, 30),
-            Minimum = 1, Maximum = 1000000000,
-            Value = Math.Max(1, configuration.OfflineSoftwareId),
+            Minimum = 0, Maximum = 1000000000,
+            Value = Math.Max(0, configuration.OfflineSoftwareId),
             BackColor = Ui.Panel, ForeColor = Ui.Text
         };
         Controls.Add(_softwareId);
+        Controls.Add(Ui.Label("0 = à renseigner (ID du logiciel dans SLM Plus).", 490, 111, 176));
         Controls.Add(Ui.Label("Version majeure prise en charge : " +
             OfflineLicenseService.SoftwareMajorVersion, 24, 150, 500));
 
