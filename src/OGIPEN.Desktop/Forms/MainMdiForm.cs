@@ -101,7 +101,7 @@ public sealed class MainMdiForm : KryptonForm
             ("Suivi", new[] { ("Tableaux de bord", "dashboard"), ("Historique", "history") }));
         AddTab("Administration",
             ("Projet", new[] { ("Utilisateurs", "users"), ("Droits", "permissions"), ("Maintenance", "maintenance") }),
-            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about") }));
+            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about"), ("Licence hors ligne", "offline-activation") }));
         AddTab("Affichage",
             ("Documents", new[] { ("Onglets", "tabs"), ("Côte à côte", "split-left-right"), ("Haut / bas", "split-top-bottom"), ("Fermer l'onglet", "close-document") }),
             ("Fenêtres", new[] { ("Explorateur", "explorer"), ("Propriétés", "properties"), ("Journal", "activity") }));
@@ -296,6 +296,9 @@ public sealed class MainMdiForm : KryptonForm
 
         switch (action)
         {
+            case "offline-activation":
+                using (var dlg = new OfflineActivationForm(_config)) dlg.ShowDialog(this);
+                return;
             case "close-document":
                 if (_workspace.ActivePage is KryptonPage selected)
                     _workspace.ClosePage(selected);
