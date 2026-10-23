@@ -22,7 +22,7 @@ public sealed class LoginForm : Form
         _serverAvailable = server.ApiAvailable && !server.Maintenance;
 
         Text = "OGIPEN — Identification";
-        ClientSize = new Size(540, 563);
+        ClientSize = new Size(540, 628);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
@@ -75,11 +75,19 @@ public sealed class LoginForm : Form
             dlg.ShowDialog(this);
         };
         Controls.Add(help);
-        Controls.Add(Ui.Label("L'aperçu ne donne accès à aucune donnée réelle.", 36, 462, 450));
+        var offline = Ui.Button("Activation hors ligne", 36, 461, 254);
+        offline.BackColor = Ui.Panel;
+        offline.Click += (_, _) =>
+        {
+            using var dlg = new OfflineActivationForm(_config);
+            dlg.ShowDialog(this);
+        };
+        Controls.Add(offline);
+        Controls.Add(Ui.Label("L'aperçu ne donne accès à aucune donnée réelle.", 36, 515, 450));
         var notice = new LicenseNoticePanel
         {
             Dock = DockStyle.None,
-            Location = new Point(0, 505),
+            Location = new Point(0, 570),
             Size = new Size(540, 58)
         };
         notice.Display(LicenseAlertEvaluator.Evaluate(
