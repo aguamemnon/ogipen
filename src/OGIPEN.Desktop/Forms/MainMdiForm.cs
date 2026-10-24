@@ -156,14 +156,15 @@ public sealed class MainMdiForm : KryptonForm
         status.Items.Add(_documentStatus);
         status.Items.Add(new ToolStripStatusLabel(_session.IsPreview
             ? "APERÇU — aucune donnée réelle"
-            : "Client connecté — modules métier non migrés"));
+            : $"Entreprise {_session.CompanyId} · Licence {_session.LicenceId} · Session jusqu’à {_session.ExpiresUtc.ToLocalTime():HH:mm} — modules métier non migrés"));
 
         _shell.BackColor = Ui.Background;
         _workspace.BackColor = Ui.Background;
         _shell.Controls.Add(_workspace);
         var licenseNotice = new LicenseNoticePanel();
+        DateOnly? expiry=_session.IsPreview || _session.LicenseExpiresUtc==default?null:DateOnly.FromDateTime(_session.LicenseExpiresUtc.UtcDateTime);
         licenseNotice.Display(LicenseAlertEvaluator.Evaluate(
-            null, false, DateOnly.FromDateTime(DateTime.UtcNow)), _session.IsPreview);
+            expiry,!_session.IsPreview && expiry is not null,DateOnly.FromDateTime(DateTime.UtcNow)),_session.IsPreview);
         _shell.Controls.Add(licenseNotice);
         Controls.Add(_shell);
         Controls.Add(_ribbon);

@@ -1,5 +1,4 @@
-using System.Net.Http.Json;
-using System.Text.Json;
+using OGIPEN.Core.Security;
 using OGIPEN.Desktop.Models;
 
 namespace OGIPEN.Desktop.Infrastructure;
@@ -7,33 +6,29 @@ namespace OGIPEN.Desktop.Infrastructure;
 public sealed class AuthenticationClient : IDisposable
 {
     private readonly HttpClient _http;
-
     public AuthenticationClient(Uri apiBase)
     {
-        _http = new HttpClient { BaseAddress = apiBase, Timeout = TimeSpan.FromSeconds(15) };
+        _http=new HttpClient(new HttpClientHandler{AllowAutoRedirect=false}) {
+            BaseAddress=LicensedSessionClient.RequireSecureEndpoint(apiBase.AbsoluteUri),
+            Timeout=TimeSpan.FromSeconds(15),MaxResponseContentBufferSize=65536
+        };
     }
-
-    // Contrat de la future API : POST /api/v1/auth/login
-    // { username, password } -> { accessToken, displayName, projects: [{id,name,role}] }
-    // L'API doit réaliser l'authentification AD/locale et le filtrage des projets.
-    public async Task<UserSession> SignInAsync(string username, string password, CancellationToken token)
+    public async Task<UserSession> SignInAsync(ClientConfiguration config,CancellationToken ct)
     {
-        using var response = await _http.PostAsJsonAsync(
-            "api/v1/auth/login", new { username, password }, token);
-        if (!response.IsSuccessStatusCode)
-        {
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                throw new InvalidOperationException("Identifiant ou mot de passe incorrect.");
-            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                throw new InvalidOperationException("Compte non autorisé.");
-            throw new HttpRequestException("Le serveur d'authentification ne répond pas correctement.");
-        }
-
-        var reply = await response.Content.ReadFromJsonAsync<LoginReply>(
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }, token);
-        if (reply is null) throw new InvalidOperationException("Réponse serveur vide.");
-        return UserSession.FromReply(reply);
+        var identity=WindowsSessionIdentity.Current();
+        var licence=OfflineLicenseService.ReadConnectionLicense(config.OfflineSoftwareId);
+        var connection=await new LicensedSessionClient(_http).SignInAsync(identity.IdentityId,
+            licence.Json,licence.Grant,text=>OfflineLicenseService.SignChallenge(text,_http.BaseAddress!),ct);
+        return UserSession.FromReply(new LoginReply {
+            AccessToken=connection.AccessToken,DisplayName=connection.Context.DisplayName,
+            CompanyId=connection.Context.CompanyId,LicenceId=connection.Context.LicenceId,
+            BeneficiaryId=connection.Context.BeneficiaryId,ExpiresUtc=connection.ExpiresUtc,LicenseExpiresUtc=licence.Grant.ExpiresUtc,
+            Projects=connection.Context.Projects.Select(p=>new ProjectAccess {
+                Id=p.Id,Name=p.Name,Role=p.Role,Permissions=p.Permissions.ToList()
+            }).ToList()
+        });
     }
-
-    public void Dispose() => _http.Dispose();
+    public Task SignOutAsync(UserSession session,CancellationToken ct)=>
+        session.IsPreview?Task.CompletedTask:new LicensedSessionClient(_http).SignOutAsync(session.AccessToken,ct);
+    public void Dispose()=>_http.Dispose();
 }

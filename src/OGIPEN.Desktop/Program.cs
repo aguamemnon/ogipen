@@ -26,6 +26,7 @@ internal sealed class StartupApplicationContext : ApplicationContext
     private ClientConfiguration? _configuration;
     private Uri? _serverEndpoint;
     private ServerPreflightResult? _preflight;
+    private UserSession? _activeSession;
 
     public StartupApplicationContext()
     {
@@ -115,6 +116,8 @@ internal sealed class StartupApplicationContext : ApplicationContext
 
     private void ShowMainWindow(UserSession session, ProjectAccess project, ClientConfiguration config)
     {
+        _activeSession=session;
+        _serverEndpoint=config.SecureApiEndpoint();
         var main = new MainMdiForm(session, project, config);
         main.LogoutRequested += OnLogoutRequested;
         MainForm = main;
@@ -135,6 +138,12 @@ internal sealed class StartupApplicationContext : ApplicationContext
 
         try
         {
+            if(_activeSession is { IsPreview:false } current && _serverEndpoint is not null){
+                using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(3));
+                try{using var client=new AuthenticationClient(_serverEndpoint);await client.SignOutAsync(current,timeout.Token);}
+                catch(Exception e) when(e is HttpRequestException or OperationCanceledException or InvalidOperationException){/* Local logout continues; server session expires at its signed deadline. */}
+            }
+            _activeSession=null;
             // On reteste le service pour ne pas réutiliser un ancien état de maintenance.
             _preflight = await StartupChecks.CheckServerAsync(
                 _configuration, _serverEndpoint, CancellationToken.None);

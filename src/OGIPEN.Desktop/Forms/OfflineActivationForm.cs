@@ -81,6 +81,7 @@ public sealed class OfflineActivationForm : Form
         try
         {
             OfflineLicenseService.ExportRequest(dialog.FileName, SoftwareId);
+            _configuration.OfflineSoftwareId=SoftwareId;_configuration.Save();
             _status.Text = "Demande enregistrée. Transmets uniquement ce fichier au gestionnaire " +
                 "par un circuit autorisé. La clé privée de ce poste n'a pas été exportée.";
         }
@@ -104,6 +105,7 @@ public sealed class OfflineActivationForm : Form
         try
         {
             var grant = OfflineLicenseService.ImportLicense(dialog.FileName, SoftwareId);
+            _configuration.OfflineSoftwareId=SoftwareId;_configuration.Save();
             _status.Text = "Licence signée valide pour ce poste. " +
                 "Expiration : " + grant.ExpiresUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm") +
                 ". Modules autorisés : " + string.Join(", ", grant.ModuleIds) + ".";

@@ -1,155 +1,67 @@
-using OGIPEN.Core.Licensing;
 using OGIPEN.Desktop.Infrastructure;
 using OGIPEN.Desktop.Models;
-
 namespace OGIPEN.Desktop.Forms;
 
-public sealed class LoginForm : Form
+public sealed class LoginForm:Form
 {
-    private readonly ClientConfiguration _config;
-    private readonly Uri? _endpoint;
-    private readonly TextBox _username, _password;
-    private readonly Button _connect, _retry;
-    private readonly Label _status;
-    private bool _serverAvailable;
-
+    private readonly ClientConfiguration config;
+    private Uri? endpoint;
+    private bool available,loading;
+    private readonly ComboBox servers=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=460};
+    private readonly Label status=new(){Width=620,Height=78};
+    private readonly Button connect=new(){Text="Se connecter",Width=195,Height=36};
+    private readonly Button retry=new(){Text="Retester le serveur",Width=195,Height=36};
+    private readonly CancellationTokenSource closing=new();
+    private readonly FlowLayoutPanel content;
     public UserSession? Session { get; private set; }
-
-    public LoginForm(ClientConfiguration config, Uri? endpoint, ServerPreflightResult server)
+    public LoginForm(ClientConfiguration configuration,Uri? initialEndpoint,ServerPreflightResult server)
     {
-        _config = config;
-        _endpoint = endpoint;
-        _serverAvailable = server.ApiAvailable && !server.Maintenance;
-
-        Text = "OGIPEN — Identification";
-        ClientSize = new Size(540, 628);
-        FormBorderStyle = FormBorderStyle.FixedDialog;
-        MaximizeBox = false;
-        StartPosition = FormStartPosition.CenterScreen;
-        BackColor = Ui.Background;
-        Controls.Add(Ui.Label("Connexion OGIPEN", 36, 30, 450, 46, true));
-        Controls.Add(Ui.Label("Utilisateur", 36, 115, 400));
-        _username = Ui.TextBox(36, 147, 454);
-        Controls.Add(_username);
-        Controls.Add(Ui.Label("Mot de passe", 36, 197, 400));
-        _password = Ui.TextBox(36, 229, 454, true);
-        Controls.Add(_password);
-
-        _status = Ui.Label(server.Message, 36, 284, 470, 60);
-        _status.ForeColor = Ui.Muted;
-        Controls.Add(_status);
-
-        _connect = Ui.Button("Se connecter", 36, 356, 214);
-        _connect.Enabled = _serverAvailable;
-        _connect.Click += async (_, _) => await ConnectAsync();
-        Controls.Add(_connect);
-
-        var preview = Ui.Button("Aperçu sans serveur", 266, 356, 224);
-        preview.BackColor = Ui.Panel;
-        preview.Click += (_, _) =>
-        {
-            Session = UserSession.Preview();
-            DialogResult = DialogResult.OK;
-            Close();
+        config=configuration;endpoint=initialEndpoint;available=server.ApiAvailable&&!server.Maintenance;
+        Text="OGIPEN — Connexion avec la session Windows";ClientSize=new(700,610);MinimumSize=new(700,610);StartPosition=FormStartPosition.CenterScreen;
+        var identity=WindowsSessionIdentity.Current();
+        content=new FlowLayoutPanel{Dock=DockStyle.Fill,FlowDirection=FlowDirection.TopDown,WrapContents=false,Padding=new(24),AutoScroll=true};
+        void Label(string text,int height=32)=>content.Controls.Add(new Label{Text=text,Width=630,Height=height,AutoEllipsis=true});
+        Label("Connexion Ogipen",45);Label("Session Windows : "+identity.DisplayName);Label("Identifiant d’enrôlement : "+identity.IdentityId,48);
+        Label("Serveur du site — choix explicite, sans basculement automatique");
+        var row=new FlowLayoutPanel{Width=640,Height=42};row.Controls.Add(servers);
+        var manage=new Button{Text="Profils serveur…",Width=150,Height=30};row.Controls.Add(manage);content.Controls.Add(row);
+        status.Text=server.Message;content.Controls.Add(status);
+        var actions=new FlowLayoutPanel{Width=640,Height=45};actions.Controls.Add(connect);actions.Controls.Add(retry);content.Controls.Add(actions);
+        var activate=new Button{Text="Activation hors ligne (.ogreq / .oglic)",Width=360,Height=34};content.Controls.Add(activate);
+        var enrol=new Button{Text="Exporter la fiche d’enrôlement Windows",Width=360,Height=34};content.Controls.Add(enrol);
+        var preview=new Button{Text="Aperçu sans serveur",Width=250,Height=34};content.Controls.Add(preview);
+        Label("La connexion utilise la clé privée de ce compte Windows et la licence locale. La fiche d’enrôlement contient un identifiant Windows : transmettez-la par un circuit autorisé.",65);
+        Label("L’aperçu ne donne accès à aucune donnée réelle.");Controls.Add(content);
+        connect.Enabled=available&&endpoint is not null;
+        connect.Click+=async(_,_)=>await ConnectAsync();retry.Click+=async(_,_)=>await RetryAsync();
+        manage.Click+=(_,_)=>{using var form=new ServerProfilesForm(config);form.ShowDialog(this);ReloadServers();endpoint=config.SecureApiEndpoint();available=false;connect.Enabled=false;status.Text="Profil choisi. Retestez le serveur avant la connexion.";};
+        activate.Click+=(_,_)=>{using var form=new OfflineActivationForm(config);form.ShowDialog(this);};
+        enrol.Click+=(_,_)=>{using var file=new SaveFileDialog{Title="Fiche contenant l’identifiant Windows et la clé publique",Filter="Fiche d’enrôlement (*.txt)|*.txt",FileName="ogipen-enrolement.txt"};if(file.ShowDialog(this)==DialogResult.OK){try{OfflineLicenseService.ExportEnrollmentInfo(file.FileName);status.Text="Fiche enregistrée. Aucune clé privée exportée.";}catch(Exception ex){status.Text=ex.Message;}}};
+        preview.Click+=(_,_)=>{Session=UserSession.Preview();DialogResult=DialogResult.OK;Close();};
+        servers.SelectedIndexChanged+=(_,_)=>{
+            if(loading || servers.SelectedItem is not ServerProfile p)return;
+            var old=config.SelectedProfileId;var oldUrl=config.ApiBaseUrl;var oldName=config.SiteName;
+            try{config.SelectProfile(p.Id);config.Save();endpoint=config.SecureApiEndpoint();available=false;connect.Enabled=false;status.Text="Serveur choisi. Retestez sa disponibilité.";}
+            catch(Exception ex){config.SelectedProfileId=old;config.ApiBaseUrl=oldUrl;config.SiteName=oldName;ReloadServers();status.Text=ex.Message;}
         };
-        Controls.Add(preview);
-
-        _retry = Ui.Button("Retester le serveur", 36, 409, 214);
-        _retry.BackColor = Ui.Panel;
-        _retry.Enabled = endpoint is not null ||
-            !string.IsNullOrWhiteSpace(config.LegacyDatabaseServer);
-        _retry.Click += async (_, _) => await RetryServerAsync();
-        Controls.Add(_retry);
-
-        var help = new LinkLabel
-        {
-            Text = "Maintenance / configuration",
-            Location = new Point(266, 418),
-            Size = new Size(240, 28),
-            LinkColor = Ui.Accent,
-            BackColor = Ui.Background
-        };
-        help.Click += (_, _) =>
-        {
-            using var dlg = new MaintenanceInfoForm(_config);
-            dlg.ShowDialog(this);
-        };
-        Controls.Add(help);
-        var offline = Ui.Button("Activation hors ligne", 36, 461, 254);
-        offline.BackColor = Ui.Panel;
-        offline.Click += (_, _) =>
-        {
-            using var dlg = new OfflineActivationForm(_config);
-            dlg.ShowDialog(this);
-        };
-        Controls.Add(offline);
-        Controls.Add(Ui.Label("L'aperçu ne donne accès à aucune donnée réelle.", 36, 515, 450));
-        var notice = new LicenseNoticePanel
-        {
-            Dock = DockStyle.None,
-            Location = new Point(0, 570),
-            Size = new Size(540, 58)
-        };
-        notice.Display(LicenseAlertEvaluator.Evaluate(
-            null, false, DateOnly.FromDateTime(DateTime.UtcNow)), true);
-        Controls.Add(notice);
-        AcceptButton = _connect;
+        ReloadServers();AcceptButton=connect;FormClosing+=(_,_)=>closing.Cancel();FormClosed+=(_,_)=>closing.Dispose();
     }
-
-    private async Task RetryServerAsync()
+    private void ReloadServers(){loading=true;try{servers.Items.Clear();foreach(var p in config.ServerProfiles)servers.Items.Add(p);servers.SelectedItem=config.ServerProfiles.FirstOrDefault(p=>p.Id==config.SelectedProfileId);}finally{loading=false;}}
+    private async Task RetryAsync()
     {
-        _retry.Enabled = false;
-        _connect.Enabled = false;
-        _status.Text = "Vérification de présence du serveur...";
-        try
-        {
-            var server = await StartupChecks.CheckServerAsync(
-                _config, _endpoint, CancellationToken.None);
-            _serverAvailable = server.ApiAvailable && !server.Maintenance;
-            _status.Text = server.Message;
-            _connect.Enabled = _serverAvailable;
-        }
-        catch (Exception)
-        {
-            _serverAvailable = false;
-            _status.Text = "Échec du contrôle serveur.";
-        }
-        finally
-        {
-            if (!IsDisposed) _retry.Enabled = true;
-        }
+        content.Enabled=false;retry.Enabled=false;connect.Enabled=false;status.Text="Vérification du serveur sélectionné…";
+        try{var result=await StartupChecks.CheckServerAsync(config,endpoint,closing.Token);if(IsDisposed)return;available=result.ApiAvailable&&!result.Maintenance;status.Text=result.Message;}
+        catch(OperationCanceledException) when(closing.IsCancellationRequested){}
+        catch(Exception){if(!IsDisposed){available=false;status.Text="Échec du contrôle serveur.";}}
+        finally{if(!IsDisposed){content.Enabled=true;retry.Enabled=true;connect.Enabled=available&&endpoint is not null;}}
     }
-
     private async Task ConnectAsync()
     {
-        if (!_serverAvailable || _endpoint is null ||
-            string.IsNullOrWhiteSpace(_username.Text) ||
-            string.IsNullOrWhiteSpace(_password.Text))
-        {
-            _status.Text = "Connexion indisponible ou identifiants manquants.";
-            return;
-        }
-
-        _connect.Enabled = false;
-        _status.Text = "Authentification sécurisée en cours...";
-        try
-        {
-            using var client = new AuthenticationClient(_endpoint);
-            Session = await client.SignInAsync(
-                _username.Text.Trim(), _password.Text, CancellationToken.None);
-            DialogResult = DialogResult.OK;
-            Close();
-        }
-        catch (Exception ex)
-        {
-            _status.Text = ex is HttpRequestException or TaskCanceledException
-                ? "Serveur indisponible ou délai de connexion dépassé."
-                : ex.Message;
-        }
-        finally
-        {
-            _password.Clear();
-            if (!IsDisposed) _connect.Enabled = _serverAvailable;
-        }
+        if(!available || endpoint is null)return;
+        content.Enabled=false;connect.Enabled=false;retry.Enabled=false;servers.Enabled=false;status.Text="Vérification de la licence et preuve de clé Windows…";
+        try{using var client=new AuthenticationClient(endpoint);var session=await client.SignInAsync(config,closing.Token);if(IsDisposed)return;Session=session;DialogResult=DialogResult.OK;Close();}
+        catch(OperationCanceledException) when(closing.IsCancellationRequested){}
+        catch(Exception ex){if(!IsDisposed)status.Text=ex is HttpRequestException or TaskCanceledException?"Serveur HTTPS indisponible ou délai dépassé.":ex.Message;}
+        finally{if(!IsDisposed){content.Enabled=true;connect.Enabled=available;retry.Enabled=true;servers.Enabled=true;}}
     }
 }

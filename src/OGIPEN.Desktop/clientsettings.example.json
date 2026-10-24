@@ -1,0 +1,13 @@
+{
+  "ApiBaseUrl": "https://www.trueshield.fr/ogipen/client-api/",
+  "SiteName": "Serveur de test Ogipen",
+  "OfflineSoftwareId": 405,
+  "SelectedProfileId": "ogipen-test",
+  "ServerProfiles": [
+    {
+      "Id": "ogipen-test",
+      "Name": "Serveur de test Ogipen",
+      "ApiBaseUrl": "https://www.trueshield.fr/ogipen/client-api/"
+    }
+  ]
+}

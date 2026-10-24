@@ -9,7 +9,7 @@ public sealed record ServerPreflightResult(bool ApiAvailable, bool Maintenance, 
 /// Précontrôles issus du démarrage VB : présence du serveur, état maintenance,
 /// puis information de mise à jour. Aucun accès direct MySQL ni mot de passe
 /// administrateur embarqué : la lecture de progelec.maintenance doit être
-/// assurée par l'API serveur GET /api/v1/health.
+/// assurée par l'API serveur GET /health.
 /// </summary>
 public static class StartupChecks
 {
@@ -28,7 +28,7 @@ public static class StartupChecks
                     Timeout = TimeSpan.FromSeconds(6)
                 };
                 using var response = await http.GetAsync(
-                    "api/v1/health", HttpCompletionOption.ResponseHeadersRead, timeout.Token);
+                    "health", HttpCompletionOption.ResponseHeadersRead, timeout.Token);
 
                 // L'endpoint de contrôle doit renvoyer un JSON, pas une page HTML.
                 using var stream = await response.Content.ReadAsStreamAsync(timeout.Token);

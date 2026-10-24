@@ -3,6 +3,8 @@ using OGIPEN.Core.Security;
 using OGIPEN.Desktop.Forms;
 using OGIPEN.Desktop.Infrastructure;
 using OGIPEN.Desktop.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace OGIPEN.Desktop.Smoke;
 
@@ -18,6 +20,9 @@ internal static class Program
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            using var issuer=ECDsa.Create();issuer.ImportFromPem(File.ReadAllText(OfflineLicenseService.PublicKeyFile));
+            if(issuer.KeySize!=256)throw new Exception("Clé publique d’émetteur invalide.");
+            using var profiles=new ServerProfilesForm(new ClientConfiguration());
             var session = UserSession.Preview();
             using var main = new MainMdiForm(session, session.Projects[0],
                 new ClientConfiguration());
@@ -77,13 +82,29 @@ internal static class Program
                 {
                     throw new Exception("La demande hors ligne CNG n'a pas pu être validée.");
                 }
+                var identity=WindowsSessionIdentity.Current();
+                if(!identity.IdentityId.StartsWith("win-sid:S-1-",StringComparison.Ordinal))throw new Exception("L’identité ne provient pas du SID Windows courant.");
+                var audience=new Uri("https://site/ogipen/client-api/");
+                var text="OGIPEN-AUTH-v2:"+audience.AbsoluteUri+":"+identity.IdentityId+":"+Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+                var proof=OfflineLicenseService.SignChallenge(text,audience);
+                using var request=System.Text.Json.JsonDocument.Parse(contents);
+                var publicKey=request.RootElement.GetProperty("public_key_spki").GetString()!.Replace('-','+').Replace('_','/');
+                using var verifier=ECDsa.Create();verifier.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey.PadRight((publicKey.Length+3)/4*4,'=')),out _);
+                if(!verifier.VerifyData(Encoding.UTF8.GetBytes(text),proof,HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation))throw new Exception("La preuve CNG ne correspond pas à la demande d’activation.");
+                try{OfflineLicenseService.SignChallenge(text.Replace(identity.IdentityId,"other-session",StringComparison.Ordinal),audience);throw new Exception("Une autre session a été signée.");}catch(InvalidOperationException){}
+                using var native=CngKey.Open("OGIPEN_Offline_P256_v1",CngProvider.MicrosoftSoftwareKeyStorageProvider,CngKeyOpenOptions.UserKey);
+                if(native.ExportPolicy!=CngExportPolicies.None)throw new Exception("La clé CNG autorise l’export privé.");
+                using var login=new LoginForm(new ClientConfiguration(),null,new(false,false,"Test local"));
+                IEnumerable<Control> Descendants(Control c)=>c.Controls.Cast<Control>().SelectMany(x=>new[]{x}.Concat(Descendants(x)));
+                if(Descendants(login).OfType<TextBox>().Any())throw new Exception("La connexion contient encore une saisie d’identifiants.");
+                Console.WriteLine("OK — SID courant, preuve CNG liée au serveur, refus autre session, export privé désactivé et connexion sans mot de passe.");
             }
             finally
             {
                 if (File.Exists(requestFile)) File.Delete(requestFile);
             }
             Console.WriteLine("OK — Demande d'activation générée avec une clé Windows CNG.");
-            Console.WriteLine("OK — MainForm, ruban Krypton et 7 onglets construits.");
+            Console.WriteLine("OK — MainForm, profils serveur, ruban Krypton et 7 onglets construits. Runtime : "+System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription);
             return 0;
         }
         catch (Exception ex)

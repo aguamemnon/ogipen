@@ -1,3 +1,7 @@
+# Connexion Windows v0.4.9
+
+Le client utilise désormais la session Windows, une preuve CNG et une licence poste Ogipen. Voir [le lot v0.4.9](../../server/linux/docs/client-windows-v0.4.9.md) pour la configuration HTTPS, l’enrôlement, les tests et les limites actuelles. Les descriptions historiques ci-dessous ne représentent pas toutes le parcours courant.
+
 # OGIPEN Desktop — premier socle C# WinForms
 
 Projet **.NET 10 Windows Forms** fondé sur les écrans `SplashScreen.vb`,

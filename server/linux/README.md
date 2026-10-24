@@ -1,3 +1,7 @@
+# API et client Windows v0.4.9
+
+Le client utilise désormais la session Windows, une preuve CNG et une licence poste Ogipen. Voir [le lot v0.4.9](docs/client-windows-v0.4.9.md) pour la configuration HTTPS, l’enrôlement, les tests et les limites actuelles. Les descriptions historiques ci-dessous ne représentent pas toutes le parcours courant.
+
 # État courant : v0.4.8
 
 L’API impose désormais les licences serveur/poste et les affectations par entreprise. Voir [le déploiement v0.4.8](docs/licences-entreprises-v0.4.8.md), ses migrations obligatoires et ses limites avant toute installation. Les instructions v0.4.5 ci-dessous décrivent la base historique ; elles ne suffisent pas seules à configurer la nouvelle API.

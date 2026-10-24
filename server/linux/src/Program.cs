@@ -10,6 +10,9 @@ using static ProjectSql;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+var audienceUri=new Uri(Environment.GetEnvironmentVariable("OGIPEN_AUTH_AUDIENCE")??throw new InvalidOperationException("OGIPEN_AUTH_AUDIENCE missing"),UriKind.Absolute);
+if(audienceUri.Scheme!="https" || audienceUri.UserInfo!="" || audienceUri.Query!="" || audienceUri.Fragment!="" || !audienceUri.AbsolutePath.EndsWith('/'))throw new InvalidOperationException("Invalid authentication audience");
+var authAudience=audienceUri.AbsoluteUri;
 var dbcs = Environment.GetEnvironmentVariable("OGIPEN_DB_CONNECTION")
     ?? throw new InvalidOperationException("OGIPEN_DB_CONNECTION missing");
 var keyB64 = Environment.GetEnvironmentVariable("OGIPEN_SESSION_KEY")
@@ -35,7 +38,7 @@ app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) =>
     await using(var cmd=Cmd(c,"SELECT server_license_json,slm_license_id FROM ogp_project_company WHERE state='prepared' AND server_license_json IS NOT NULL AND slm_license_id IS NOT NULL")){
         await using var r=await cmd.ExecuteReaderAsync(ct);while(await r.ReadAsync(ct))if(license.Verify(r.GetString(0),r.GetInt64(1)) is not null)verified++;
     }
-    return Results.Ok(new {status="ok", version="0.4.8-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
+    return Results.Ok(new {status="ok", version="0.4.9-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
 });
 app.MapPost("/auth/challenge", async (ChallengeRequest req,Db db,CompanyLicensing licensing,CancellationToken ct) => {
     if(string.IsNullOrWhiteSpace(req.IdentityId) || req.IdentityId.Length>80)return Results.BadRequest();
@@ -46,7 +49,7 @@ app.MapPost("/auth/challenge", async (ChallengeRequest req,Db db,CompanyLicensin
     var nonce=Convert.ToBase64String(random);
     var nonceHash=Convert.ToHexString(SHA256.HashData(random));
     await Exec(c,"INSERT INTO ogp_challenge(nonce_hash,identity_id,expires_utc) VALUES(@hash,@id,DATE_ADD(UTC_TIMESTAMP(6),INTERVAL 90 SECOND))",ct,("@hash",nonceHash),("@id",req.IdentityId));
-    return Results.Ok(new {nonce,signingText=$"OGIPEN-AUTH-v1:{req.IdentityId}:{nonce}",expiresInSeconds=90});
+    return Results.Ok(new {nonce,signingText=$"OGIPEN-AUTH-v2:{authAudience}:{req.IdentityId}:{nonce}",expiresInSeconds=90});
 });
 app.MapPost("/auth/complete",async (CompleteRequest req,Db db,TokenService tokens,CompanyLicensing licensing,CancellationToken ct)=>{
     try {
@@ -63,7 +66,7 @@ app.MapPost("/auth/complete",async (CompleteRequest req,Db db,TokenService token
         await using(var cmd=Cmd(c,"SELECT public_key_pem,auth_version FROM ogp_identity WHERE id=@id AND enabled=1 FOR UPDATE",("@id",req.IdentityId))){cmd.Transaction=(MySqlTransaction)tx;await using var r=await cmd.ExecuteReaderAsync(ct);if(await r.ReadAsync(ct)){pem=r.GetString(0);version=r.GetInt32(1);}}
         if(pem==null){await tx.RollbackAsync(ct);return Results.Unauthorized();}
         using var ec=ECDsa.Create();ec.ImportFromPem(pem);
-        var input=Encoding.UTF8.GetBytes($"OGIPEN-AUTH-v1:{req.IdentityId}:{req.Nonce}");
+        var input=Encoding.UTF8.GetBytes($"OGIPEN-AUTH-v2:{authAudience}:{req.IdentityId}:{req.Nonce}");
         if(!ec.VerifyData(input,Convert.FromBase64String(req.Signature),HashAlgorithmName.SHA256)){
             await tx.RollbackAsync(ct);return Results.Unauthorized();
         }
@@ -93,7 +96,23 @@ var api=app.MapGroup("/api").AddEndpointFilter(async (ctx,next)=>{
 });
 api.MapGet("/session",async(HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct)=>{
     await using var c=await db.Open(ct);var b=await licensing.Binding(c,Actor(h),ct);
-    return b is null?Results.Unauthorized():Results.Ok(new{identity=Actor(h),companyId=b.CompanyId,licenceId=b.Server.LicenseId,beneficiaryId=b.BeneficiaryId});
+    if(b is null)return Results.Unauthorized();
+    string displayName="";bool read=false,edit=false;
+    await using(var cmd=Cmd(c,"SELECT i.display_name,COALESCE(p.can_read,0),COALESCE(p.can_edit,0) FROM ogp_identity i LEFT JOIN ogp_permission p ON p.identity_id=i.id WHERE i.id=@id",("@id",Actor(h)))){
+        await using var r=await cmd.ExecuteReaderAsync(ct);if(await r.ReadAsync(ct)){displayName=r.GetString(0);read=r.GetBoolean(1);edit=r.GetBoolean(2);}
+    }
+    var permissions=new List<string>();if(read){permissions.Add("projects.read");permissions.Add("cables.read");if(edit)permissions.Add("cables.write");}
+    var projects=new List<object>();if(read)projects.Add(new {
+        id=Environment.GetEnvironmentVariable("OGIPEN_PROJECT_ID")??"prototype",
+        name=Environment.GetEnvironmentVariable("OGIPEN_PROJECT_NAME")??"Projet de démonstration",
+        role=edit?"Lecture et édition":"Lecture seule",permissions
+    });
+    return Results.Ok(new{identity=Actor(h),companyId=b.CompanyId,licenceId=b.Server.LicenseId,beneficiaryId=b.BeneficiaryId,displayName,projects});
+});
+api.MapDelete("/session",async(HttpContext h,Db db,CancellationToken ct)=>{
+    var session=(AuthSession)h.Items["session"]!;await using var c=await db.Open(ct);
+    await Exec(c,"DELETE FROM ogp_auth_session WHERE session_id=@session AND identity_id=@id",ct,("@session",session.SessionId),("@id",session.IdentityId));
+    return Results.NoContent();
 });
 api.MapGet("/modules/{module:int}/access",async(int module,HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct)=>{
     await using var c=await db.Open(ct);

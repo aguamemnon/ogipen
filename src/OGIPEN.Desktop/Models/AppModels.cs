@@ -17,6 +17,11 @@ public sealed class ProjectAccess
 
 public sealed class LoginReply
 {
+    public long CompanyId { get; set; }
+    public long LicenceId { get; set; }
+    public long BeneficiaryId { get; set; }
+    public DateTimeOffset ExpiresUtc { get; set; }
+    public DateTimeOffset LicenseExpiresUtc { get; set; }
     [JsonPropertyName("accessToken")] public string AccessToken { get; set; } = "";
     [JsonPropertyName("displayName")] public string DisplayName { get; set; } = "";
     [JsonPropertyName("projects")] public List<ProjectAccess> Projects { get; set; } = new();
@@ -29,6 +34,11 @@ public sealed class UserSession
     public string DisplayName { get; }
     public IReadOnlyList<ProjectAccess> Projects { get; }
     public bool IsPreview { get; }
+    public long CompanyId { get; private init; }
+    public long LicenceId { get; private init; }
+    public long BeneficiaryId { get; private init; }
+    public DateTimeOffset ExpiresUtc { get; private init; }
+    public DateTimeOffset LicenseExpiresUtc { get; private init; }
 
     private UserSession(string token, string displayName,
         IReadOnlyList<ProjectAccess> projects, bool preview)
@@ -50,7 +60,9 @@ public sealed class UserSession
                                         string.IsNullOrWhiteSpace(permission))) ||
             reply.Projects.Select(p => p.Id).Distinct(StringComparer.Ordinal).Count() != reply.Projects.Count)
             throw new InvalidOperationException("Liste de projets invalide.");
-        return new UserSession(reply.AccessToken, reply.DisplayName, reply.Projects, false);
+        return new UserSession(reply.AccessToken, reply.DisplayName, reply.Projects, false) {
+            CompanyId=reply.CompanyId,LicenceId=reply.LicenceId,BeneficiaryId=reply.BeneficiaryId,ExpiresUtc=reply.ExpiresUtc,LicenseExpiresUtc=reply.LicenseExpiresUtc
+        };
     }
 
     public static UserSession Preview() => new(
