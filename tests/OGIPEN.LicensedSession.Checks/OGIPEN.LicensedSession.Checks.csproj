@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup>
- <ItemGroup><ProjectReference Include="../../src/OGIPEN.Core/OGIPEN.Core.csproj" /><Compile Include="../../src/OGIPEN.Desktop/Infrastructure/ClientConfiguration.cs" Link="ClientConfiguration.cs" /></ItemGroup>
+ <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup>
+ <ItemGroup><ProjectReference Include="../../src/OGIPEN.Core/OGIPEN.Core.csproj" /><Compile Include="../../src/OGIPEN.Desktop/Infrastructure/ClientConfiguration.cs" Link="ClientConfiguration.cs" /><Compile Include="../../src/OGIPEN.Desktop/Infrastructure/ServerTransport.cs" Link="ServerTransport.cs" /><Content Include="../../src/OGIPEN.Desktop/Assets/company-server-profiles.json" Link="Assets/company-server-profiles.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>

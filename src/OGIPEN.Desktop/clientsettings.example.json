@@ -1,13 +1,14 @@
 {
-  "ApiBaseUrl": "https://www.trueshield.fr/ogipen/client-api/",
-  "SiteName": "Serveur de test Ogipen",
+  "ApiBaseUrl": "https://192.168.2.216/",
+  "SiteName": "Ogipen entreprise — serveur de test",
   "OfflineSoftwareId": 405,
-  "SelectedProfileId": "ogipen-test",
+  "SelectedProfileId": "ogipen-company-test",
   "ServerProfiles": [
     {
-      "Id": "ogipen-test",
-      "Name": "Serveur de test Ogipen",
-      "ApiBaseUrl": "https://www.trueshield.fr/ogipen/client-api/"
+      "Id": "ogipen-company-test",
+      "Name": "Ogipen entreprise — serveur de test",
+      "ApiBaseUrl": "https://192.168.2.216/",
+      "CertificateSha256": "139BB05C51ED32D64FD502498787A8F1656337498D67C99C12232626B6C46540"
     }
   ]
 }

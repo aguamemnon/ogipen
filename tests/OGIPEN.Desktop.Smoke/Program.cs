@@ -84,7 +84,7 @@ internal static class Program
                 }
                 var identity=WindowsSessionIdentity.Current();
                 if(!identity.IdentityId.StartsWith("win-sid:S-1-",StringComparison.Ordinal))throw new Exception("L’identité ne provient pas du SID Windows courant.");
-                var audience=new Uri("https://site/ogipen/client-api/");
+                var audience=new Uri("https://192.168.2.216/");
                 var text="OGIPEN-AUTH-v2:"+audience.AbsoluteUri+":"+identity.IdentityId+":"+Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
                 var proof=OfflineLicenseService.SignChallenge(text,audience);
                 using var request=System.Text.Json.JsonDocument.Parse(contents);

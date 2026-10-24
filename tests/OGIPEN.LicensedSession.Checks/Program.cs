@@ -18,6 +18,7 @@ var signatures=0;
 byte[] Sign(string text){signatures++;return device.SignData(Encoding.UTF8.GetBytes(text),HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation);}
 LicensedSessionClient Client(Fake f)=>new(new HttpClient(f){BaseAddress=new Uri(Fake.Audience)});
 try{
+ CertificateChecks.Run(Check);
  foreach(var url in new[]{"http://site/","https://user:password@site/","https://site/?token=x","https://site/#fragment","ftp://site/"})
   await Denied("unsafe_endpoint_"+checks.Count,()=>Task.FromResult(LicensedSessionClient.RequireSecureEndpoint(url)));
  Check("https_prefix_preserved",LicensedSessionClient.RequireSecureEndpoint("https://SITE/ogipen/client-api").AbsoluteUri==Fake.Audience);

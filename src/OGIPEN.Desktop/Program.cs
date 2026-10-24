@@ -67,7 +67,7 @@ internal sealed class StartupApplicationContext : ApplicationContext
             {
                 _splash.Report("Recherche des mises à jour...", 75);
                 string updateStatus =
-                    await StartupChecks.CheckUpdateAsync(endpoint!, CancellationToken.None);
+                    await StartupChecks.CheckUpdateAsync(endpoint!, CancellationToken.None,config);
                 _splash.Report(updateStatus, 90);
             }
             else
@@ -140,7 +140,7 @@ internal sealed class StartupApplicationContext : ApplicationContext
         {
             if(_activeSession is { IsPreview:false } current && _serverEndpoint is not null){
                 using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(3));
-                try{using var client=new AuthenticationClient(_serverEndpoint);await client.SignOutAsync(current,timeout.Token);}
+                try{using var client=new AuthenticationClient(_serverEndpoint,_configuration);await client.SignOutAsync(current,timeout.Token);}
                 catch(Exception e) when(e is HttpRequestException or OperationCanceledException or InvalidOperationException){/* Local logout continues; server session expires at its signed deadline. */}
             }
             _activeSession=null;

@@ -6,12 +6,9 @@ namespace OGIPEN.Desktop.Infrastructure;
 public sealed class AuthenticationClient : IDisposable
 {
     private readonly HttpClient _http;
-    public AuthenticationClient(Uri apiBase)
+    public AuthenticationClient(Uri apiBase,ClientConfiguration? configuration=null)
     {
-        _http=new HttpClient(new HttpClientHandler{AllowAutoRedirect=false}) {
-            BaseAddress=LicensedSessionClient.RequireSecureEndpoint(apiBase.AbsoluteUri),
-            Timeout=TimeSpan.FromSeconds(15),MaxResponseContentBufferSize=65536
-        };
+        _http=ServerTransport.CreateClient(apiBase,configuration);
     }
     public async Task<UserSession> SignInAsync(ClientConfiguration config,CancellationToken ct)
     {

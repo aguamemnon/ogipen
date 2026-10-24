@@ -9,11 +9,12 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <AssemblyName>OGIPEN.Desktop</AssemblyName>
     <RootNamespace>OGIPEN.Desktop</RootNamespace>
-    <Version>0.4.9</Version>
+    <Version>0.4.10</Version>
     <RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets/SLMMS-Signing-Public.pem" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/company-server-profiles.json" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="Krypton.Toolkit" Version="105.26.7.201" />
     <PackageReference Include="Krypton.Ribbon" Version="105.26.7.201" />
     <PackageReference Include="Krypton.Navigator" Version="105.26.7.201" />

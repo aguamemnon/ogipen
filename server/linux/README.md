@@ -1,3 +1,7 @@
+# Version courante : serveur d’entreprise autonome 0.4.10
+
+Le client se connecte directement à l’API de l’entreprise. Le relais WordPress est retiré. Voir [la version 0.4.10](docs/company-server-v0.4.10.md) pour les adresses, la confiance au certificat par serveur, le paquet et les limites actuelles. Les anciens modes d’accès ci-dessous sont historiques.
+
 # API et client Windows v0.4.9
 
 Le client utilise désormais la session Windows, une preuve CNG et une licence poste Ogipen. Voir [le lot v0.4.9](docs/client-windows-v0.4.9.md) pour la configuration HTTPS, l’enrôlement, les tests et les limites actuelles. Les descriptions historiques ci-dessous ne représentent pas toutes le parcours courant.

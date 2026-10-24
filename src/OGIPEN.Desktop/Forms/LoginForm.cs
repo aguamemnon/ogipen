@@ -17,11 +17,11 @@ public sealed class LoginForm:Form
     public LoginForm(ClientConfiguration configuration,Uri? initialEndpoint,ServerPreflightResult server)
     {
         config=configuration;endpoint=initialEndpoint;available=server.ApiAvailable&&!server.Maintenance;
-        Text="OGIPEN — Connexion avec la session Windows";ClientSize=new(700,610);MinimumSize=new(700,610);StartPosition=FormStartPosition.CenterScreen;
+        Text="OGIPEN "+Application.ProductVersion+" — Connexion avec la session Windows";ClientSize=new(700,610);MinimumSize=new(700,610);StartPosition=FormStartPosition.CenterScreen;
         var identity=WindowsSessionIdentity.Current();
         content=new FlowLayoutPanel{Dock=DockStyle.Fill,FlowDirection=FlowDirection.TopDown,WrapContents=false,Padding=new(24),AutoScroll=true};
         void Label(string text,int height=32)=>content.Controls.Add(new Label{Text=text,Width=630,Height=height,AutoEllipsis=true});
-        Label("Connexion Ogipen",45);Label("Session Windows : "+identity.DisplayName);Label("Identifiant d’enrôlement : "+identity.IdentityId,48);
+        Label("Connexion Ogipen — "+Application.ProductVersion,45);Label("Session Windows : "+identity.DisplayName);Label("Identifiant d’enrôlement : "+identity.IdentityId,48);
         Label("Serveur du site — choix explicite, sans basculement automatique");
         var row=new FlowLayoutPanel{Width=640,Height=42};row.Controls.Add(servers);
         var manage=new Button{Text="Profils serveur…",Width=150,Height=30};row.Controls.Add(manage);content.Controls.Add(row);
@@ -59,7 +59,7 @@ public sealed class LoginForm:Form
     {
         if(!available || endpoint is null)return;
         content.Enabled=false;connect.Enabled=false;retry.Enabled=false;servers.Enabled=false;status.Text="Vérification de la licence et preuve de clé Windows…";
-        try{using var client=new AuthenticationClient(endpoint);var session=await client.SignInAsync(config,closing.Token);if(IsDisposed)return;Session=session;DialogResult=DialogResult.OK;Close();}
+        try{using var client=new AuthenticationClient(endpoint,config);var session=await client.SignInAsync(config,closing.Token);if(IsDisposed)return;Session=session;DialogResult=DialogResult.OK;Close();}
         catch(OperationCanceledException) when(closing.IsCancellationRequested){}
         catch(Exception ex){if(!IsDisposed)status.Text=ex is HttpRequestException or TaskCanceledException?"Serveur HTTPS indisponible ou délai dépassé.":ex.Message;}
         finally{if(!IsDisposed){content.Enabled=true;connect.Enabled=available;retry.Enabled=true;servers.Enabled=true;}}

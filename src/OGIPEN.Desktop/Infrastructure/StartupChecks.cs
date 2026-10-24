@@ -22,11 +22,8 @@ public static class StartupChecks
             {
                 using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 timeout.CancelAfter(TimeSpan.FromSeconds(5));
-                using var http = new HttpClient
-                {
-                    BaseAddress = endpoint,
-                    Timeout = TimeSpan.FromSeconds(6)
-                };
+                using var http = ServerTransport.CreateClient(endpoint,config);
+                http.Timeout=TimeSpan.FromSeconds(6);
                 using var response = await http.GetAsync(
                     "health", HttpCompletionOption.ResponseHeadersRead, timeout.Token);
 
@@ -59,7 +56,7 @@ public static class StartupChecks
             }
             catch (HttpRequestException)
             {
-                return new(false, false, "Serveur HTTPS inaccessible ou certificat non valide.");
+                return new(false, false, "Serveur HTTPS inaccessible ou certificat non approuvé pour ce profil.");
             }
             catch (JsonException)
             {
@@ -99,14 +96,14 @@ public static class StartupChecks
     }
 
     public static async Task<string> CheckUpdateAsync(
-        Uri endpoint, CancellationToken cancellationToken)
+        Uri endpoint, CancellationToken cancellationToken,ClientConfiguration? config=null)
     {
         // Découverte seulement. Aucun package n'est exécuté sans signature valide.
         try
         {
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(4));
-            using var http = new HttpClient { BaseAddress = endpoint };
+            using var http = ServerTransport.CreateClient(endpoint,config);
             string version = Uri.EscapeDataString(Application.ProductVersion);
             using var response = await http.GetAsync(
                 "api/v1/client/update?version=" + version,

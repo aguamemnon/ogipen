@@ -23,7 +23,7 @@ public sealed class ClientConfiguration
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "OGIPEN", "clientsettings.json");
 
-    public static ClientConfiguration Load()=>LoadFrom(Location);
+    public static ClientConfiguration Load(){var configuration=LoadFrom(Location);ServerTransport.ApplyProvisioning(configuration);return configuration;}
     public static ClientConfiguration LoadFrom(string location)
     {
         ClientConfiguration result;
@@ -104,6 +104,7 @@ public sealed class ClientConfiguration
             if(string.IsNullOrWhiteSpace(p.Id) || p.Id.Length>64 || string.IsNullOrWhiteSpace(p.Name) || p.Name.Length>80)
                 throw new InvalidOperationException("Code ou nom de profil invalide.");
             p.ApiBaseUrl=LicensedSessionClient.RequireSecureEndpoint(p.ApiBaseUrl).AbsoluteUri;
+            ServerTransport.ValidatePin(p.CertificateSha256);
         }
         if(ServerProfiles.Count>0 && !string.IsNullOrEmpty(SelectedProfileId))SelectProfile(SelectedProfileId);
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(location))!);
@@ -114,6 +115,7 @@ public sealed class ClientConfiguration
 }
 public sealed class ServerProfile
 {
+    public string CertificateSha256 { get; set; }="";
     public string Id { get; set; }=Guid.NewGuid().ToString("N");
     public string Name { get; set; }="";
     public string ApiBaseUrl { get; set; }="";
