@@ -13,9 +13,16 @@ public sealed class AuthenticationClient : IDisposable
     public async Task<UserSession> SignInAsync(ClientConfiguration config,CancellationToken ct)
     {
         var identity=WindowsSessionIdentity.Current();
-        var licence=OfflineLicenseService.ReadConnectionLicense(config.OfflineSoftwareId);
+        (string Json,OfflineLicenseActivation.OfflineGrant Grant) licence;
+        try{licence=OfflineLicenseService.ReadConnectionLicense(config.OfflineSoftwareId);}
+        catch(Exception e) when(e is InvalidOperationException or System.Security.Cryptography.CryptographicException or IOException or UnauthorizedAccessException){
+            using var timeout=CancellationTokenSource.CreateLinkedTokenSource(ct);timeout.CancelAfter(TimeSpan.FromSeconds(3));
+            try{await new LicensedSessionClient(_http).ReportLocalRefusalAsync(identity.IdentityId,new(Environment.MachineName,identity.DisplayName),OfflineLicenseService.DeclaredStoredLicenseNumber(),timeout.Token);}
+            catch(Exception reportError) when(reportError is HttpRequestException or OperationCanceledException or InvalidOperationException){}
+            throw;
+        }
         var connection=await new LicensedSessionClient(_http).SignInAsync(identity.IdentityId,
-            licence.Json,licence.Grant,text=>OfflineLicenseService.SignChallenge(text,_http.BaseAddress!),ct);
+            licence.Json,licence.Grant,text=>OfflineLicenseService.SignChallenge(text,_http.BaseAddress!),ct,new ClientAuditMetadata(Environment.MachineName,identity.DisplayName));
         return UserSession.FromReply(new LoginReply {
             AccessToken=connection.AccessToken,DisplayName=connection.Context.DisplayName,
             CompanyId=connection.Context.CompanyId,LicenceId=connection.Context.LicenceId,

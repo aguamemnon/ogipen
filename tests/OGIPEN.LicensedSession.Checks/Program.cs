@@ -22,12 +22,14 @@ try{
  foreach(var url in new[]{"http://site/","https://user:password@site/","https://site/?token=x","https://site/#fragment","ftp://site/"})
   await Denied("unsafe_endpoint_"+checks.Count,()=>Task.FromResult(LicensedSessionClient.RequireSecureEndpoint(url)));
  Check("https_prefix_preserved",LicensedSessionClient.RequireSecureEndpoint("https://SITE/ogipen/client-api").AbsoluteUri==Fake.Audience);
- var f=new Fake(device);var connection=await Client(f).SignInAsync("win-sid:test","signed-file-fixture",grant,Sign,CancellationToken.None);
+ var f=new Fake(device);var connection=await Client(f).SignInAsync("win-sid:test","signed-file-fixture",grant,Sign,CancellationToken.None,new("PC-FIXTURE","DOMAIN\\user"));
  Check("challenge_complete_metadata",f.Calls==3 && signatures==1 && connection.Context.LicenceId==2);
  Check("bearer_only_on_authenticated_calls",f.AuthHeaders.SequenceEqual(new[]{false,false,true}));
  Check("no_password_in_request",!f.Body.Contains("password",StringComparison.OrdinalIgnoreCase));
  Check("signed_license_sent",f.Body.Contains("signed-file-fixture"));
+ Check("computer_and_user_metadata_sent",f.CapturedBodies.Count==2 && f.CapturedBodies.All(x=>JsonNode.Parse(x)!["computerName"]!.GetValue<string>()=="PC-FIXTURE" && JsonNode.Parse(x)!["licenseId"]!.GetValue<int>()==2));
  await Client(f).SignOutAsync(connection.AccessToken,CancellationToken.None);Check("logout_calls_current_session",f.Logout);
+ var local=new Fake(device);await Client(local).ReportLocalRefusalAsync("win-sid:test",new("PC-LOCAL","LOCAL-USER"),8,CancellationToken.None);Check("local_licence_refusal_report_has_no_authentication",local.LocalRefusal && local.Calls==1 && !local.AuthHeaders[0]);
  foreach(var kind in new[]{"wrong_identity","foreign_audience","short_nonce","noncanonical_nonce","lifetime"}){
   var bad=new Fake(device){ChallengeFault=kind};var before=signatures;
   await Denied("challenge_"+kind,()=>Client(bad).SignInAsync("win-sid:test","fixture",grant,Sign,CancellationToken.None));
@@ -58,12 +60,14 @@ sealed class Fake(ECDsa device):HttpMessageHandler
  public const string Audience="https://site/ogipen/client-api/";
  public string? ChallengeFault,ContextFault;
  public HttpStatusCode Status=HttpStatusCode.OK;
- public int Calls;public bool Logout;public List<bool> AuthHeaders=new();public string Body="";
+ public int Calls;public bool Logout,LocalRefusal;public List<bool> AuthHeaders=new();public List<string> CapturedBodies=new();public string Body="";
  private string nonce=Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
  protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken ct){
   Calls++;AuthHeaders.Add(request.Headers.Authorization is not null);
+  if(request.Content is not null)CapturedBodies.Add(await request.Content.ReadAsStringAsync(ct));
   if(Status!=HttpStatusCode.OK)return new(Status);
   JsonObject json;
+  if(request.RequestUri!.AbsolutePath.EndsWith("auth/attempt")){LocalRefusal=true;return new(HttpStatusCode.Accepted);}
   if(request.RequestUri!.AbsolutePath.EndsWith("auth/challenge")){
    var n=ChallengeFault=="short_nonce"?Convert.ToBase64String(new byte[8]):ChallengeFault=="noncanonical_nonce"?nonce+"\n":nonce;
    json=new(){["nonce"]=n,["signingText"]=$"OGIPEN-AUTH-v2:{Audience}:win-sid:test:{n}",["expiresInSeconds"]=90};

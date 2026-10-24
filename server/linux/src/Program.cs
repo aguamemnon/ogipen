@@ -22,6 +22,7 @@ if(signKey.Length < 32) throw new InvalidOperationException("Session key too sho
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<LicenseState>();
 builder.Services.AddSingleton<CompanyLicensing>();
+builder.Services.AddSingleton<AuthenticationAudit>();
 builder.WebHost.ConfigureKestrel(o=>o.Limits.MaxRequestBodySize=65536);
 builder.Services.AddSingleton<ConnectionRegistry>();
 builder.Services.AddHostedService(sp=>sp.GetRequiredService<ConnectionRegistry>());
@@ -29,6 +30,7 @@ builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics",LogLevel.Wa
 builder.Services.AddSingleton(new Db(dbcs));
 builder.Services.AddSingleton(new TokenService(signKey));
 var app = builder.Build();
+app.Use((context,next)=>context.RequestServices.GetRequiredService<AuthenticationAudit>().Observe(context,next));
 
 // NOTE: use TLS reverse proxy, never expose Kestrel port over the network.
 app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) => {
@@ -38,20 +40,22 @@ app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) =>
     await using(var cmd=Cmd(c,"SELECT server_license_json,slm_license_id FROM ogp_project_company WHERE state='prepared' AND server_license_json IS NOT NULL AND slm_license_id IS NOT NULL")){
         await using var r=await cmd.ExecuteReaderAsync(ct);while(await r.ReadAsync(ct))if(license.Verify(r.GetString(0),r.GetInt64(1)) is not null)verified++;
     }
-    return Results.Ok(new {status="ok", version="0.4.9-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
+    return Results.Ok(new {status="ok", version="0.4.11-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
 });
-app.MapPost("/auth/challenge", async (ChallengeRequest req,Db db,CompanyLicensing licensing,CancellationToken ct) => {
-    if(string.IsNullOrWhiteSpace(req.IdentityId) || req.IdentityId.Length>80)return Results.BadRequest();
+app.MapPost("/auth/attempt",(ChallengeRequest req,HttpContext h)=>{h.Items["authReason"]="client_local_license_refused";return Results.Accepted();});
+app.MapPost("/auth/challenge", async (ChallengeRequest req,HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct) => {
+    if(string.IsNullOrWhiteSpace(req.IdentityId) || req.IdentityId.Length>80){h.Items["authReason"]="identity_invalid";return Results.BadRequest();}
     await using var c=await db.Open(ct);
     var enabled=await Scalar(c,"SELECT COUNT(*) FROM ogp_identity WHERE id=@id AND enabled=1",ct,("@id",req.IdentityId));
-    if(enabled!=1 || await licensing.Binding(c,req.IdentityId,ct) is null)return Results.NotFound();
+    if(enabled!=1){h.Items["authReason"]="identity_not_enrolled_or_disabled";return Results.NotFound();}
+    if(await licensing.Binding(c,req.IdentityId,ct) is null){h.Items["authReason"]="company_entitlement_unavailable";return Results.NotFound();}
     var random=RandomNumberGenerator.GetBytes(32);
     var nonce=Convert.ToBase64String(random);
     var nonceHash=Convert.ToHexString(SHA256.HashData(random));
     await Exec(c,"INSERT INTO ogp_challenge(nonce_hash,identity_id,expires_utc) VALUES(@hash,@id,DATE_ADD(UTC_TIMESTAMP(6),INTERVAL 90 SECOND))",ct,("@hash",nonceHash),("@id",req.IdentityId));
     return Results.Ok(new {nonce,signingText=$"OGIPEN-AUTH-v2:{authAudience}:{req.IdentityId}:{nonce}",expiresInSeconds=90});
 });
-app.MapPost("/auth/complete",async (CompleteRequest req,Db db,TokenService tokens,CompanyLicensing licensing,CancellationToken ct)=>{
+app.MapPost("/auth/complete",async (CompleteRequest req,HttpContext h,Db db,TokenService tokens,CompanyLicensing licensing,CancellationToken ct)=>{
     try {
         if (string.IsNullOrEmpty(req.LicenseJson) || req.LicenseJson.Length>16384 || string.IsNullOrEmpty(req.IdentityId) || req.IdentityId.Length>80 || string.IsNullOrEmpty(req.Nonce) || req.Nonce.Length>128 || string.IsNullOrEmpty(req.Signature) || req.Signature.Length>256) return Results.Unauthorized();
         var nonceRaw=Convert.FromBase64String(req.Nonce);
@@ -61,17 +65,19 @@ app.MapPost("/auth/complete",async (CompleteRequest req,Db db,TokenService token
         await using var tx=await c.BeginTransactionAsync(IsolationLevel.ReadCommitted,ct);
         // Atomically consume the nonce so it cannot be replayed.
         var changed=await Exec(c,"UPDATE ogp_challenge SET consumed=1 WHERE nonce_hash=@hash AND identity_id=@id AND consumed=0 AND expires_utc>UTC_TIMESTAMP(6)",ct,tx,("@hash",hash),("@id",req.IdentityId));
-        if(changed!=1){await tx.RollbackAsync(ct);return Results.Unauthorized();}
+        if(changed!=1){h.Items["authReason"]="nonce_invalid_or_replayed";await tx.RollbackAsync(ct);return Results.Unauthorized();}
         string? pem=null;int version=0;
         await using(var cmd=Cmd(c,"SELECT public_key_pem,auth_version FROM ogp_identity WHERE id=@id AND enabled=1 FOR UPDATE",("@id",req.IdentityId))){cmd.Transaction=(MySqlTransaction)tx;await using var r=await cmd.ExecuteReaderAsync(ct);if(await r.ReadAsync(ct)){pem=r.GetString(0);version=r.GetInt32(1);}}
         if(pem==null){await tx.RollbackAsync(ct);return Results.Unauthorized();}
         using var ec=ECDsa.Create();ec.ImportFromPem(pem);
         var input=Encoding.UTF8.GetBytes($"OGIPEN-AUTH-v2:{authAudience}:{req.IdentityId}:{req.Nonce}");
         if(!ec.VerifyData(input,Convert.FromBase64String(req.Signature),HashAlgorithmName.SHA256)){
+            h.Items["authReason"]="identity_proof_refused";
             await tx.RollbackAsync(ct);return Results.Unauthorized();
         }
         var binding=await licensing.Binding(c,req.IdentityId,ct,(MySqlTransaction)tx);
-        if(binding is null || !licensing.VerifyClient(binding,req.LicenseJson!,out var grant)){await tx.RollbackAsync(ct);return Results.Unauthorized();}
+        h.Items["identityProofVerified"]=true;
+        if(binding is null || !licensing.VerifyClient(binding,req.LicenseJson!,out var grant)){h.Items["authReason"]="client_entitlement_refused";await tx.RollbackAsync(ct);return Results.Unauthorized();}
         var sessionId=Guid.NewGuid().ToString("N");
         var expires=new[]{DateTimeOffset.UtcNow.AddMinutes(15),grant!.ExpiresUtc,binding.Server.Expires}.Min();
         await Exec(c,"DELETE FROM ogp_auth_session WHERE expires_utc<=UTC_TIMESTAMP(6) LIMIT 100",ct,tx);
@@ -179,7 +185,7 @@ api.MapPut("/demo/cables/{id:long}",async(long id,SaveCable body,HttpContext h,D
 api.MapGet("/events",async(HttpContext h,Db db,long? after,CancellationToken ct)=>{
     await using var c=await db.Open(ct);if(!await Authorized(c,Actor(h),false,ct))return Results.StatusCode(403);
     var list=new List<object>();
-    await using var cmd=Cmd(c,"SELECT id,happened_utc,actor_id,action_code,entity_type,entity_id FROM ogp_audit_event WHERE id>@after ORDER BY id LIMIT 200",("@after",after??0));
+    await using var cmd=Cmd(c,"SELECT id,happened_utc,actor_id,action_code,entity_type,entity_id FROM ogp_audit_event WHERE entity_type<>'authentication' AND id>@after ORDER BY id LIMIT 200",("@after",after??0));
     await using var r=await cmd.ExecuteReaderAsync(ct);
     while(await r.ReadAsync(ct))list.Add(new{id=r.GetInt64(0),utc=r.GetDateTime(1),actor=r.GetString(2),action=r.GetString(3),entityType=r.GetString(4),entityId=r.GetInt64(5)});
     return Results.Ok(list);

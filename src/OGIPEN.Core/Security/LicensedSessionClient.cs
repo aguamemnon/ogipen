@@ -20,14 +20,14 @@ public sealed class LicensedSessionClient(HttpClient http)
     }
 
     public async Task<LicensedConnection> SignInAsync(string identityId,string licenseJson,
-        OfflineLicenseActivation.OfflineGrant localGrant,Func<string,byte[]> sign,CancellationToken ct)
+        OfflineLicenseActivation.OfflineGrant localGrant,Func<string,byte[]> sign,CancellationToken ct,ClientAuditMetadata? auditMetadata=null)
     {
         var audience=RequireSecureEndpoint(http.BaseAddress?.AbsoluteUri??"").AbsoluteUri;
         if(localGrant.LicenseId<1 || localGrant.BeneficiaryId<1 || localGrant.ExpiresUtc<=DateTimeOffset.UtcNow || string.IsNullOrWhiteSpace(licenseJson))
             throw new InvalidOperationException("Licence locale invalide ou expirée.");
         if(string.IsNullOrWhiteSpace(identityId) || identityId.Length>80 || identityId.Contains('|'))
             throw new InvalidOperationException("Identité Windows non utilisable pour l’enrôlement.");
-        using var challengeResponse=await http.PostAsJsonAsync("auth/challenge",new{identityId},ct);
+        using var challengeResponse=await http.PostAsJsonAsync("auth/challenge",new{identityId,computerName=auditMetadata?.ComputerName,userName=auditMetadata?.UserName,licenseId=localGrant.LicenseId},ct);
         await EnsureSuccess(challengeResponse,ct);
         var challenge=await challengeResponse.Content.ReadFromJsonAsync<Challenge>(cancellationToken:ct)
             ??throw new InvalidOperationException("Challenge serveur vide.");
@@ -39,7 +39,7 @@ public sealed class LicensedSessionClient(HttpClient http)
             throw new InvalidOperationException("Challenge serveur invalide.");
         var proof=sign(expected);if(proof.Length!=64)throw new InvalidOperationException("Preuve de clé P-256 invalide.");
         var signature=Convert.ToBase64String(proof);
-        using var complete=await http.PostAsJsonAsync("auth/complete",new{identityId,nonce=challenge.Nonce,signature,licenseJson},ct);
+        using var complete=await http.PostAsJsonAsync("auth/complete",new{identityId,nonce=challenge.Nonce,signature,licenseJson,computerName=auditMetadata?.ComputerName,userName=auditMetadata?.UserName,licenseId=localGrant.LicenseId},ct);
         await EnsureSuccess(complete,ct);
         var reply=await complete.Content.ReadFromJsonAsync<TokenReply>(cancellationToken:ct)
             ??throw new InvalidOperationException("Session serveur vide.");
@@ -70,6 +70,12 @@ public sealed class LicensedSessionClient(HttpClient http)
         using var response=await http.SendAsync(request,ct);
         if(response.StatusCode!=HttpStatusCode.Unauthorized)await EnsureSuccess(response,ct);
     }
+    public async Task ReportLocalRefusalAsync(string identityId,ClientAuditMetadata metadata,long? licenseId,CancellationToken ct)
+    {
+        _=RequireSecureEndpoint(http.BaseAddress?.AbsoluteUri??"");
+        using var response=await http.PostAsJsonAsync("auth/attempt",new{identityId,computerName=metadata.ComputerName,userName=metadata.UserName,licenseId},ct);
+        await EnsureSuccess(response,ct);
+    }
     private static Task EnsureSuccess(HttpResponseMessage response,CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
@@ -87,3 +93,4 @@ public sealed class LicensedSessionClient(HttpClient http)
 public sealed record SessionProject(string Id,string Name,string Role,string[] Permissions);
 public sealed record SessionContext(string Identity,long CompanyId,long LicenceId,long BeneficiaryId,string DisplayName,SessionProject[] Projects);
 public sealed record LicensedConnection(string AccessToken,DateTimeOffset ExpiresUtc,SessionContext Context);
+public sealed record ClientAuditMetadata(string ComputerName,string UserName);

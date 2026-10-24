@@ -89,6 +89,17 @@ public static class OfflineLicenseService
             throw new InvalidOperationException("La licence locale ne correspond pas à ce poste, à Ogipen ou à sa période de validité.");
         return (json,grant);
     }
+    public static long? DeclaredStoredLicenseNumber()
+    {
+        try{
+            if(!File.Exists(StoredLicenseFile) || new FileInfo(StoredLicenseFile).Length>16384)return null;
+            using var file=System.Text.Json.JsonDocument.Parse(File.ReadAllText(StoredLicenseFile));
+            var parts=file.RootElement.GetProperty("token").GetString()!.Split('.');if(parts.Length!=3)return null;
+            var encoded=parts[1].Replace('-','+').Replace('_','/');
+            using var claims=System.Text.Json.JsonDocument.Parse(Convert.FromBase64String(encoded.PadRight((encoded.Length+3)/4*4,'=')));
+            return claims.RootElement.GetProperty("lic").TryGetInt64(out var n) && n>0?n:null;
+        }catch{return null;}
+    }
 
     public static byte[] SignChallenge(string text,Uri audience)
     {

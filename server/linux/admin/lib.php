@@ -48,3 +48,10 @@ function event_table(array $events):string{
  foreach($events as $e){echo '<tr><td>'.h($e['happened_utc']).'</td><td>'.h($e['actor_id']).'</td><td><span class="pill">'.h($e['action_code']).'</span></td><td>'.h($e['entity_type']).' #'.h($e['entity_id']).'</td><td class="detail">'.h($e['details']??'').'</td></tr>';}
  echo '</tbody></table>';return (string)ob_get_clean();
 }
+require_once __DIR__.'/auth-event-view.php';
+function portal_auth_event(bool $success,string $reason):void {
+ try{
+  $data=['schema'=>'ogipen-auth-audit-v1','phase'=>'portal','success'=>$success,'reason'=>$reason,'computerName'=>'','userName'=>'admin','identityId'=>'ADMIN:admin','ip'=>(string)($_SERVER['REMOTE_ADDR']??'unknown'),'licenseId'=>null,'serverLicenseId'=>null,'licenseSignatureVerified'=>false,'identityProofVerified'=>false,'clientMetadataDeclared'=>true];
+  $q=db()->prepare("INSERT INTO ogp_audit_event(happened_utc,actor_id,action_code,entity_type,entity_id,details) VALUES(UTC_TIMESTAMP(6),'ADMIN:admin','PORTAL_LOGIN','authentication',0,?)");$q->execute([json_encode($data,JSON_THROW_ON_ERROR)]);
+ }catch(Throwable $e){error_log('Ogipen portal authentication audit storage unavailable');}
+}

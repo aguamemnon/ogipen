@@ -1,3 +1,7 @@
+# Version courante : 0.4.11 — audit des connexions
+
+La connexion directe au serveur d’entreprise est conservée. Les tentatives sont maintenant journalisées avec PC/utilisateur déclarés, IP source et référence de licence, y compris les références différentes. Voir [le lot 0.4.11](../../server/linux/docs/authentication-audit-v0.4.11.md) pour la confidentialité, les validations et les limites.
+
 # Version courante : serveur d’entreprise autonome 0.4.10
 
 Le client se connecte directement à l’API de l’entreprise. Le relais WordPress est retiré. Voir [la version 0.4.10](../../server/linux/docs/company-server-v0.4.10.md) pour les adresses, la confiance au certificat par serveur, le paquet et les limites actuelles. Les anciens modes d’accès ci-dessous sont historiques.
