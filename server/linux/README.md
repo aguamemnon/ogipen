@@ -1,3 +1,7 @@
+# État courant : v0.4.8
+
+L’API impose désormais les licences serveur/poste et les affectations par entreprise. Voir [le déploiement v0.4.8](docs/licences-entreprises-v0.4.8.md), ses migrations obligatoires et ses limites avant toute installation. Les instructions v0.4.5 ci-dessous décrivent la base historique ; elles ne suffisent pas seules à configurer la nouvelle API.
+
 # Ogipen Linux server — v0.4.5 prototype
 
 This directory versions the ASP.NET Core API and PHP administration portal tested on the Linux test environment. It does not replace the Windows client in `src/OGIPEN.Desktop`.

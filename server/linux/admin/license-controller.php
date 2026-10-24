@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $tmp=null;
     try {
         csrf_check();
+        if((int)db()->query('SELECT COUNT(*) FROM ogp_project_company WHERE server_license_json IS NOT NULL')->fetchColumn()>0)throw new DomainException('Les licences utilisées par l’API sont maintenant gérées par entreprise. Importez le renouvellement dans la rubrique Entreprises.');
         $f=$_FILES['license']??null;
         if (!$f || $f['error']!==UPLOAD_ERR_OK || $f['size']>65536 || !is_uploaded_file($f['tmp_name'])) {
             throw new RuntimeException('Fichier de licence invalide ou trop volumineux.');

@@ -1,9 +1,9 @@
 <?php if(!function_exists('bound_license')){http_response_code(404);exit;} ?>
-<section class="panel license-summary">
-<div class="section-heading"><div><h2>Droits du serveur</h2><p>Retrouvez ici votre licence et sa date de validité.</p></div><span class="license-badge <?=$data?'valid':'invalid'?>"><?=$data?'Licence valide':'Activation requise'?></span></div>
+<section class="panel"><h2>Licences des entreprises participantes</h2><p>Les licences utilisées par les connexions API sont importées dans la rubrique Entreprises, une licence signée par entreprise. Le fichier affiché ci-dessous conserve le diagnostic de l’activation initiale de cette instance ; il n’accorde pas les modules des autres entreprises.</p><a href="<?=h(url('/?page=companies'))?>">Gérer les licences par entreprise</a></section><section class="panel license-summary">
+<div class="section-heading"><div><h2>Activation initiale de cette instance</h2><p>Diagnostic du fichier initial ; les droits des connexions sont contrôlés par entreprise.</p></div><span class="license-badge <?=$data?'valid':'invalid'?>"><?=$data?'Licence valide':'Activation requise'?></span></div>
 <?php if($data):?>
 <dl class="license-details"><dt>Licence</dt><dd><?=h($data['license_id'])?></dd><dt>Places autorisées</dt><dd><?=h($data['seats'])?></dd><dt>Valable jusqu’au</dt><dd><?=h((new DateTimeImmutable($data['expires_utc']))->format('d/m/Y à H:i'))?> UTC</dd><dt>Modules supplémentaires</dt><dd><?=count($data['modules'])?h(implode(', ',$data['modules'])):'Aucun'?></dd></dl>
-<?php else:?><p>Importez une licence valide pour activer l’API de ce serveur. Vous pouvez continuer à administrer le portail.</p><?php endif;?>
+<?php else:?><p>Importez une licence serveur dans la rubrique Entreprises pour autoriser les connexions API. Vous pouvez continuer à administrer le portail.</p><?php endif;?>
 </section>
 <div class="license-grid"><section class="panel"><h2>Importer ou renouveler</h2><p>Sélectionnez le fichier de licence exporté depuis WordPress. Il est vérifié avant de remplacer la licence actuelle.</p>
 <form class="license-import" method="post" action="<?=h(url('/?page=license'))?>" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=h(csrf())?>"><label for="license-file">Fichier de licence serveur</label><input id="license-file" type="file" name="license" accept=".oglic,.json,application/json" required><button>Vérifier et importer la licence serveur</button></form>

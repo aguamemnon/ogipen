@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
 using static ProjectSql;
 
-sealed class ConnectionRegistry(Db db, TokenService tokens, LicenseState license) : BackgroundService
+sealed class ConnectionRegistry(Db db, TokenService tokens, CompanyLicensing licensing) : BackgroundService
 {
     private readonly ConcurrentDictionary<string,(HubCallerContext Context,string Token)> clients = new();
     public void Add(HubCallerContext context,string token) => clients[context.ConnectionId]=(context,token);
@@ -14,13 +14,10 @@ sealed class ConnectionRegistry(Db db, TokenService tokens, LicenseState license
             while(await timer.WaitForNextTickAsync(stop)) {
                 if(clients.IsEmpty) continue;
                 try {
-                    var rights=license.Read();
-                    if(!rights.Valid){CloseAll();continue;}
                     await using var c=await db.Open(stop);
-                    if(await Scalar(c,"SELECT COUNT(*) FROM ogp_identity WHERE enabled=1",stop)>rights.Seats){CloseAll();continue;}
                     foreach(var pair in clients) {
                         var session=tokens.Validate(pair.Value.Token);
-                        if(session is null || !await SessionValid(c,session,stop) || !await Authorized(c,session.IdentityId,false,stop)) {
+                        if(session is null || !await licensing.SessionValid(c,session,stop) || !await Authorized(c,session.IdentityId,false,stop)) {
                             pair.Value.Context.Abort();Remove(pair.Key);
                         }
                     }
