@@ -17,3 +17,8 @@ Le login est prérempli avec le compte Windows courant, modifiable, avec mot de 
 ## Démarrage et thème — 0.4.14
 
 L’activation du poste est séparée du login. Sans licence valide, la fenêtre dédiée précède la connexion ; avec une licence valide, le login s’ouvre directement. La licence se met à jour depuis Administration → Application → Licence / activation. Les fenêtres utilisent le thème sombre Krypton. Voir [le parcours 0.4.14](docs/parcours-licence-login-v0.4.14.md).
+
+
+## Comptes internes — 0.4.15
+
+Gestion des comptes internes dans Administration → Application → Comptes Ogipen : administrateur en modification, OSSI en consultation. Le rôle technique et les droits métier restent distincts. API protégée et limitée à l’entreprise licenciée. Voir [la livraison 0.4.15](docs/comptes-internes-v0.4.15.md).

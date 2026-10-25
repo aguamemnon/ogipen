@@ -40,7 +40,7 @@ app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) =>
     await using(var cmd=Cmd(c,"SELECT server_license_json,slm_license_id FROM ogp_project_company WHERE state='prepared' AND server_license_json IS NOT NULL AND slm_license_id IS NOT NULL")){
         await using var r=await cmd.ExecuteReaderAsync(ct);while(await r.ReadAsync(ct))if(license.Verify(r.GetString(0),r.GetInt64(1)) is not null)verified++;
     }
-    return Results.Ok(new {status="ok", version="0.4.13-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
+    return Results.Ok(new {status="ok", version="0.4.15-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
 });
 app.MapPost("/auth/attempt",(ChallengeRequest req,HttpContext h)=>{h.Items["authReason"]="client_local_license_refused";return Results.Accepted();});
 app.MapPost("/auth/challenge",()=>Results.Json(new{message="Client 0.4.13 requis : login et mot de passe."},statusCode:426));
@@ -59,9 +59,11 @@ var api=app.MapGroup("/api").AddEndpointFilter(async (ctx,next)=>{
     ctx.HttpContext.Items["session"]=session;
     return await next(ctx);
 });
-api.MapGet("/administration",async(HttpContext h,Db db,CancellationToken ct)=>{
+AccountAdministration.Map(api);
+api.MapGet("/administration",async(HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct)=>{
     await using var c=await db.Open(ct);var role=await PasswordAuthentication.Role(c,Actor(h),ct);
-    return role is "admin" or "ossi"?Results.Ok(new{systemRole=role,identities=await Scalar(c,"SELECT COUNT(*) FROM ogp_identity",ct),scope="company-server"}):Results.StatusCode(403);
+    var binding=await licensing.Binding(c,Actor(h),ct);if(binding is null)return Results.Unauthorized();
+    return role is "admin" or "ossi"?Results.Ok(new{systemRole=role,identities=await Scalar(c,"SELECT COUNT(*) FROM ogp_identity WHERE company_id=@company",ct,("@company",binding.CompanyId)),scope="company-server"}):Results.StatusCode(403);
 });
 api.MapGet("/session",async(HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct)=>{
     await using var c=await db.Open(ct);var b=await licensing.Binding(c,Actor(h),ct);
@@ -151,7 +153,7 @@ api.MapPut("/demo/cables/{id:long}",async(long id,SaveCable body,HttpContext h,D
 api.MapGet("/events",async(HttpContext h,Db db,long? after,CancellationToken ct)=>{
     await using var c=await db.Open(ct);if(!await Authorized(c,Actor(h),false,ct))return Results.StatusCode(403);
     var list=new List<object>();
-    await using var cmd=Cmd(c,"SELECT id,happened_utc,actor_id,action_code,entity_type,entity_id FROM ogp_audit_event WHERE entity_type<>'authentication' AND id>@after ORDER BY id LIMIT 200",("@after",after??0));
+    await using var cmd=Cmd(c,"SELECT id,happened_utc,actor_id,action_code,entity_type,entity_id FROM ogp_audit_event WHERE entity_type NOT IN ('authentication','administration','account_administration') AND id>@after ORDER BY id LIMIT 200",("@after",after??0));
     await using var r=await cmd.ExecuteReaderAsync(ct);
     while(await r.ReadAsync(ct))list.Add(new{id=r.GetInt64(0),utc=r.GetDateTime(1),actor=r.GetString(2),action=r.GetString(3),entityType=r.GetString(4),entityId=r.GetInt64(5)});
     return Results.Ok(list);

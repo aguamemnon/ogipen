@@ -101,7 +101,7 @@ public sealed class MainMdiForm : KryptonForm
             ("Suivi", new[] { ("Tableaux de bord", "dashboard"), ("Historique", "history") }));
         AddTab("Administration",
             ("Projet", new[] { ("Utilisateurs", "users"), ("Droits", "permissions"), ("Maintenance", "maintenance") }),
-            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about"), ("Licence / activation", "offline-activation"), ("Fiche d’accès Windows", "windows-enrollment") }));
+            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about"), ("Licence / activation", "offline-activation"), ("Fiche d’accès Windows", "windows-enrollment"), ("Comptes Ogipen", "accounts") }));
         AddTab("Affichage",
             ("Documents", new[] { ("Onglets", "tabs"), ("Côte à côte", "split-left-right"), ("Haut / bas", "split-top-bottom"), ("Fermer l'onglet", "close-document") }),
             ("Fenêtres", new[] { ("Explorateur", "explorer"), ("Propriétés", "properties"), ("Journal", "activity") }));
@@ -150,7 +150,7 @@ public sealed class MainMdiForm : KryptonForm
             SizingGrip = false
         };
         status.Items.Add(new ToolStripStatusLabel("OGIPEN C#"));
-        if(_session.SystemRole is "admin" or "ossi"){var administration=new ToolStripButton("Administration serveur");administration.Click+=(_,_)=>{using var form=new ServerAdministrationForm(_session,_config);form.ShowDialog(this);};status.Items.Add(administration);}
+        if(_session.SystemRole is "admin" or "ossi"){var administration=new ToolStripButton("Administration serveur");administration.Click+=(_,_)=>{using var form=new ServerAdministrationForm(_session,_config);form.ShowDialog(this);if(form.ReauthenticationRequired)LogoutRequested?.Invoke(this,EventArgs.Empty);};status.Items.Add(administration);}
         status.Items.Add(new ToolStripStatusLabel($"Utilisateur : {_session.DisplayName} · {_session.SystemRole}"));
         status.Items.Add(new ToolStripStatusLabel($"Projet : {_project.Name}"));
         status.Items.Add(new ToolStripStatusLabel($"Poste : {_project.Role}"));
@@ -298,6 +298,12 @@ public sealed class MainMdiForm : KryptonForm
 
         switch (action)
         {
+            case "accounts":
+                if(_session.IsPreview || _session.SystemRole is not ("admin" or "ossi")){MessageBox.Show(this,"Les comptes internes sont réservés à l’administrateur et à l’OSSI.","OGIPEN — Comptes internes",MessageBoxButtons.OK,MessageBoxIcon.Information);return;}
+                using(var accounts=new AccountAdministrationForm(_session,_config)){
+                    accounts.ShowDialog(this);if(accounts.ReauthenticationRequired)LogoutRequested?.Invoke(this,EventArgs.Empty);
+                }
+                return;
             case "windows-enrollment":
                 using(var file=new SaveFileDialog{Title="Fiche d’accès Windows",Filter="Fiche (*.txt)|*.txt",FileName="ogipen-enrolement.txt"}){
                     if(file.ShowDialog(this)==DialogResult.OK){try{OfflineLicenseService.ExportEnrollmentInfo(file.FileName);}catch(Exception ex){MessageBox.Show(this,ex.Message,"Fiche d’accès",MessageBoxButtons.OK,MessageBoxIcon.Warning);}}

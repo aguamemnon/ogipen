@@ -31,6 +31,13 @@ internal static class Program
             if(issuer.KeySize!=256)throw new Exception("Clé publique d’émetteur invalide.");
             using var profiles=new ServerProfilesForm(new ClientConfiguration());
             var session = UserSession.Preview();
+            using var accounts=new AccountAdministrationForm(session,new ClientConfiguration(),previewOnly:true);
+            if(accounts is not KryptonForm)throw new Exception("La gestion des comptes doit utiliser le thème de l’application.");
+            var children=accounts.Controls.Cast<Control>().SelectMany(c=>c.Controls.Cast<Control>()).ToArray();
+            var tables=accounts.Controls.Cast<Control>().SelectMany(c=>c.Controls.Cast<Control>()).OfType<KryptonDataGridView>().ToArray();
+            if(tables.Length!=1||!tables[0].ReadOnly)throw new Exception("La liste des comptes et droits doit être en lecture seule.");
+            if(Environment.GetEnvironmentVariable("OGIPEN_TEST_ACCOUNTS_IMAGE") is string accountsImage){accounts.ShowInTaskbar=false;accounts.Opacity=0;accounts.Show();Application.DoEvents();using(var image=new Bitmap(accounts.Width,accounts.Height)){accounts.DrawToBitmap(image,new Rectangle(Point.Empty,accounts.Size));image.Save(accountsImage);}accounts.Hide();}
+            Console.WriteLine("OK — Fenêtre Comptes Ogipen, grille en lecture seule et champs sensibles masqués.");
             using var main = new MainMdiForm(session, session.Projects[0],
                 new ClientConfiguration());
 
