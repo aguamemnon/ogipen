@@ -101,7 +101,7 @@ public sealed class MainMdiForm : KryptonForm
             ("Suivi", new[] { ("Tableaux de bord", "dashboard"), ("Historique", "history") }));
         AddTab("Administration",
             ("Projet", new[] { ("Utilisateurs", "users"), ("Droits", "permissions"), ("Maintenance", "maintenance") }),
-            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about"), ("Licence hors ligne", "offline-activation") }));
+            ("Application", new[] { ("Connexion", "connection"), ("Mise à jour", "updates"), ("Informations", "about"), ("Licence / activation", "offline-activation"), ("Fiche d’accès Windows", "windows-enrollment") }));
         AddTab("Affichage",
             ("Documents", new[] { ("Onglets", "tabs"), ("Côte à côte", "split-left-right"), ("Haut / bas", "split-top-bottom"), ("Fermer l'onglet", "close-document") }),
             ("Fenêtres", new[] { ("Explorateur", "explorer"), ("Propriétés", "properties"), ("Journal", "activity") }));
@@ -298,8 +298,19 @@ public sealed class MainMdiForm : KryptonForm
 
         switch (action)
         {
+            case "windows-enrollment":
+                using(var file=new SaveFileDialog{Title="Fiche d’accès Windows",Filter="Fiche (*.txt)|*.txt",FileName="ogipen-enrolement.txt"}){
+                    if(file.ShowDialog(this)==DialogResult.OK){try{OfflineLicenseService.ExportEnrollmentInfo(file.FileName);}catch(Exception ex){MessageBox.Show(this,ex.Message,"Fiche d’accès",MessageBoxButtons.OK,MessageBoxIcon.Warning);}}
+                }
+                return;
             case "offline-activation":
-                using (var dlg = new OfflineActivationForm(_config)) dlg.ShowDialog(this);
+                using (var dlg = new OfflineActivationForm(_config)){
+                    dlg.ShowDialog(this);
+                    if(dlg.LicenseChanged){
+                        MessageBox.Show(this,"Licence du poste mise à jour. Reconnectez-vous pour appliquer ses droits à la session.","OGIPEN — Licence mise à jour",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        LogoutRequested?.Invoke(this,EventArgs.Empty);
+                    }
+                }
                 return;
             case "close-document":
                 if (_workspace.ActivePage is KryptonPage selected)

@@ -1,9 +1,10 @@
 using OGIPEN.Desktop.Models;
+using Krypton.Toolkit;
 
 namespace OGIPEN.Desktop.Forms;
-public sealed class ProjectSelectionForm : Form
+public sealed class ProjectSelectionForm : AppDialog
 {
-    private readonly ListBox _list;
+    private readonly KryptonListBox _list;
     private readonly UserSession _session;
     public ProjectAccess? SelectedProject { get; private set; }
 
@@ -14,8 +15,8 @@ public sealed class ProjectSelectionForm : Form
         StartPosition = FormStartPosition.CenterScreen; BackColor = Ui.Background;
         Controls.Add(Ui.Label("Sélection du projet", 30, 24, 500, 42, true));
         Controls.Add(Ui.Label("Seuls les projets autorisés par le serveur sont présentés.", 30, 72, 540));
-        _list = new ListBox { Location = new Point(30, 120), Size = new Size(550, 210),
-            Font = new Font("Segoe UI", 12), DisplayMember = nameof(ProjectAccess.Name) };
+        _list = new KryptonListBox { Location = new Point(30, 120), Size = new Size(550, 210),
+            DisplayMember = nameof(ProjectAccess.Name) };
         foreach (var project in session.Projects) _list.Items.Add(project);
         if (_list.Items.Count > 0) _list.SelectedIndex = 0;
         Controls.Add(_list);

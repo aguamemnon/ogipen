@@ -1,4 +1,5 @@
 using Krypton.Ribbon;
+using Krypton.Toolkit;
 using OGIPEN.Core.Security;
 using OGIPEN.Desktop.Forms;
 using OGIPEN.Desktop.Infrastructure;
@@ -19,6 +20,12 @@ internal static class Program
         try
         {
             Application.EnableVisualStyles();
+            int activationCalls=0;bool valid=true;
+            if(!LicenseStartupGate.Ensure(()=>valid,()=>{activationCalls++;return true;})||activationCalls!=0)throw new Exception("Une licence valide doit aller directement au login.");
+            valid=false;if(!LicenseStartupGate.Ensure(()=>valid,()=>{activationCalls++;valid=true;return true;})||activationCalls!=1)throw new Exception("L’activation doit précéder le login.");
+            if(LicenseStartupGate.Ensure(()=>false,()=>false))throw new Exception("Annuler l’activation ne doit pas ouvrir le login.");
+            if(LicenseStartupGate.Ensure(()=>false,()=>true))throw new Exception("Un résultat de dialogue seul ne vaut pas licence valide.");
+            Console.WriteLine("OK — Licence valide : login direct ; licence absente : activation ; annulation et licence toujours invalide : accès bloqué.");
             Application.SetCompatibleTextRenderingDefault(false);
             using var issuer=ECDsa.Create();issuer.ImportFromPem(File.ReadAllText(OfflineLicenseService.PublicKeyFile));
             if(issuer.KeySize!=256)throw new Exception("Clé publique d’émetteur invalide.");
@@ -95,7 +102,14 @@ internal static class Program
                 using var native=CngKey.Open("OGIPEN_Offline_P256_v1",CngProvider.MicrosoftSoftwareKeyStorageProvider,CngKeyOpenOptions.UserKey);
                 if(native.ExportPolicy!=CngExportPolicies.None)throw new Exception("La clé CNG autorise l’export privé.");
                 using var login=new LoginForm(new ClientConfiguration(),null,new(false,false,"Test local"));
-                IEnumerable<Control> Descendants(Control c)=>c.Controls.Cast<Control>().SelectMany(x=>new[]{x}.Concat(Descendants(x)));
+                IEnumerable<Control> Descendants(Control c)=>(c is KryptonForm k?k.Controls:c.Controls).Cast<Control>().SelectMany(x=>new[]{x}.Concat(Descendants(x)));
+                if(login is not KryptonForm || Descendants(login).OfType<KryptonButton>().Any(b=>b.Text.Contains(".oglic")||b.Text.Contains(".ogreq")))throw new Exception("Le login doit être thémé et séparé de l’activation.");
+                using var activation=new OfflineActivationForm(new ClientConfiguration(),activationRequired:true);
+                if(activation is not KryptonForm || Descendants(activation).OfType<KryptonTextBox>().Any())throw new Exception("L’activation ne doit pas demander d’identifiants.");
+                
+                var next=Descendants(activation).OfType<KryptonButton>().Single(b=>b.Values.Text=="Continuer vers la connexion");
+                if(next.Enabled!=OfflineLicenseService.TryReadLicense(new ClientConfiguration().OfflineSoftwareId,out _))throw new Exception("Continuer doit dépendre de la licence réelle.");
+                if(Environment.GetEnvironmentVariable("OGIPEN_TEST_ACTIVATION_IMAGE") is string activationImage){activation.ShowInTaskbar=false;activation.Opacity=0;activation.Show();Application.DoEvents();using(var bitmap=new Bitmap(activation.Width,activation.Height)){activation.DrawToBitmap(bitmap,new Rectangle(Point.Empty,activation.Size));bitmap.Save(activationImage);}activation.Hide();}
                 var fields=Descendants(login).OfType<TextBox>().ToArray();
                 if(Environment.GetEnvironmentVariable("OGIPEN_TEST_LOGIN_IMAGE") is string imagePath){login.ShowInTaskbar=false;login.Opacity=0;login.Show();Application.DoEvents();using(var bitmap=new Bitmap(login.Width,login.Height)){login.DrawToBitmap(bitmap,new Rectangle(Point.Empty,login.Size));bitmap.Save(imagePath);}login.Hide();}
                 if(fields.Length!=2 || !fields.Any(t=>t.UseSystemPasswordChar && t.Text=="") || !fields.Any(t=>!t.UseSystemPasswordChar && t.Text==identity.DisplayName && !t.ReadOnly))throw new Exception("Login Windows prérempli modifiable et mot de passe masqué obligatoires.");

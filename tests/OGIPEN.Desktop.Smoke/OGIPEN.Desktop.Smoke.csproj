@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion>
-    <OutputType>Exe</OutputType>
+    <OutputType>Exe</OutputType><Version>0.4.14</Version>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>

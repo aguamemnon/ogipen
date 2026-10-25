@@ -51,6 +51,9 @@ internal sealed class StartupApplicationContext : ApplicationContext
             _serverEndpoint = endpoint;
             await Task.Yield();
 
+            _splash.Hide();
+            if(!EnsureLicense(config)){_splash.Close();ExitThread();return;}
+            _splash.Show();
             _splash.Report("Test de présence du serveur...", 45);
             ServerPreflightResult result =
                 await StartupChecks.CheckServerAsync(config, endpoint, CancellationToken.None);
@@ -98,9 +101,16 @@ internal sealed class StartupApplicationContext : ApplicationContext
             ExitThread();
         }
     }
+    private static bool EnsureLicense(ClientConfiguration config)
+        =>LicenseStartupGate.Ensure(()=>OfflineLicenseService.TryReadLicense(config.OfflineSoftwareId,out _),()=>{
+            using var activation=new OfflineActivationForm(config,activationRequired:true);
+            return activation.ShowDialog()==DialogResult.OK;
+        });
+
     private static (UserSession Session, ProjectAccess Project)? RequestSession(
         ClientConfiguration config, Uri? endpoint, ServerPreflightResult server)
     {
+        if(!EnsureLicense(config))return null;
         using var login = new LoginForm(config, endpoint, server);
         if (login.ShowDialog() != DialogResult.OK || login.Session is null)
             return null;

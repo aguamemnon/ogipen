@@ -12,3 +12,8 @@ Dans WordPress, choisir la licence Ogipen et charger le `.ogreq` du poste, puis 
 ## Connexion utilisateur — 0.4.13
 
 Le login est prérempli avec le compte Windows courant, modifiable, avec mot de passe obligatoire. Choix Windows/AD ou compte interne Ogipen. Les comptes admin/OSSI se configurent dans le portail, rubrique Comptes Ogipen. La licence du poste reste distincte du compte choisi. Voir [la connexion 0.4.13](docs/authentification-v0.4.13.md). L’ancienne connexion sans mot de passe est désactivée côté API.
+
+
+## Démarrage et thème — 0.4.14
+
+L’activation du poste est séparée du login. Sans licence valide, la fenêtre dédiée précède la connexion ; avec une licence valide, le login s’ouvre directement. La licence se met à jour depuis Administration → Application → Licence / activation. Les fenêtres utilisent le thème sombre Krypton. Voir [le parcours 0.4.14](docs/parcours-licence-login-v0.4.14.md).
