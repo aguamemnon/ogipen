@@ -8,7 +8,11 @@ try{
         try{
             csrf_check();$message=identity_change($identityDb,$_POST);
         }catch(DomainException $e){$error=$e->getMessage();}
-        catch(PDOException $e){$error=$e->getCode()==='23000'?'Cet identifiant ou cette clé publique est déjà attribué.':'Modification annulée : données indisponibles.';}
+        catch(PDOException $e){
+            $driver=(int)($e->errorInfo[1]??0);
+            error_log('Ogipen identity operation failed; SQLSTATE='.$e->getCode().'; driver='.$driver);
+            $error=$e->getCode()==='23000'?'Cet identifiant ou cette clé publique est déjà attribué.':(in_array($driver,[1142,1143],true)?'Modification annulée : permissions techniques du portail incomplètes.':'Modification annulée : données indisponibles.');
+        }
         catch(Throwable $e){$error='Modification refusée. Vérifiez le formulaire et son jeton de sécurité.';}
     }
     $identityRows=$identityDb->query('SELECT i.id,i.display_name,i.system_role,i.enabled,i.created_utc,i.public_key_sha256,i.auth_version,i.company_id,i.license_beneficiary_id,COALESCE(p.can_read,0) AS can_read,COALESCE(p.can_edit,0) AS can_edit,a.login_name FROM ogp_identity i LEFT JOIN ogp_permission p ON p.identity_id=i.id LEFT JOIN ogp_app_account a ON a.identity_id=i.id ORDER BY i.display_name LIMIT 500')->fetchAll();

@@ -17,6 +17,7 @@ try:
  sql("INSERT INTO ogp_device(device_id,company_id,public_key_pem,legacy_beneficiary_id,enabled) SELECT id,company_id,public_key_pem,license_beneficiary_id,1 FROM ogp_identity WHERE enabled=1 AND company_id IS NOT NULL AND public_key_pem<>''")
  sql("GRANT SELECT,INSERT,UPDATE ON ogp_test_001.ogp_device TO 'ogp_admin_php'@'localhost'")
  sql("GRANT DELETE ON ogp_test_001.ogp_auth_session TO 'ogp_admin_php'@'localhost'")
+ sql("GRANT SELECT (identity_id) ON ogp_test_001.ogp_auth_session TO 'ogp_admin_php'@'localhost'")
  sql("GRANT SELECT,INSERT,UPDATE,DELETE ON ogp_test_001.ogp_app_account TO 'ogp_admin_php'@'localhost'")
  # Seed inactive internal accounts without any password or implicit project permission.
  sql("START TRANSACTION; INSERT INTO ogp_identity(id,display_name,public_key_pem,public_key_sha256,enabled,company_id,auth_version) VALUES('ogipen:admin','Administrateur Ogipen','',NULL,0,1,1),('ogipen:ossi','OSSI','',NULL,0,1,1); INSERT INTO ogp_app_account(identity_id,login_name,system_role,enabled) VALUES('ogipen:admin','admin','admin',0),('ogipen:ossi','ossi','ossi',0); INSERT INTO ogp_permission(identity_id,can_read,can_edit) VALUES('ogipen:admin',0,0),('ogipen:ossi',0,0); INSERT INTO ogp_audit_event(actor_id,action_code,entity_type,entity_id,details) VALUES('ADMIN:deployment','PASSWORD_LOGIN_ENABLED','administration',0,'{\"version\":\"0.4.13\",\"seededAccounts\":\"admin,ossi\",\"defaultPassword\":false}'); COMMIT;")

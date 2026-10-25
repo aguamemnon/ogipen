@@ -22,6 +22,7 @@ try:
   run(['systemctl','stop','ogipen-api','ogipen-admin'])
   before=snapshot("COALESCE(a.system_role,'user')")
   sql((r/'schema-role.sql').read_text())
+  sql("GRANT SELECT (identity_id) ON ogp_test_001.ogp_auth_session TO 'ogp_admin_php'@'localhost'")
   if before!=snapshot('i.system_role'):raise RuntimeError('Migration changed an existing role, password, key or project right')
   for p in (r/'publish').iterdir():
    if p.is_file():
