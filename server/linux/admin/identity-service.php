@@ -33,13 +33,13 @@ function identity_change(PDO $pdo,array $input):string {
             if(!$pem && !$old)throw new DomainException('La clé publique de l’utilisateur est requise.');
             $key=identity_key($pem?:$old['public_key_pem']);
             $company=$toggle?($old['company_id']??null):($input['company_id']??null);
-            $beneficiary=$toggle?($old['license_beneficiary_id']??null):($input['license_beneficiary_id']??null);
+            $beneficiary=$toggle?($old['license_beneficiary_id']??null):($input['license_beneficiary_id']??($old['license_beneficiary_id']??null));
             $company=$company===''?null:$company;$beneficiary=$beneficiary===''?null:$beneficiary;
             foreach([$company,$beneficiary] as $value){if($value!==null && !preg_match('/\A[1-9][0-9]{0,14}\z/D',(string)$value))throw new DomainException('Entreprise ou bénéficiaire SLM invalide.');}
-            if(($company===null)!==($beneficiary===null))throw new DomainException('Renseignez ensemble l’entreprise et son bénéficiaire SLM.');
+            if($company===null && $beneficiary!==null)throw new DomainException('L’ancienne attribution nominative nécessite son entreprise.');
             if($enabled==='1'){
                 $q=$pdo->prepare("SELECT * FROM ogp_project_company WHERE id=? AND state='prepared' FOR UPDATE");$q->execute([$company]);$companyRow=$q->fetch();
-                if(!$companyRow || !$beneficiary)throw new DomainException('Une entreprise licenciée et son bénéficiaire SLM sont requis pour activer cet utilisateur.');
+                if(!$companyRow)throw new DomainException('Une entreprise licenciée est requise pour activer cet utilisateur.');
                 try{$license=company_license($companyRow);}
                 catch(Throwable $e){throw new DomainException('Une licence serveur WordPress valide est requise pour cette entreprise.');}
                 $q=$pdo->prepare('SELECT COUNT(*) FROM ogp_identity WHERE enabled=1 AND company_id=? AND id<>?');$q->execute([$company,$id]);

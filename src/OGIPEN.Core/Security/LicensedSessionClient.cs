@@ -23,7 +23,7 @@ public sealed class LicensedSessionClient(HttpClient http)
         OfflineLicenseActivation.OfflineGrant localGrant,Func<string,byte[]> sign,CancellationToken ct,ClientAuditMetadata? auditMetadata=null)
     {
         var audience=RequireSecureEndpoint(http.BaseAddress?.AbsoluteUri??"").AbsoluteUri;
-        if(localGrant.LicenseId<1 || localGrant.BeneficiaryId<1 || localGrant.ExpiresUtc<=DateTimeOffset.UtcNow || string.IsNullOrWhiteSpace(licenseJson))
+        if(localGrant.LicenseId<1 || localGrant.BeneficiaryId<0 || localGrant.ExpiresUtc<=DateTimeOffset.UtcNow || string.IsNullOrWhiteSpace(licenseJson))
             throw new InvalidOperationException("Licence locale invalide ou expirée.");
         if(string.IsNullOrWhiteSpace(identityId) || identityId.Length>80 || identityId.Contains('|'))
             throw new InvalidOperationException("Identité Windows non utilisable pour l’enrôlement.");

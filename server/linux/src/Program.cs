@@ -40,7 +40,7 @@ app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) =>
     await using(var cmd=Cmd(c,"SELECT server_license_json,slm_license_id FROM ogp_project_company WHERE state='prepared' AND server_license_json IS NOT NULL AND slm_license_id IS NOT NULL")){
         await using var r=await cmd.ExecuteReaderAsync(ct);while(await r.ReadAsync(ct))if(license.Verify(r.GetString(0),r.GetInt64(1)) is not null)verified++;
     }
-    return Results.Ok(new {status="ok", version="0.4.11-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
+    return Results.Ok(new {status="ok", version="0.4.12-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
 });
 app.MapPost("/auth/attempt",(ChallengeRequest req,HttpContext h)=>{h.Items["authReason"]="client_local_license_refused";return Results.Accepted();});
 app.MapPost("/auth/challenge", async (ChallengeRequest req,HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct) => {
@@ -103,6 +103,7 @@ var api=app.MapGroup("/api").AddEndpointFilter(async (ctx,next)=>{
 api.MapGet("/session",async(HttpContext h,Db db,CompanyLicensing licensing,CancellationToken ct)=>{
     await using var c=await db.Open(ct);var b=await licensing.Binding(c,Actor(h),ct);
     if(b is null)return Results.Unauthorized();
+    var currentGrant=await licensing.ReadGrant(c,b,(AuthSession)h.Items["session"]!,ct);if(currentGrant is null)return Results.Unauthorized();
     string displayName="";bool read=false,edit=false;
     await using(var cmd=Cmd(c,"SELECT i.display_name,COALESCE(p.can_read,0),COALESCE(p.can_edit,0) FROM ogp_identity i LEFT JOIN ogp_permission p ON p.identity_id=i.id WHERE i.id=@id",("@id",Actor(h)))){
         await using var r=await cmd.ExecuteReaderAsync(ct);if(await r.ReadAsync(ct)){displayName=r.GetString(0);read=r.GetBoolean(1);edit=r.GetBoolean(2);}
@@ -113,7 +114,7 @@ api.MapGet("/session",async(HttpContext h,Db db,CompanyLicensing licensing,Cance
         name=Environment.GetEnvironmentVariable("OGIPEN_PROJECT_NAME")??"Projet de démonstration",
         role=edit?"Lecture et édition":"Lecture seule",permissions
     });
-    return Results.Ok(new{identity=Actor(h),companyId=b.CompanyId,licenceId=b.Server.LicenseId,beneficiaryId=b.BeneficiaryId,displayName,projects});
+    return Results.Ok(new{identity=Actor(h),companyId=b.CompanyId,licenceId=b.Server.LicenseId,beneficiaryId=currentGrant.BeneficiaryId,binding=currentGrant.IsDeviceBound?"device":"legacy_user",displayName,projects});
 });
 api.MapDelete("/session",async(HttpContext h,Db db,CancellationToken ct)=>{
     var session=(AuthSession)h.Items["session"]!;await using var c=await db.Open(ct);

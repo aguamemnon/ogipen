@@ -9,7 +9,7 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <AssemblyName>OGIPEN.Desktop</AssemblyName>
     <RootNamespace>OGIPEN.Desktop</RootNamespace>
-    <Version>0.4.11</Version>
+    <Version>0.4.12</Version>
     <RuntimeFrameworkVersion>10.0.13</RuntimeFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>

@@ -15,12 +15,12 @@ sealed class CompanyLicensing(LicenseState licences)
             JOIN ogp_collaboration_config x ON x.id=1 WHERE i.id=@id AND i.enabled=1",("@id",identity));
         cmd.Transaction=tx;
         await using var r=await cmd.ExecuteReaderAsync(ct);
-        if(!await r.ReadAsync(ct) || r.IsDBNull(1) || r.IsDBNull(4) || r.IsDBNull(5) || r.GetString(6)!="prepared")return null;
+        if(!await r.ReadAsync(ct) || r.IsDBNull(4) || r.IsDBNull(5) || r.GetString(6)!="prepared")return null;
         var mode=r.GetString(7);
         if(mode!="multi" && (mode!="single" || r.GetInt64(9)!=1))return null;
         var server=licences.Verify(r.GetString(4),r.GetInt64(5));
         if(server is null || r.GetInt64(8)>server.Seats)return null;
-        return new(r.GetInt64(0),r.GetInt64(1),r.GetString(2),r.GetInt32(3),server);
+        return new(r.GetInt64(0),r.IsDBNull(1)?0:r.GetInt64(1),r.GetString(2),r.GetInt32(3),server);
     }
     public bool VerifyClient(CompanyBinding binding,string json,out OfflineLicenseActivation.OfflineGrant? grant)
     {
@@ -31,17 +31,21 @@ sealed class CompanyLicensing(LicenseState licences)
                 Environment.GetEnvironmentVariable("OGIPEN_LICENSE_ISSUER")??"",
                 binding.Server.SoftwareId,"ogipen",1,Array.Empty<int>(),out grant) &&
                 grant is not null && grant.LicenseId==binding.Server.LicenseId &&
-                grant.BeneficiaryId==binding.BeneficiaryId;
+                (grant.IsDeviceBound || grant.BeneficiaryId==binding.BeneficiaryId);
         }catch{return false;}
     }
     public async Task<bool> SessionValid(MySqlConnection c,AuthSession s,CancellationToken ct)
     {
         var binding=await Binding(c,s.IdentityId,ct);
         if(binding is null || binding.Version!=s.Version)return false;
+        return await ReadGrant(c,binding,s,ct) is not null;
+    }
+    public async Task<OfflineLicenseActivation.OfflineGrant?> ReadGrant(MySqlConnection c,CompanyBinding binding,AuthSession s,CancellationToken ct)
+    {
         string? json=null;
         await using(var cmd=Cmd(c,"SELECT client_license_json FROM ogp_auth_session WHERE session_id=@session AND identity_id=@id AND auth_version=@version AND company_id=@company AND expires_utc>UTC_TIMESTAMP(6)",("@session",s.SessionId),("@id",s.IdentityId),("@version",s.Version),("@company",binding.CompanyId)))
             json=(string?)await cmd.ExecuteScalarAsync(ct);
-        return json is not null && VerifyClient(binding,json,out _);
+        return json is not null && VerifyClient(binding,json,out var grant)?grant:null;
     }
     public async Task<bool> ModuleAllowed(MySqlConnection c,AuthSession s,int module,CancellationToken ct)
     {

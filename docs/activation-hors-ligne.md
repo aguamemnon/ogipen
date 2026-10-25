@@ -1,58 +1,31 @@
-# OGIPEN C# — Échange de licence hors ligne (.ogreq / .oglic)
+# Activation Ogipen — 0.4.12
 
-## Étapes prévues (sans accès Internet sur le poste)
+## Parcours du poste
 
-1. Dans l'écran **Identification**, bouton **Activation hors ligne**
-   (également présent dans le ruban **Administration → Application**).
-2. Indiquer l'identifiant du logiciel dans le catalogue SLM Plus
-   (valeur numérique du post Progelec de la boutique). On peut le
-   préconfigurer via `%APPDATA%\\OGIPEN\\clientsettings.json` :
-   `{"OfflineSoftwareId": 123}` avec **123 à remplacer**.
-3. **Exporter la demande (.ogreq)**.
-4. Faire traiter la demande par le gestionnaire de licences sur un poste
-   autorisé à accéder à WordPress (voir documentation SLM Plus).
-5. **Importer la licence (.oglic)** sur le poste isolé.
-6. OGIPEN vérifie la signature, le bon poste, le logiciel,
-   la version majeure, les modules et l'expiration **sans réseau**.
+1. Dans le client, ouvrir **Activation hors ligne (.ogreq / .oglic)**. L’identifiant logiciel Ogipen préconfiguré est **405**, majeure **1**.
+2. Exporter la demande `.ogreq`. Une demande déjà exportée reste compatible si la clé du même compte Windows existe toujours.
+3. Dans WordPress, ouvrir **SLM Plus → Ogipen hors ligne → Activer un poste (.ogreq)**, choisir la **licence Ogipen**, charger la demande puis télécharger le `.oglic`.
+4. Dans le **client 0.4.12 ou ultérieur**, choisir **2. Importer la licence (.oglic)**, sélectionner ce fichier puis fermer la fenêtre d’activation.
+5. Sélectionner explicitement le serveur de l’entreprise et se connecter avec la session Windows courante.
 
-## Confiance et cryptographie
+Il n’y a aucun bénéficiaire à créer, sélectionner ou vérifier dans WordPress. Le gestionnaire reste administrateur de SLM Plus. L’activation automatique en ligne depuis le client reste à développer.
 
-- Poste Windows : clé EC P-256 propre au profil, persistante et marquée
-  non exportable par le magasin Windows CNG Microsoft Software KSP.
-  Aucune clé privée ne figure dans `.ogreq` ou `.oglic`.
-- La demande comporte seulement clé publique SPKI, identifiant logiciel,
-  version majeure, défi aléatoire, preuve de possession de la clé.
-- Le serveur WordPress signe avec sa clé ECDSA P-256, conservée sur Linux.
-- OGIPEN refuse tout fichier mal signé ou lié à un autre poste, et vérifie
-  les identifiants du logiciel, la version, les modules et les dates.
-- Le public signer `SLMMS-Signing-Public.pem` doit être distribué comme
-  **ancre de confiance par l'installateur signé** dans le dossier
-  `Assets/` du client. Ne pas la récupérer depuis une URL arbitraire
-  à chaque vérification : une substitution de clé annulerait la garantie.
-- Émetteur attendu en dur pour ce prototype :
-  `https://www.trueshield.fr`; logiciel `progelec`, majeure `1`.
-  Ces valeurs devront suivre la configuration signée de chaque distribution.
-- Une licence valide est conservée dans
-  `%LOCALAPPDATA%\\OGIPEN\\offline-license.oglic`.
+## Licence et accès au projet
 
-## Important : portée du prototype
+WordPress est le seul émetteur. La licence poste contient la même référence commerciale que la licence serveur de l’entreprise. Le serveur vérifie cette correspondance, les dates, les modules et la clé du poste. Les droits métier du projet restent attribués dans le portail à une identité et à sa clé publique ; une activation ne crée pas d’accès au projet.
 
-**L'import local cryptographique est implémenté**, mais le logiciel ne
-dispose pas encore d'une authentification Windows SAM/AD locale intégrée
-au processus de démarrage ni du chargement des projets et données
-hors connexion. Le mode aperçu reste sans accès métier.
+Le serveur Ogipen de test est **192.168.2.216** : API **https://192.168.2.216/**, portail **http://192.168.2.216:8080/**. WordPress **https://www.trueshield.fr/** émet les licences. Chaque entreprise héberge son API, son portail et ses données. Le mode multi-entreprise reste un choix explicite pour un projet partagé. HTTPS sur le port 8080 est différé à la demande de l’utilisateur.
 
-Une licence signée ne remplace **jamais** le contrôle des identités, des
-modules en cours d'utilisation ni les droits de chaque projet. Ces
-fonctions sont à raccorder. Les mécanismes d'horloge fiable, anti-retour
-en arrière, TPM et renouvellement restent également à développer.
+## Places, renouvellement et anciennes activations
 
-Pour un environnement relevant de l'IGI 1300, ce prototype n'est
-**ni homologué ni recommandé en production classifiée en l'état**.
-Le transfert physique de `.ogreq` et `.oglic` doit être validé
-par l'autorité de sécurité/homologation, avec supports et procédures
-autorisés. Même si la demande ne contient aucun nom/AD/projet,
-elle doit être examinée avant de sortir d'un SI classifié.
+Chaque nouvelle clé activée réserve une place. La clé CNG reste propre au compte Windows ; plusieurs comptes Windows peuvent donc représenter plusieurs clés sur un même PC. Une nouvelle demande de la même clé renouvelle l’activation sans ajouter une place. La durée de 1 à 365 jours est plafonnée par l’expiration commerciale. Un nouvel envoi identique renvoie le même fichier si ses droits sont encore valides.
 
-La compromission antérieure du serveur WordPress doit avoir été
-entièrement traitée avant d'y installer une clé privée de production.
+Les anciennes réservations nominatives et leurs fichiers sont conservés. Elles comptent dans le quota tant qu’elles sont actives. Aucun utilisateur n’est créé ni marqué vérifié par cette mise à jour. Une ancienne activation doit être révoquée explicitement avant de réaffecter sa clé dans le nouveau parcours. Une révocation hors ligne ne supprime pas un fichier déjà importé : sa validité cryptographique dure jusqu’à son expiration.
+
+## Format et contrôles
+
+Les demandes restent au format v1, avec clé publique P-256, nonce, logiciel, majeure et preuve de possession. Aucun nom PC, compte AD ou secret ne figure dans la demande. Les nouvelles licences signées portent `binding: "device"` et `sub: 0`. Zéro sans ce marqueur est refusé ; les anciens fichiers avec un bénéficiaire positif restent pris en charge. Les clés privées restent sur leur hôte respectif.
+
+Le client contrôle la signature WordPress, la clé locale, le logiciel, la version, les modules et l’expiration. Le serveur exige aussi la preuve de la clé, une identité autorisée dans le projet, une entreprise licenciée et la même référence de licence. Le journal des tentatives reste disponible dans le portail.
+
+La licence locale est conservée dans `%LOCALAPPDATA%\OGIPEN\offline-license.oglic`. La clé publique de signature et le profil TLS du serveur de test sont distribués dans `Assets/`. La confiance TLS est limitée au serveur configuré ; aucun certificat racine Windows n’est installé.

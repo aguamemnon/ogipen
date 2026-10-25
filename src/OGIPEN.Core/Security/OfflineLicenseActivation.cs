@@ -18,7 +18,10 @@ public static class OfflineLicenseActivation
     public sealed record OfflineGrant(
         long LicenseId, long BeneficiaryId, long ActivationId,
         int SoftwareId, string SoftwareSlug, int MajorVersion,
-        IReadOnlyList<int> ModuleIds, DateTimeOffset ExpiresUtc);
+        IReadOnlyList<int> ModuleIds, DateTimeOffset ExpiresUtc)
+    {
+        public bool IsDeviceBound => BeneficiaryId==0;
+    }
 
     public static string CreateRequest(ECDsa deviceKey, int softwareId, int major,
                                        byte[] randomNonce)
@@ -156,7 +159,8 @@ public static class OfflineLicenseActivation
             long licenseId = Long(payload, "lic");
             long beneficiaryId = Long(payload, "sub");
             long activationId = Long(payload, "activation");
-            if (licenseId < 1 || beneficiaryId < 1 || activationId < 1 ||
+            bool deviceBound=Str(payload,"binding")=="device";
+            if (licenseId < 1 || (deviceBound?beneficiaryId!=0:beneficiaryId<1) || activationId < 1 ||
                 !payload.TryGetProperty("modules", out var modules) ||
                 modules.ValueKind != JsonValueKind.Array ||
                 modules.GetArrayLength() > 200) return false;
