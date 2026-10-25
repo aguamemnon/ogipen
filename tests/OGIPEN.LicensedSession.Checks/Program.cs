@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 using OGIPEN.Core.Security;
 using OGIPEN.Desktop.Infrastructure;
 
+if(args.Contains("--password-integration")){await LivePasswordCheck.Run();return;}
 if(args.Contains("--integration",StringComparer.Ordinal)){await LiveApiCheck.Run();return;}
 if(args.Contains("--https",StringComparer.Ordinal)){await HttpsCheck.Run();return;}
 var checks=new List<object>();

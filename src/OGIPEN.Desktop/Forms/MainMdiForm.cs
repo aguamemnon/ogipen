@@ -150,7 +150,8 @@ public sealed class MainMdiForm : KryptonForm
             SizingGrip = false
         };
         status.Items.Add(new ToolStripStatusLabel("OGIPEN C#"));
-        status.Items.Add(new ToolStripStatusLabel($"Utilisateur : {_session.DisplayName}"));
+        if(_session.SystemRole is "admin" or "ossi"){var administration=new ToolStripButton("Administration serveur");administration.Click+=(_,_)=>{using var form=new ServerAdministrationForm(_session,_config);form.ShowDialog(this);};status.Items.Add(administration);}
+        status.Items.Add(new ToolStripStatusLabel($"Utilisateur : {_session.DisplayName} · {_session.SystemRole}"));
         status.Items.Add(new ToolStripStatusLabel($"Projet : {_project.Name}"));
         status.Items.Add(new ToolStripStatusLabel($"Poste : {_project.Role}"));
         status.Items.Add(_documentStatus);

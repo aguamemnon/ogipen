@@ -3,12 +3,13 @@ declare(strict_types=1);
 require __DIR__ . '/lib.php';
 login_check();
 $page=$_GET['page']??'overview';
-if(!in_array($page,['overview','events','locks','identities','license','companies','settings'],true))$page='overview';
+if(!in_array($page,['overview','events','locks','identities','license','companies','accounts','settings'],true))$page='overview';
 $message='';$error='';
 if($page==='license')require __DIR__.'/license-controller.php';
 if($page==='identities')require __DIR__.'/identity-controller.php';
+if($page==='accounts')require __DIR__.'/account-controller.php';
 if($page==='companies')require __DIR__.'/company-controller.php';
-if(!in_array($page,['license','identities','companies'],true) && $_SERVER['REQUEST_METHOD']==='POST'){
+if(!in_array($page,['license','identities','companies','accounts'],true) && $_SERVER['REQUEST_METHOD']==='POST'){
  try {
   csrf_check();
   switch($_POST['action']??''){
@@ -43,9 +44,10 @@ require __DIR__.'/portal-header.php';
 ?>
 <?php if($page==='license'):require __DIR__.'/license-view.php';?>
 <?php elseif($page==='overview'):?><?php $service=api_status(); ?><section class="panel"><h2>État du serveur</h2><p>API : <strong><?=$service['online']?'Connectée':'Indisponible'?></strong> · Licence : <strong><?=$service['licensed']?'Active':'À importer ou renouveler'?></strong></p><a href="<?=h(url('/?page=license'))?>">Gérer la licence WordPress</a></section><section class="stats"><article><span>Identités</span><strong><?=count($identities)?></strong></article><article><span>Verrous actifs</span><strong><?=$activeLocks?></strong></article><article><span>Événements récents</span><strong><?=count($events)?></strong></article><article><span>Câbles de démonstration</span><strong><?=count($cables)?></strong></article></section><section class="panel"><h2>Dernières opérations</h2><?=event_table(array_slice($events,0,12))?></section><section class="panel"><h2>Objets de démonstration</h2><table><thead><tr><th>Identifiant</th><th>Référence</th><th>Version</th></tr></thead><tbody><?php foreach($cables as $v):?><tr><td><?=h($v['id'])?></td><td><?=h($v['reference'])?></td><td><?=h($v['row_version'])?></td></tr><?php endforeach;?></tbody></table></section>
+<?php elseif($page==='accounts'):require __DIR__.'/account-view.php';?>
 <?php elseif($page==='events'):?><section class="panel"><h2>Tentatives de connexion</h2><p>Heures locales avec décalage UTC ; horodatage conservé en UTC. Le nom du PC et le nom utilisateur sont déclarés par le client ; l’IP est relevée par le serveur. Un numéro de licence annoncé est conservé même si la licence est différente ou refusée. La signature est indiquée séparément.</p><?=authentication_event_table($authenticationEvents)?></section><section class="panel"><h2>Audit du projet</h2><p>Événements stockés dans la base du projet, pas dans la base centrale.</p><?=event_table($events)?></section>
 <?php elseif($page==='locks'):?><section class="panel"><h2>Gestion des éditions concurrentes</h2><p>La libération forcée doit être réservée aux administrateurs habilités. Un client ancien ne pourra plus enregistrer avec son jeton de verrou invalidé.</p><table><thead><tr><th>Objet</th><th>Identifiant</th><th>Utilisateur</th><th>Expiration UTC</th><th>Action</th></tr></thead><tbody><?php foreach($locks as $l):?><tr><td><?=h($l['entity_type'])?></td><td><?=h($l['entity_id'])?></td><td><?=h($l['owner_id'])?></td><td><?=h($l['expires_utc'])?></td><td><form method="post" onsubmit="return confirm('Forcer la libération du verrou ?')"><input type="hidden" name="csrf" value="<?=h(csrf())?>"><input type="hidden" name="action" value="unlock"><input type="hidden" name="type" value="<?=h($l['entity_type'])?>"><input type="hidden" name="entity_id" value="<?=h($l['entity_id'])?>"><button class="danger">Libérer</button></form></td></tr><?php endforeach;?></tbody></table></section>
 <?php elseif($page==='identities'):require __DIR__.'/identity-view.php';?>
 <?php elseif($page==='companies'):require __DIR__.'/company-runtime-view.php';?>
-<?php else:?><section class="panel"><h2>Paramètres d’installation</h2><dl><dt>Version</dt><dd>Console PHP v0.4.12</dd><dt>Port d’écoute</dt><dd>192.168.2.216:8080 (réseau local)</dd><dt>Base projet</dt><dd><?=h(getenv('OGIPEN_ADMIN_DB_NAME')?:'non définie')?></dd><dt>Serveur MySQL</dt><dd><?=h(getenv('OGIPEN_ADMIN_DB_HOST')?:'127.0.0.1')?></dd><dt>Authentification</dt><dd>Mot de passe administrateur Argon2id / session locale</dd><dt>API Ogipen</dt><dd>127.0.0.1:5088</dd></dl><p>La création des projets se fait exclusivement depuis le logiciel Ogipen. Ce portail ne crée pas de projet. Les rôles métier seront isolés par projet.</p></section><?php endif; ?>
+<?php else:?><section class="panel"><h2>Paramètres d’installation</h2><dl><dt>Version</dt><dd>Console PHP v0.4.13</dd><dt>Port d’écoute</dt><dd>192.168.2.216:8080 (réseau local)</dd><dt>Base projet</dt><dd><?=h(getenv('OGIPEN_ADMIN_DB_NAME')?:'non définie')?></dd><dt>Serveur MySQL</dt><dd><?=h(getenv('OGIPEN_ADMIN_DB_HOST')?:'127.0.0.1')?></dd><dt>Authentification</dt><dd>Mot de passe administrateur Argon2id / session locale</dd><dt>API Ogipen</dt><dd>127.0.0.1:5088</dd></dl><p>La création des projets se fait exclusivement depuis le logiciel Ogipen. Ce portail ne crée pas de projet. Les rôles métier seront isolés par projet.</p></section><?php endif; ?>
 <?php require __DIR__.'/portal-footer.php'; ?>

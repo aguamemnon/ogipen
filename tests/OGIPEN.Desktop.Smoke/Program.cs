@@ -96,8 +96,13 @@ internal static class Program
                 if(native.ExportPolicy!=CngExportPolicies.None)throw new Exception("La clé CNG autorise l’export privé.");
                 using var login=new LoginForm(new ClientConfiguration(),null,new(false,false,"Test local"));
                 IEnumerable<Control> Descendants(Control c)=>c.Controls.Cast<Control>().SelectMany(x=>new[]{x}.Concat(Descendants(x)));
-                if(Descendants(login).OfType<TextBox>().Any())throw new Exception("La connexion contient encore une saisie d’identifiants.");
-                Console.WriteLine("OK — SID courant, preuve CNG liée au serveur, refus autre session, export privé désactivé et connexion sans mot de passe.");
+                var fields=Descendants(login).OfType<TextBox>().ToArray();
+                if(Environment.GetEnvironmentVariable("OGIPEN_TEST_LOGIN_IMAGE") is string imagePath){login.ShowInTaskbar=false;login.Opacity=0;login.Show();Application.DoEvents();using(var bitmap=new Bitmap(login.Width,login.Height)){login.DrawToBitmap(bitmap,new Rectangle(Point.Empty,login.Size));bitmap.Save(imagePath);}login.Hide();}
+                if(fields.Length!=2 || !fields.Any(t=>t.UseSystemPasswordChar && t.Text=="") || !fields.Any(t=>!t.UseSystemPasswordChar && t.Text==identity.DisplayName && !t.ReadOnly))throw new Exception("Login Windows prérempli modifiable et mot de passe masqué obligatoires.");
+                var v3="OGIPEN-AUTH-v3:"+audience.AbsoluteUri+":ogipen:ogipen:fixture:"+identity.IdentityId+":"+Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+                if(!verifier.VerifyData(Encoding.UTF8.GetBytes(v3),OfflineLicenseService.SignChallenge(v3,audience),HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation))throw new Exception("Défi v3 refusé.");
+                try{using var refused=WindowsPasswordIdentity.Authenticate(@".\ogipen-nonexistent-selftest","test-only-not-a-real-password");throw new Exception("Compte Windows inexistant accepté.");}catch(InvalidOperationException){}
+                Console.WriteLine("OK — SID courant, preuve CNG liée au serveur, refus autre session, export privé désactivé et login modifiable, mot de passe masqué et refus Windows invalide.");
             }
             finally
             {

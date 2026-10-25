@@ -17,6 +17,7 @@ public sealed class ProjectAccess
 
 public sealed class LoginReply
 {
+    public string SystemRole { get; set; } = "user";
     public long CompanyId { get; set; }
     public long LicenceId { get; set; }
     public long BeneficiaryId { get; set; }
@@ -32,6 +33,7 @@ public sealed class UserSession
     // Jamais persisté sur disque. En mode aperçu, jeton vide et données fictives.
     public string AccessToken { get; }
     public string DisplayName { get; }
+    public string SystemRole { get; private init; } = "user";
     public IReadOnlyList<ProjectAccess> Projects { get; }
     public bool IsPreview { get; }
     public long CompanyId { get; private init; }
@@ -61,7 +63,7 @@ public sealed class UserSession
             reply.Projects.Select(p => p.Id).Distinct(StringComparer.Ordinal).Count() != reply.Projects.Count)
             throw new InvalidOperationException("Liste de projets invalide.");
         return new UserSession(reply.AccessToken, reply.DisplayName, reply.Projects, false) {
-            CompanyId=reply.CompanyId,LicenceId=reply.LicenceId,BeneficiaryId=reply.BeneficiaryId,ExpiresUtc=reply.ExpiresUtc,LicenseExpiresUtc=reply.LicenseExpiresUtc
+            SystemRole=reply.SystemRole,CompanyId=reply.CompanyId,LicenceId=reply.LicenceId,BeneficiaryId=reply.BeneficiaryId,ExpiresUtc=reply.ExpiresUtc,LicenseExpiresUtc=reply.LicenseExpiresUtc
         };
     }
 

@@ -9,7 +9,7 @@ sealed class AuthenticationAudit(Db db,ILogger<AuthenticationAudit> logger)
     public async Task Observe(HttpContext h,RequestDelegate next)
     {
         var path=(h.Request.Path.Value??"").TrimEnd('/').ToLowerInvariant();
-        if(!HttpMethods.IsPost(h.Request.Method) || (path!="/auth/challenge" && path!="/auth/complete" && path!="/auth/attempt")){await next(h);return;}
+        if(!HttpMethods.IsPost(h.Request.Method) || (path!="/auth/challenge" && path!="/auth/complete" && path!="/auth/attempt" && path!="/auth/v3/challenge" && path!="/auth/v3/complete" && path!="/auth/v3/attempt")){await next(h);return;}
         var phase=path.EndsWith("complete",StringComparison.Ordinal)?"login":path.EndsWith("attempt",StringComparison.Ordinal)?"client":"challenge";
         var identity="";var computer="";var user="";long? licence=null;bool signature=false;bool? expired=null;var malformed=false;
         h.Request.EnableBuffering(65536,65536);
@@ -39,6 +39,7 @@ sealed class AuthenticationAudit(Db db,ILogger<AuthenticationAudit> logger)
                 await using(var cmd=Cmd(c,"SELECT p.slm_license_id FROM ogp_identity i JOIN ogp_project_company p ON p.id=i.company_id WHERE i.id=@id",("@id",identity))){var value=await cmd.ExecuteScalarAsync(timeout.Token);if(value is not null && value!=DBNull.Value)expected=Convert.ToInt64(value);}
                 var referenceSource="identity_company";
                 if(expected is null){expected=InitialLicenceNumber();referenceSource=expected is null?"unknown":"instance_initial";}
+                if(h.Items.TryGetValue("authIdentity",out var actual))identity=actual?.ToString()??identity;
                 int status=failure??h.Response.StatusCode;bool success=phase!="client" && status is >=200 and <300;
                 bool proof=h.Items.TryGetValue("identityProofVerified",out var proofValue) && proofValue is true;
                 bool? mismatch=licence is not null && expected is not null?licence!=expected:null;

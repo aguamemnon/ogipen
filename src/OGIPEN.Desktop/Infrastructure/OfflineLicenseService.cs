@@ -105,6 +105,14 @@ public static class OfflineLicenseService
     {
         var identity=WindowsSessionIdentity.Current();
         var prefix="OGIPEN-AUTH-v2:"+LicensedSessionClient.RequireSecureEndpoint(audience.AbsoluteUri).AbsoluteUri+":"+identity.IdentityId+":";
+        if(text.StartsWith("OGIPEN-AUTH-v3:",StringComparison.Ordinal)){
+            var start="OGIPEN-AUTH-v3:"+LicensedSessionClient.RequireSecureEndpoint(audience.AbsoluteUri).AbsoluteUri+":";
+            var device=":"+identity.IdentityId+":";int at=text.LastIndexOf(device,StringComparison.Ordinal);
+            if(!text.StartsWith(start+"windows:",StringComparison.Ordinal) && !text.StartsWith(start+"ogipen:",StringComparison.Ordinal) || at<=start.Length)throw new InvalidOperationException("Défi d’un autre poste refusé.");
+            var n=text[(at+device.Length)..];var bytes=Convert.FromBase64String(n);
+            if(bytes.Length!=32||Convert.ToBase64String(bytes)!=n)throw new InvalidOperationException("Défi invalide.");
+            using var currentKey=OpenDeviceKey();return currentKey.SignData(System.Text.Encoding.UTF8.GetBytes(text),HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+        }
         if(!text.StartsWith(prefix,StringComparison.Ordinal))throw new InvalidOperationException("Challenge d’une autre session Windows refusé.");
         var nonce=Convert.FromBase64String(text[prefix.Length..]);
         if(nonce.Length!=32 || Convert.ToBase64String(nonce)!=text[prefix.Length..])throw new InvalidOperationException("Challenge invalide.");

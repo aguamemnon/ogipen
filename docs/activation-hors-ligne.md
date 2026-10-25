@@ -29,3 +29,8 @@ Les demandes restent au format v1, avec clé publique P-256, nonce, logiciel, ma
 Le client contrôle la signature WordPress, la clé locale, le logiciel, la version, les modules et l’expiration. Le serveur exige aussi la preuve de la clé, une identité autorisée dans le projet, une entreprise licenciée et la même référence de licence. Le journal des tentatives reste disponible dans le portail.
 
 La licence locale est conservée dans `%LOCALAPPDATA%\OGIPEN\offline-license.oglic`. La clé publique de signature et le profil TLS du serveur de test sont distribués dans `Assets/`. La confiance TLS est limitée au serveur configuré ; aucun certificat racine Windows n’est installé.
+
+
+## Connexion utilisateur — 0.4.13
+
+Le login est prérempli avec le compte Windows courant, modifiable, avec mot de passe obligatoire. Choix Windows/AD ou compte interne Ogipen. Les comptes admin/OSSI se configurent dans le portail, rubrique Comptes Ogipen. La licence du poste reste distincte du compte choisi. Voir [la connexion 0.4.13](authentification-v0.4.13.md). L’ancienne connexion sans mot de passe est désactivée côté API.

@@ -55,6 +55,10 @@ function identity_change(PDO $pdo,array $input):string {
                 $q=$pdo->prepare('INSERT INTO ogp_identity(id,display_name,public_key_pem,public_key_sha256,enabled,company_id,license_beneficiary_id,auth_version) VALUES(?,?,?,?,?,?,?,1)');
                 $q->execute([$id,$name,$key['pem'],$key['fingerprint'],(int)$enabled,$company,$beneficiary]);
             }
+            if($company!==null && str_starts_with($id,'win-sid:') && $action!=='identity_toggle'){
+                $q=$pdo->prepare('INSERT INTO ogp_device(device_id,company_id,public_key_pem,legacy_beneficiary_id,enabled) VALUES(?,?,?,?,1) ON DUPLICATE KEY UPDATE company_id=VALUES(company_id),public_key_pem=VALUES(public_key_pem),legacy_beneficiary_id=VALUES(legacy_beneficiary_id)');
+                $q->execute([$id,$company,$key['pem'],$beneficiary]);
+            }
             $q=$pdo->prepare('INSERT INTO ogp_permission(identity_id,can_read,can_edit) VALUES(?,?,?) ON DUPLICATE KEY UPDATE can_read=VALUES(can_read),can_edit=VALUES(can_edit)');
             $q->execute([$id,$read,$edit]);
             if($old){$q=$pdo->prepare('DELETE FROM ogp_edit_lock WHERE owner_id=?');$q->execute([$id]);}
