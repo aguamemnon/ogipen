@@ -14,7 +14,7 @@ static class AccountAdministration
    if(role is not ("admin" or "ossi"))return Results.StatusCode(403);
    var binding=await licensing.Binding(c,actor,ct);if(binding is null)return Results.Unauthorized();
    var items=new List<object>();
-   await using var cmd=Cmd(c,@"SELECT a.identity_id,a.login_name,i.display_name,a.system_role,a.enabled,i.auth_version,
+   await using var cmd=Cmd(c,@"SELECT a.identity_id,a.login_name,i.display_name,i.system_role,a.enabled,i.auth_version,
     COALESCE(p.can_read,0),COALESCE(p.can_edit,0) FROM ogp_app_account a JOIN ogp_identity i ON i.id=a.identity_id
     LEFT JOIN ogp_permission p ON p.identity_id=i.id WHERE i.company_id=@company ORDER BY a.login_name LIMIT 201",("@company",binding.CompanyId));
    await using var reader=await cmd.ExecuteReaderAsync(ct);
@@ -33,13 +33,13 @@ static class AccountAdministration
     // Same allocation lock and lock order as the existing PHP account service.
     await using(var lockCommand=Cmd(c,"SELECT id FROM ogp_collaboration_config WHERE id=1 FOR UPDATE")){lockCommand.Transaction=tx;await lockCommand.ExecuteScalarAsync(ct);}
     var binding=await licensing.Binding(c,actor,ct,tx);if(binding is null){await tx.RollbackAsync(ct);return Results.Unauthorized();}
-    await using(var authorization=Cmd(c,@"SELECT COUNT(*) FROM ogp_app_account a JOIN ogp_identity i ON i.id=a.identity_id
-      JOIN ogp_auth_session s ON s.identity_id=i.id WHERE a.identity_id=@actor AND a.system_role='admin' AND a.enabled=1
+    await using(var authorization=Cmd(c,@"SELECT COUNT(*) FROM ogp_identity i
+      JOIN ogp_auth_session s ON s.identity_id=i.id WHERE i.id=@actor AND i.system_role='admin'
       AND i.enabled=1 AND i.auth_version=@version AND s.session_id=@session AND s.auth_version=i.auth_version AND s.expires_utc>UTC_TIMESTAMP(6)",("@actor",actor),("@version",session.Version),("@session",session.SessionId))){
       authorization.Transaction=tx;if(Convert.ToInt64(await authorization.ExecuteScalarAsync(ct))!=1){await tx.RollbackAsync(ct);return Results.Unauthorized();}
     }
     string? id=null,oldHash=null,oldRole=null;bool oldEnabled=false;int revision=0;
-    await using(var select=Cmd(c,@"SELECT a.identity_id,a.password_hash,a.system_role,a.enabled,i.auth_version
+    await using(var select=Cmd(c,@"SELECT a.identity_id,a.password_hash,i.system_role,a.enabled,i.auth_version
       FROM ogp_app_account a JOIN ogp_identity i ON i.id=a.identity_id WHERE a.login_name=@login AND i.company_id=@company FOR UPDATE",("@login",login),("@company",binding.CompanyId))){
       select.Transaction=tx;await using var r=await select.ExecuteReaderAsync(ct);
       if(await r.ReadAsync(ct)){id=r.GetString(0);oldHash=r.IsDBNull(1)?null:r.GetString(1);oldRole=r.GetString(2);oldEnabled=r.GetBoolean(3);revision=r.GetInt32(4);}
@@ -50,8 +50,7 @@ static class AccountAdministration
      if(Convert.ToInt64(await duplicate.ExecuteScalarAsync(ct))!=0){await tx.RollbackAsync(ct);return Error(409,"Ce login est indisponible.");}
     }
     if(oldRole=="admin" && oldEnabled && (!req.Enabled || req.SystemRole!="admin")){
-     await using var last=Cmd(c,@"SELECT COUNT(*) FROM ogp_app_account a JOIN ogp_identity i ON i.id=a.identity_id
-       WHERE i.company_id=@company AND a.system_role='admin' AND a.enabled=1 AND i.enabled=1 AND a.password_hash IS NOT NULL",("@company",binding.CompanyId));last.Transaction=tx;
+     await using var last=Cmd(c,@"SELECT COUNT(*) FROM ogp_identity i WHERE i.company_id=@company AND i.system_role='admin' AND i.enabled=1",("@company",binding.CompanyId));last.Transaction=tx;
      if(Convert.ToInt64(await last.ExecuteScalarAsync(ct))<=1){await tx.RollbackAsync(ct);return Error(409,"Conservez au moins un administrateur actif dans cette entreprise.");}
     }
     // Lock the company before counting seats, as in PHP's account mutation.
@@ -64,11 +63,11 @@ static class AccountAdministration
     if(req.Enabled && hash is null){await tx.RollbackAsync(ct);return Error(400,"Définissez un mot de passe avant d’activer ce compte.");}
     bool created=id is null;id??="ogipen:"+Guid.NewGuid().ToString("N");
     if(created){
-     await Exec(c,"INSERT INTO ogp_identity(id,display_name,public_key_pem,public_key_sha256,enabled,company_id,auth_version) VALUES(@id,@name,'',NULL,@enabled,@company,1)",ct,tx,("@id",id),("@name",req.DisplayName.Trim()),("@enabled",req.Enabled),("@company",binding.CompanyId));
+     await Exec(c,"INSERT INTO ogp_identity(id,display_name,public_key_pem,public_key_sha256,enabled,company_id,auth_version,system_role) VALUES(@id,@name,'',NULL,@enabled,@company,1,@role)",ct,tx,("@id",id),("@name",req.DisplayName.Trim()),("@enabled",req.Enabled),("@company",binding.CompanyId),("@role",req.SystemRole));
      await Exec(c,"INSERT INTO ogp_permission(identity_id,can_read,can_edit) VALUES(@id,0,0)",ct,tx,("@id",id));
      await Exec(c,"INSERT INTO ogp_app_account(identity_id,login_name,password_hash,system_role,enabled) VALUES(@id,@login,@hash,@role,@enabled)",ct,tx,("@id",id),("@login",login),("@hash",(object?)hash??DBNull.Value),("@role",req.SystemRole),("@enabled",req.Enabled));
     }else{
-     await Exec(c,"UPDATE ogp_identity SET display_name=@name,enabled=@enabled,auth_version=auth_version+1 WHERE id=@id",ct,tx,("@id",id),("@name",req.DisplayName.Trim()),("@enabled",req.Enabled));
+     await Exec(c,"UPDATE ogp_identity SET display_name=@name,enabled=@enabled,system_role=@role,auth_version=auth_version+1 WHERE id=@id",ct,tx,("@id",id),("@name",req.DisplayName.Trim()),("@enabled",req.Enabled),("@role",req.SystemRole));
      await Exec(c,"UPDATE ogp_app_account SET password_hash=@hash,system_role=@role,enabled=@enabled,updated_utc=UTC_TIMESTAMP(6) WHERE identity_id=@id",ct,tx,("@id",id),("@hash",(object?)hash??DBNull.Value),("@role",req.SystemRole),("@enabled",req.Enabled));
     }
     await Exec(c,"DELETE FROM ogp_auth_session WHERE identity_id=@id",ct,tx,("@id",id));

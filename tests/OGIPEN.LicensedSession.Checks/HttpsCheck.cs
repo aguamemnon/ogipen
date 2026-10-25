@@ -12,7 +12,7 @@ static class HttpsCheck
         using var health=await http.GetAsync("health");Check("windows_direct_pinned_https_and_health",health.IsSuccessStatusCode);
         var existing=new ClientConfiguration{ServerProfiles=new(){new(){Id="existing-user-profile",Name="Ogipen test",ApiBaseUrl="https://192.168.2.216/"}},SelectedProfileId="existing-user-profile"};ServerTransport.ApplyProvisioning(existing);
         using var existingClient=ServerTransport.CreateClient(existing.SecureApiEndpoint()!,existing);using var existingHealth=await existingClient.GetAsync("health");Check("existing_ip_profile_uses_provisioned_pin",existingHealth.IsSuccessStatusCode && existing.ServerProfiles.Count==1);
-        using var data=JsonDocument.Parse(await health.Content.ReadAsStringAsync());Check("installed_api_0415",data.RootElement.GetProperty("version").GetString()=="0.4.15-test");
+        using var data=JsonDocument.Parse(await health.Content.ReadAsStringAsync());Check("installed_api_0416",data.RootElement.GetProperty("version").GetString()=="0.4.16-test");
         using var anonymous=await http.GetAsync("api/session");Check("https_anonymous_session_refused",anonymous.StatusCode==HttpStatusCode.Unauthorized);
         using var unknownRequest=new HttpRequestMessage(HttpMethod.Post,"auth/challenge"){Content=JsonContent.Create(new{identityId="nonexistent-v0412-selftest",computerName="SELFTEST-WINDOWS-PC",userName="SELFTEST-USER",licenseId=999,password="AUDIT_SECRET_SENTINEL",accessToken="AUDIT_SECRET_SENTINEL"})};unknownRequest.Headers.Add("X-Real-IP","203.0.113.99");
         using var unknown=await http.SendAsync(unknownRequest);Check("https_legacy_passwordless_login_disabled",unknown.StatusCode==HttpStatusCode.UpgradeRequired);

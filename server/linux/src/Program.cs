@@ -40,7 +40,7 @@ app.MapGet("/health", async (LicenseState license,Db db,CancellationToken ct) =>
     await using(var cmd=Cmd(c,"SELECT server_license_json,slm_license_id FROM ogp_project_company WHERE state='prepared' AND server_license_json IS NOT NULL AND slm_license_id IS NOT NULL")){
         await using var r=await cmd.ExecuteReaderAsync(ct);while(await r.ReadAsync(ct))if(license.Verify(r.GetString(0),r.GetInt64(1)) is not null)verified++;
     }
-    return Results.Ok(new {status="ok", version="0.4.15-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
+    return Results.Ok(new {status="ok", version="0.4.16-test", licensed=license.Read().Valid || verified>0,collaborationMode=mode,licensedCompanies=verified});
 });
 app.MapPost("/auth/attempt",(ChallengeRequest req,HttpContext h)=>{h.Items["authReason"]="client_local_license_refused";return Results.Accepted();});
 app.MapPost("/auth/challenge",()=>Results.Json(new{message="Client 0.4.13 requis : login et mot de passe."},statusCode:426));

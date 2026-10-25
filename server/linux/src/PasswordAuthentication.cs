@@ -51,7 +51,7 @@ static class PasswordAuthentication
   });
  }
  static bool Valid(string provider,string login,string device)=>(provider is "windows" or "ogipen") && !string.IsNullOrWhiteSpace(login) && login.Length<=180 && device is {Length:>0 and <=80};
- public static async Task<string> Role(MySqlConnection c,string identity,CancellationToken ct){await using var cmd=Cmd(c,"SELECT system_role FROM ogp_app_account WHERE identity_id=@id AND enabled=1",("@id",identity));return (string?)await cmd.ExecuteScalarAsync(ct)??"user";}
+ public static async Task<string> Role(MySqlConnection c,string identity,CancellationToken ct){await using var cmd=Cmd(c,"SELECT system_role FROM ogp_identity WHERE id=@id AND enabled=1",("@id",identity));return (string?)await cmd.ExecuteScalarAsync(ct)??"user";}
  static async Task<string?> Resolve(MySqlConnection c,string provider,string login,string identity,CancellationToken ct){
   if(provider=="windows")return identity.StartsWith("win-sid:",StringComparison.Ordinal) && identity.Length<=80?identity:null;
   await using var cmd=Cmd(c,"SELECT identity_id FROM ogp_app_account WHERE login_name=@login AND enabled=1 AND password_hash IS NOT NULL",("@login",login.Trim().ToLowerInvariant()));return (string?)await cmd.ExecuteScalarAsync(ct);

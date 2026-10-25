@@ -22,3 +22,8 @@ L’activation du poste est séparée du login. Sans licence valide, la fenêtre
 ## Comptes internes — 0.4.15
 
 Gestion des comptes internes dans Administration → Application → Comptes Ogipen : administrateur en modification, OSSI en consultation. Le rôle technique et les droits métier restent distincts. API protégée et limitée à l’entreprise licenciée. Voir [la livraison 0.4.15](docs/comptes-internes-v0.4.15.md).
+
+
+## Rôles dans Utilisateurs — serveur 0.4.16
+
+La liste du portail regroupe les comptes Windows/AD et internes Ogipen. Le rôle Utilisateur, Administrateur logiciel ou OSSI s’attribue directement sur chaque ligne ou dans la fiche, séparément des droits du projet. Reconnexion nécessaire après changement. Le client Windows 0.4.15 reste compatible. Voir [la livraison 0.4.16](docs/roles-utilisateurs-v0.4.16.md).
